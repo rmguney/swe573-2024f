@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
@@ -36,3 +37,9 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+=======
+# SWE573-2024F
+Will be updated as the project progresses...
+
+This readme will contain basic setup and links towards wiki resources when necessary.
+>>>>>>> c463aad6a7cab69d2a35c76213cd925de9bc411d
