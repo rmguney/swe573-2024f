@@ -3,7 +3,7 @@
   import { threadStore } from '../../threadStore';
 </script>
 
-<div class="flex">
+<div class="flex overflow-x-hidden">
     <div class="flex flex-col gap-4 m-8 lg:flex-row lg:flex-wrap lg:justify-center">
       {#each $threadStore as thread}
         <a href={`/thread/${thread.id}`} 
