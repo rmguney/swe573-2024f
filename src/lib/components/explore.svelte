@@ -2,7 +2,7 @@
     import * as Card from "$lib/components/ui/card";
 </script>
 
-<div class="flex flex-col text-center">
+<div class="flex flex-col text-center hidden lg:block">
     <div class="pl-8 pt-8">
         <Card.Root class="w-56">
             <Card.Header class="gap-2 pb-6">

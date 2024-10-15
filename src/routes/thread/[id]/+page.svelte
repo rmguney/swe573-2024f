@@ -1,5 +1,4 @@
 <script>
-    import { ScrollArea } from "$lib/components/ui/scroll-area/index.js";
     import { Textarea } from "$lib/components/ui/textarea";
     import { Button } from "$lib/components/ui/button";
     import * as Card from "$lib/components/ui/card";
@@ -13,8 +12,9 @@
     let thread = $threadStore.find(thread => thread.id == data.id);
   </script>
   
-  <div class="flex flex-row fixed">
-    <div class="w-[50rem] p-8 flex flex-col">
+  <div class="flex flex-row bg-gradient-to-br from-[#c08081] to-[#49796b]">
+    <div class="p-8 flex flex-col w-full">
+      <div class="w-full">
       <Post
         id={data.id}
         title={thread.title}
@@ -30,14 +30,11 @@
         <Button class="w-full mt-2">Send</Button>
       </Card.Root>
     </div>
-
-    <div class="w-auto pt-8 pr-8 [50rem]">
-      <Suggestions class="p-4" />
-    </div>
-    <div class="flex flex-col justify-center w-2/3">
-
-      <ScrollArea class="w-full h-[49rem]">
-        <div class="flex flex-wrap justify-center pt-2 pr-8">
+      <div class="flex flex-col lg:flex-row justify-center">
+        <div class="lg:w-1/3 pt-8 lg:pr-8">
+          <Suggestions class="p-4" />
+        </div>
+        <div class="flex flex-wrap justify-center pt-6 lg:w-2/3">
           {#if thread.comments && thread.comments.length > 0}
             {#each thread.comments as comment}
               <Comment
@@ -48,10 +45,10 @@
               />
             {/each}
           {:else}
-            <div class="pt-6 -translate-x-8">
-              <Card.Root class="bg-opacity-90 hover:bg-opacity-100 w-[50rem]">
+            <div class="-translate-x-8 w-full p-4 pt-2">
+              <Card.Root class="bg-opacity-90 hover:bg-opacity-100">
                 <Card.Header>
-                  <Card.Title class="pb-2 text-lg">There are no comments yet</Card.Title>
+                  <Card.Title class="pb-2 text-lg hidden lg:block">There are no comments yet</Card.Title>
                 </Card.Header>
                 <Card.Description class="p-4 pl-6 text-md pb-6">
                   Be the first to comment on this thread!
@@ -60,7 +57,6 @@
             </div>
           {/if}
         </div>
-      </ScrollArea>
+    </div>
     </div>
   </div>
-  

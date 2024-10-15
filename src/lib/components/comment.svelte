@@ -1,5 +1,4 @@
 <script>
-  import { ScrollArea } from "$lib/components/ui/scroll-area/index.js";
   import * as Card from "$lib/components/ui/card";
   export let comment;
   export let voteCountComment;

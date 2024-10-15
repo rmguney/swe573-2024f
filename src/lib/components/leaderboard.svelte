@@ -1,6 +1,5 @@
 <script>
     import * as Card from "$lib/components/ui/card";
-    import { Description } from "./ui/sheet";
 
     let topContributors = [
     { name: "User123", contributions: 120 },
@@ -17,7 +16,7 @@
 
 </script>
 
-<div class="pr-8 pt-8 text-center">
+<div class="hidden lg:block pr-8 pt-8 text-center">
     <Card.Root class="w-56">
         <Card.Header>
             <Card.Title class="pb-2">Top Contributors</Card.Title>

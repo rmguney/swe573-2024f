@@ -3,8 +3,8 @@
     import * as Card from "$lib/components/ui/card/index.js";
 </script>
     
-<div class="flex justify-center h-screen fixed">
-    <div class="w-1/2 p-8">
+<div class="flex justify-center">
+    <div class="lg:w-1/2 p-8">
         <Card.Root class="bg-opacity-90 hover:bg-opacity-100">
             <Card.Header>
                 <Card.Title class="pb-2 text-4xl">About</Card.Title>

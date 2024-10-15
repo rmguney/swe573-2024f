@@ -1,45 +1,22 @@
-<<<<<<< HEAD
-# create-svelte
+# Stufffinder (3F)
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+**Stufffinder** is a web application that allows users to search for and identify objects using data from Wikidata. It helps users discover information about unknown objects by querying by several attributes and feedback in form of comments by other users. The app uses Svelte for its frontend, Django as the backend framework, and PostgreSQL as the database. 
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+1. **User Input**: Users can open threads for objects by defining characteristics through Wikidata tags along with visual description and an image.
+2. **SPARQL Queries**: App generates SPARQL queries to retrieve relevant objects from Wikidata.
+3. **Thread Display**: Search results are displayed in these user created threads.
+4. **Community Feedback**: Other users can comment in these threads, helping with the identification of the object.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+Project [wiki](https://github.com/rmguney/SWE573-2024F/wiki) contains further information about the lifecycle of the project. Main contents of information are:
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+[0. Progress Tracking:](https://github.com/rmguney/SWE573-2024F/wiki/0.-Progress-Tracking) Weekly updates on what has been done through timetables.
 
-## Developing
+[1. Use Case:](https://github.com/rmguney/SWE573-2024F/wiki/1.-Use-Case) Contains mockup scenarios which serve for requirements elicitation process.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+[2. Requirements:](https://github.com/rmguney/SWE573-2024F/wiki/2.-Requirements) Requirements gathered through elicitation.
 
-```bash
-npm run dev
+[3. Architecture and Mockups:](https://github.com/rmguney/SWE573-2024F/wiki/3.-Architecture-and-Mockups) System diagram and early mockup pages.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
-=======
-# SWE573-2024F
-Will be updated as the project progresses...
-
-This readme will contain basic setup and links towards wiki resources when necessary.
->>>>>>> c463aad6a7cab69d2a35c76213cd925de9bc411d
+[4. Tech Stack:](https://github.com/rmguney/SWE573-2024F/wiki/4.-Tech-Stack) Necessary research notes and major tech choices.
