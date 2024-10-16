@@ -44,22 +44,19 @@
     selectedItems.update((items) => items.filter((i) => i.id !== itemId));
   };
 
-  const handleClickOutside = (event) => {
-    const searchContainer = document.querySelector('.search-container');
-    if (!searchContainer.contains(event.target)) {
-      showResults.set(false);
-    }
-  };
-
   onMount(() => {
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
+    const handleClickOutside = (event) => {
+      const searchContainer = document.querySelector('.search-container');
+      if (!searchContainer.contains(event.target)) {
+        showResults.set(false);
+      }
     };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
   });
 </script>
 
-<div class="w-full max-w-2xl mx-auto relative">
+<div class="w-full max-w-2xl mx-auto relative search-container">
   <input
     type="text"
     placeholder="Now let's add some relevant tags"
@@ -96,11 +93,11 @@
             href={`https://www.wikidata.org/wiki/${selectedItem.id}`} 
             target="_blank" 
             rel="noopener noreferrer"
-            class="underline text-black dark:text-white hover:text-rose-600 dark:hover:text-rose-900"
+            class="underline text-black dark:text-white hover:text-rose-700 dark:hover:text-rose-900"
           >
             {selectedItem.label}: {selectedItem.description}
           </a>
-          <button s
+          <button 
             on:click={() => removeSelectedItem(selectedItem.id)} 
             class="ml-4 bg-black dark:bg-white text-white dark:text-black py-1 px-3 rounded-md hover:bg-rose-900 hover:text-white"
           >
