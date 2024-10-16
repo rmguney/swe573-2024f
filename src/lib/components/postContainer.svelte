@@ -4,7 +4,7 @@
 </script>
 
 {#each $threadStore as thread}
-<a href={`/thread/${thread.id}`} class="w-[calc(33.333%-1rem)]">
+<a href={`/thread/${thread.id}`} class="w-full lg:w-[calc(33.333%-1rem)]">
   <Post
     id={thread.id}
     title={thread.title}

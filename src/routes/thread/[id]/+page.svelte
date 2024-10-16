@@ -4,7 +4,6 @@
   import * as Card from "$lib/components/ui/card";
   import Post from '$lib/components/post.svelte';
   import Comment from '$lib/components/comment.svelte';
-  import Suggestions from '$lib/components/suggestions.svelte';
   import { threadStore } from '../../../threadStore';
 
   export let data;
@@ -13,7 +12,7 @@
 </script>
 
 <div class="flex flex-col items-center bg-gradient-to-br from-[#c08081] to-[#49796b] p-8">
-  <div class="w-2/3">
+  <div class="w-full lg:w-2/3">
     <Post
       id={data.id}
       title={thread.title}
