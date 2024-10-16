@@ -49,7 +49,8 @@
         <li><a href="/" class="block hover:text-rose-900 text-lg" on:click={() => (navbar = false)}>Home</a></li>
         <li><a href="/create" class="block hover:text-rose-900 text-lg" on:click={() => (navbar = false)}>Create</a></li>
         <li><a href="/about" class="block hover:text-rose-900 text-lg" on:click={() => (navbar = false)}>About</a></li>
-        <li><a href="/test" class="block hover:text-rose-900 text-lg" on:click={() => (navbar = false)}>TEST</a></li>
+        <li><a href="/dev" class="block hover:text-rose-900 text-lg" on:click={() => (navbar = false)}>Dev</a></li>
+
       </ul>
     </nav>
   </Sheet.Content>

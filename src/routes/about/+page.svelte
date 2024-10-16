@@ -20,7 +20,7 @@
                 <div class="flex h-5 space-x-4 text-lg">
                     <a href="https://github.com/rmguney/SWE573-2024F" class="hover:underline font-bold text-rose-900">Source</a>
                     <Separator orientation="vertical" class="py-4" />
-                    <a href="https://github.com/rmguney/SWE573-2024F" class="hover:underline font-bold text-rose-900">Wiki</a>
+                    <a href="https://github.com/rmguney/SWE573-2024F/wiki" class="hover:underline font-bold text-rose-900">Wiki</a>
                 </div>
             </Card.Footer>   
         </Card.Root>
