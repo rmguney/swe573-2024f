@@ -5,28 +5,31 @@
 
 </script>
     
-<div class="flex justify-center pt-8">
-    <Card.Root class="bg-opacity-90 hover:bg-opacity-100">
-        <Card.Title class="p-4 text-2xl">
-            Let's help you create a new thread!
-        </Card.Title>
+<div class="flex justify-center pt-8 px-4">
+    <div class="w-full lg:w-2/3">
+        <Card.Root>
+            <Card.Title class="p-4 text-2xl">
+                Let's help you post a new object!
+            </Card.Title>
 
-        <div class="p-4">
-            <Textarea placeholder="First, we will start by giving it a title. That's what people will see on their feed." />
-        </div>
+            <div class="p-4 pt-0">
+                <Textarea placeholder="First, we will start by titling it. That's what people will see on their feed." />
+            </div>
 
-        <div class="p-4 pt-0">
-            <Textarea placeholder="Now let's give as much of a visual description as possible." />
-        </div>
+            <div class="p-4 pt-0">
+                <Textarea placeholder="Now let's give as much of a description as possible. This will help people to identify it." />
+            </div>
 
-        <div class="flex flex-col lg:flex-row justify-between p-4 pt-0 w-full">
+            <div class="p-4 pt-0 ">
+                <Query/>
+            </div>
 
-        <Query/>
-
-        </div>
-
-        <div class="p-4 pt-0">
-            <input type="file" class="hover:text-rose-900 pt-4 lg:pt-0"/>
-             </div>
-    </Card.Root>
+            <div class="p-4 pt-0">
+                <h3 class="text-md">
+                    And lastly a photo or a video to go with it:
+                </h3>
+                <input type="file" class="hover:text-rose-900 pt-4 lg:pt-0"/>
+            </div>
+        </Card.Root>
+    </div>
 </div>

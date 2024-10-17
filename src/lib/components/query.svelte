@@ -56,13 +56,13 @@
   });
 </script>
 
-<div class="w-full max-w-2xl mx-auto relative search-container">
+<div class="w-full mx-auto relative search-container">
   <input
     type="text"
-    placeholder="Now let's add some relevant tags"
+    placeholder="And add some relevant tags"
     bind:value={searchTerm}
     on:input={searchWikidata}
-    class="w-full p-3 border border-black dark:border-white rounded-md text-black dark:text-white bg-white dark:bg-black"
+    class="w-full p-3 border border-black dark:border-white rounded-md text-black dark:text-white bg-white dark:bg-black text-sm"
   />
 
   {#if $isLoading}
