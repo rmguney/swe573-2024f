@@ -5,10 +5,65 @@
   import Post from '$lib/components/post.svelte';
   import Comment from '$lib/components/comment.svelte';
   import { threadStore } from '../../../threadStore';
-  import { goto } from '$app/navigation'; // Ensure goto is imported
 
   export let data;
   let comment = '';
+
+  let handleDownvote = () => {
+  threadStore.update((prev) => {
+    return prev.map((thread) => {
+      if (thread.id == id) {
+        return {
+          ...thread,
+          voteCount: thread.voteCount - 1
+        };
+      }
+      return thread;
+    });
+  });
+};
+
+let handleUpvote = () => {
+  threadStore.update((prev) => {
+    return prev.map((thread) => {
+      if (thread.id == id) {
+        return {
+          ...thread,
+          voteCount: thread.voteCount + 1
+        };
+      }
+      return thread;
+    });
+  });
+};
+
+let handleUpvoteComment = () => {
+  threadStore.update((prev) => {
+    return prev.map((thread) => {
+      if (thread.id == id) {
+        return {
+          ...thread,
+          voteCountComment: comment.voteCountComment + 1
+        };
+      }
+      return thread;
+    });
+  });
+};
+
+let handleDownvoteComment = () => {
+  threadStore.update((prev) => {
+    return prev.map((thread) => {
+      if (thread.id == id) {
+        return {
+          ...thread,
+          voteCountComment: comment.voteCountComment - 1
+        };
+      }
+      return thread;
+    });
+  });
+};
 
   let handleSend = () => {
     threadStore.update(prev => {
@@ -40,7 +95,8 @@
 
 <div class="flex flex-col items-center bg-gradient-to-br from-[#c08081] to-[#49796b] p-8">
   <div class="w-full lg:w-2/3">
-    <Post
+    <Post bind:handleDownvote={handleDownvote}
+    bind:handleUpvote={handleUpvote}
       id={data.id}
       title={thread.title}
       description={thread.description}
@@ -60,7 +116,8 @@
     <div class="flex flex-col justify-center pt-4">
       {#if thread.comments && thread.comments.length > 0}
         {#each thread.comments as comment}
-          <Comment
+          <Comment bind:handleDownvoteComment={handleDownvoteComment}
+          bind:handleUpvoteComment={handleUpvoteComment}
             commentId={comment.commentId}
             comment={comment.comment}
             voteCountComment={comment.voteCountComment}
