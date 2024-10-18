@@ -1,5 +1,6 @@
 <script>
   import * as Card from "$lib/components/ui/card";
+  export let commentId;
   export let comment;
   export let voteCountComment;
   export let commentator;
@@ -37,6 +38,9 @@
         <Card.Description class="w-full p-3 pl-6">
           <small>
             {voteCountComment} by {commentator} {timeAgoComment} ago
+          </small>
+          <small class="hidden">
+            {commentId}
           </small>
         </Card.Description>
       </div>

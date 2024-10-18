@@ -12,7 +12,6 @@ export const threadStore = writable([
         voteCount: 150,
         comments: [
             {
-                threadId: 1,
                 commentId: 1,
                 comment: "I think it's a very old object that was used in ancient times.",
                 voteCountComment: 10,
@@ -20,7 +19,6 @@ export const threadStore = writable([
                 timeAgoComment: "2 hours"
             },
             {
-                threadId: 1,
                 commentId: 2,
                 comment: "It might be an antique tool used for farming.",
                 voteCountComment: 15,
@@ -40,7 +38,6 @@ export const threadStore = writable([
         voteCount: 95,
         comments: [
             {
-                threadId: 2,
                 commentId: 1,
                 comment: "This looks like an old ceremonial item.",
                 voteCountComment: 20,
@@ -48,7 +45,6 @@ export const threadStore = writable([
                 timeAgoComment: "4 hours 30 minutes"
             },
             {
-                threadId: 2,
                 commentId: 2,
                 comment: "I have something similar in my collection!",
                 voteCountComment: 12,
@@ -68,7 +64,6 @@ export const threadStore = writable([
         voteCount: 200,
         comments: [
             {
-                threadId: 3,
                 commentId: 1,
                 comment: "It’s definitely an art piece from the early 1900s.",
                 voteCountComment: 30,

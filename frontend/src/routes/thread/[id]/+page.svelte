@@ -5,10 +5,37 @@
   import Post from '$lib/components/post.svelte';
   import Comment from '$lib/components/comment.svelte';
   import { threadStore } from '../../../threadStore';
+  import { goto } from '$app/navigation'; // Ensure goto is imported
 
   export let data;
+  let comment = '';
 
-  let thread = $threadStore.find(thread => thread.id == data.id);
+  let handleSend = () => {
+    threadStore.update(prev => {
+
+      const lastCommentId = prev.find(thread => thread.id == data.id)?.comments?.slice(-1)[0]?.commentId || 0;
+
+      let newComment = {
+        commentId: lastCommentId + 1,
+        comment,
+        voteCountComment: 0,
+        commentator: 'Anonymous',
+        timeAgoComment: '0 hours'
+      };
+
+      return prev.map(thread => {
+        if (thread.id == data.id) {
+          return {
+            ...thread,
+            comments: [...thread.comments, newComment]
+          };
+        }
+        return thread;
+      });
+    });
+  };
+
+  $: thread = $threadStore.find(thread => thread.id == data.id);
 </script>
 
 <div class="flex flex-col items-center bg-gradient-to-br from-[#c08081] to-[#49796b] p-8">
@@ -25,14 +52,16 @@
       variant="thread"
     />
     <Card.Root class="bg-opacity-90 hover:bg-opacity-100 p-4 mt-4 flex flex-col">
-      <Textarea class="h-20 resize-none p-2" placeholder="Say stuff" />
-      <Button class="w-full mt-2 hover:bg-rose-900">Send</Button>
+      <Textarea bind:value={comment} class="h-20 resize-none p-2" placeholder="Say stuff" />
+
+      <Button on:click={handleSend} class="w-full mt-2 hover:bg-rose-900">Send</Button>
     </Card.Root>
 
     <div class="flex flex-col justify-center pt-4">
       {#if thread.comments && thread.comments.length > 0}
         {#each thread.comments as comment}
           <Comment
+            commentId={comment.commentId}
             comment={comment.comment}
             voteCountComment={comment.voteCountComment}
             commentator={comment.commentator}

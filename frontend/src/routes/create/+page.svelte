@@ -27,7 +27,7 @@
                 description,
                 tags: storedTags,
                 imageSrc: `https://picsum.photos/1200/3200?random=1`,
-                postedBy: "", 
+                postedBy: "Anonymous", 
                 timeAgo: "0 hours",
                 voteCount,
                 comments: []
