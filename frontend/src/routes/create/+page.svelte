@@ -1,35 +1,69 @@
 <script>
     import * as Card from "$lib/components/ui/card/index.js";
     import { Textarea } from "$lib/components/ui/textarea";
+    import { Button } from "$lib/components/ui/button";
     import Query from '$lib/components/query.svelte';
+    import { threadStore } from "../../threadStore";
+    import { goto } from '$app/navigation';
+  
+    let id;
+    let title = '';
+    let tags = [];
+    let imageSrc;
+    let postedBy;
+    let timeAgo;
+    let voteCount = 0;
+    let description = '';
 
+    let handlePost = () => {
+        threadStore.update(prev => {
+            let id = prev[prev.length - 1]?.id + 1 || 1;
+
+            let storedTags = tags.map(tag => tag.id); 
+
+            let newThread = {
+                id: id,
+                title, 
+                description,
+                tags: storedTags,
+                imageSrc: `https://picsum.photos/1200/3200?random=1`,
+                postedBy: "", 
+                timeAgo: "0 hours",
+                voteCount,
+                comments: []
+            };
+
+            return [...prev, newThread];
+        });
+
+        goto(`/`);
+    };
 </script>
-    
+
 <div class="flex justify-center pt-8 px-4">
-    <div class="w-full lg:w-2/3">
+    <form class="w-full lg:w-2/3">
         <Card.Root>
             <Card.Title class="p-4 text-2xl">
                 Let's help you post a new object!
             </Card.Title>
 
             <div class="p-4 pt-0">
-                <Textarea placeholder="First, we will start by titling it. That's what people will see on their feed." />
+                <Textarea bind:value={title} placeholder="First, we will start by titling it." />
             </div>
 
             <div class="p-4 pt-0">
-                <Textarea placeholder="Now let's give as much of a description as possible. This will help people to identify it." />
+                <Textarea bind:value={description} placeholder="Now let's give as much of a description as possible." />
             </div>
 
             <div class="p-4 pt-0 ">
-                <Query/>
+                <Query bind:tags={tags} />
             </div>
 
             <div class="p-4 pt-0">
-                <h3 class="text-md">
-                    And lastly a photo or a video to go with it:
-                </h3>
-                <input type="file" class="hover:text-rose-900 pt-4 lg:pt-0"/>
+                <Button on:click={handlePost} variant="outline" size="icon" class="hover:bg-rose-900 flex items-center justify-center p-4 w-full text-lg">
+                    Post
+                </Button>
             </div>
         </Card.Root>
-    </div>
+    </form>
 </div>

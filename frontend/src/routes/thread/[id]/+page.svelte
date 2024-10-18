@@ -17,6 +17,7 @@
       id={data.id}
       title={thread.title}
       description={thread.description}
+      tags={thread.tags}
       imageSrc={thread.imageSrc}
       postedBy={thread.postedBy}
       timeAgo={thread.timeAgo}
@@ -25,10 +26,10 @@
     />
     <Card.Root class="bg-opacity-90 hover:bg-opacity-100 p-4 mt-4 flex flex-col">
       <Textarea class="h-20 resize-none p-2" placeholder="Say stuff" />
-      <Button class="w-full mt-2">Send</Button>
+      <Button class="w-full mt-2 hover:bg-rose-900">Send</Button>
     </Card.Root>
 
-    <div class="flex flex-col justify-center pt-6">
+    <div class="flex flex-col justify-center pt-4">
       {#if thread.comments && thread.comments.length > 0}
         {#each thread.comments as comment}
           <Comment
@@ -39,7 +40,7 @@
           />
         {/each}
       {:else}
-        <Card.Root class="bg-opacity-90 hover:bg-opacity-100 mt-4">
+        <Card.Root class="bg-opacity-90 hover:bg-opacity-100">
           <Card.Header>
             <Card.Title class="pb-2 text-lg text-center">There are no comments yet</Card.Title>
           </Card.Header>

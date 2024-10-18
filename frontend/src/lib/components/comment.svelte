@@ -6,7 +6,7 @@
   export let timeAgoComment;
 </script>
 
-<div class="flex w-full pt-2">
+<div class="flex w-full pb-2">
   <Card.Root class="w-full bg-opacity-90 hover:bg-opacity-100">
     <div class="flex items-center w-full">
       <div class="flex flex-col items-center justify-center w-12 h-24 translate-x-4">

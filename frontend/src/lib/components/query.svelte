@@ -54,6 +54,10 @@
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
   });
+
+  $: tags = $selectedItems;
+  export let tags;
+
 </script>
 
 <div class="w-full mx-auto relative search-container">

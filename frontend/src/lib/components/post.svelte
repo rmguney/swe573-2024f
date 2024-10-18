@@ -1,14 +1,40 @@
 <script>
   import * as Card from "$lib/components/ui/card";
+  import { onMount } from 'svelte';
+  import { writable } from 'svelte/store';
 
   export let id;
   export let title;
+  export let tags;
   export let imageSrc;
   export let postedBy;
   export let timeAgo;
   export let voteCount;  
-  export let description;  
+  export let description;
   export let variant = "thumb";
+
+  let tagDetails = writable([]);
+
+  const fetchTagDetails = async () => {
+    let fetchedTags = await Promise.all(tags.map(async (qcode) => {
+      try {
+        const response = await fetch(`https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${qcode}&format=json&languages=en&props=labels|descriptions&origin=*`);
+        const data = await response.json();
+        const entity = data.entities[qcode];
+        return {
+          label: entity.labels?.en?.value || 'Unknown label',
+          description: entity.descriptions?.en?.value || 'No description',
+          id: qcode
+        };
+      } catch (error) {
+        console.error('Failed to fetch tag details:', error);
+        return { label: 'Unknown label', description: 'No description', id: qcode };
+      }
+    }));
+    tagDetails.set(fetchedTags);
+  };
+
+  onMount(fetchTagDetails);
 </script>
 
 <Card.Root 
@@ -48,6 +74,23 @@
           <small class={`${variant === "thumb" ? 'text-ellipsis overflow-hidden whitespace-nowrap w-full max-w-full' : ''}`}>
           {timeAgo} ago by {postedBy}
           </small>
+          <div class={`${variant === "thumb" ? 'hidden' : 'pt-2'}`}>
+            <ul>
+              <h2 class="text-md font-semibold text-black dark:text-white">Tags:</h2>
+              {#each $tagDetails as tag}
+                <li class="mt-2">
+                  <a 
+                    href={`https://www.wikidata.org/wiki/${tag.id}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="underline text-black dark:text-white hover:text-rose-700 dark:hover:text-rose-900"
+                  >
+                    {tag.label}: {tag.description}
+                  </a>
+                </li>
+              {/each}
+            </ul>
+          </div>
         </Card.Description>
       </div>
     </div>
