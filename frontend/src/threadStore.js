@@ -10,24 +10,6 @@ export const threadStore = writable([
         postedBy: "User123",
         timeAgo: "22 hours",
         voteCount: 150,
-        comments: [
-            {
-                threadId: 1,
-                commentId: 1,
-                comment: "I think it's a very old object that was used in ancient times.",
-                voteCountComment: 10,
-                commentator: "User456",
-                timeAgoComment: "2 hours"
-            },
-            {
-                threadId: 1,
-                commentId: 2,
-                comment: "It might be an antique tool used for farming.",
-                voteCountComment: 15,
-                commentator: "Historian101",
-                timeAgoComment: "1 hour 45 minutes"
-            }
-        ]
     },
     {
         id: 2,
@@ -38,24 +20,6 @@ export const threadStore = writable([
         postedBy: "ChefMaster",
         timeAgo: "22 hours",
         voteCount: 95,
-        comments: [
-            {
-                threadId: 2,
-                commentId: 1,
-                comment: "This looks like an old ceremonial item.",
-                voteCountComment: 20,
-                commentator: "User789",
-                timeAgoComment: "4 hours 30 minutes"
-            },
-            {
-                threadId: 2,
-                commentId: 2,
-                comment: "I have something similar in my collection!",
-                voteCountComment: 12,
-                commentator: "CollectorX",
-                timeAgoComment: "4 hours"
-            }
-        ]
     },
     {
         id: 3,
@@ -66,16 +30,6 @@ export const threadStore = writable([
         postedBy: "ArtLover",
         timeAgo: "21 hours",
         voteCount: 200,
-        comments: [
-            {
-                threadId: 3,
-                commentId: 1,
-                comment: "It’s definitely an art piece from the early 1900s.",
-                voteCountComment: 30,
-                commentator: "VintageFan",
-                timeAgoComment: "22 hours"
-            }
-        ]
     },
     {
         id: 4,
@@ -86,7 +40,6 @@ export const threadStore = writable([
         postedBy: "Historian101",
         timeAgo: "18 hours",
         voteCount: 175,
-        comments: []
     },
     {
         id: 5,
@@ -97,7 +50,6 @@ export const threadStore = writable([
         postedBy: "BargainHunter",
         timeAgo: "16 hours",
         voteCount: 120,
-        comments: []
     },
     {
         id: 6,
@@ -108,7 +60,6 @@ export const threadStore = writable([
         postedBy: "ExplorerX",
         timeAgo: "12 hours",
         voteCount: 90,
-        comments: []
     },
     {
         id: 7,
@@ -119,7 +70,6 @@ export const threadStore = writable([
         postedBy: "CuriosityCollector",
         timeAgo: "12 hours",
         voteCount: 210,
-        comments: []
     },
     {
         id: 8,
@@ -130,7 +80,6 @@ export const threadStore = writable([
         postedBy: "GenealogyBuff",
         timeAgo: "11 hours",
         voteCount: 145,
-        comments: []
     },
     {
         id: 9,
@@ -141,6 +90,5 @@ export const threadStore = writable([
         postedBy: "ThriftShopper",
         timeAgo: "8 hours",
         voteCount: 180,
-        comments: []
     }
 ]);

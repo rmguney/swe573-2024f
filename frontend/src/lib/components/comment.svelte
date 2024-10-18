@@ -1,5 +1,7 @@
 <script>
   import * as Card from "$lib/components/ui/card";
+  export let threadId;
+  export let commentId;
   export let comment;
   export let voteCountComment;
   export let commentator;
@@ -40,6 +42,9 @@
           </small>
         </Card.Description>
       </div>
+    </div>
+    <div class="hidden">
+      {threadId} {commentId}
     </div>
   </Card.Root>
 </div>
