@@ -41,7 +41,7 @@
 
 <Card.Root 
   class={`shadow-lg hover:shadow-xl transition duration-300
-  ${variant === "thumb" ? 'grayscale hover:grayscale-0 bg-opacity-75 hover:bg-opacity-100 w-70 h-70 ' : 'bg-opacity-90 hover:bg-opacity-100'}`}>
+  ${variant === "thumb" ? 'grayscale hover:grayscale-0 bg-opacity-75 hover:bg-opacity-100 w-70 h-70 hover:scale-110' : 'bg-opacity-90 hover:bg-opacity-100'}`}>
   <Card.Header>
     <div class="flex flex-row items-center">
       {#if variant !== 'thumb'}

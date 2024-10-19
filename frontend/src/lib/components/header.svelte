@@ -3,12 +3,9 @@
   import { Input } from "$lib/components/ui/input";
   import { Separator } from "$lib/components/ui/separator";
   import { toggleMode } from "mode-watcher";
-
   import Sun from "lucide-svelte/icons/sun";
   import Moon from "lucide-svelte/icons/moon";
-
   import * as Sheet from "$lib/components/ui/sheet";
-
   import Login from '$lib/components/login.svelte';
 
   let navbar = false;
@@ -50,7 +47,6 @@
         <li><a href="/create" class="block hover:text-rose-900 text-lg" on:click={() => (navbar = false)}>Create</a></li>
         <li><a href="/about" class="block hover:text-rose-900 text-lg" on:click={() => (navbar = false)}>About</a></li>
         <li><a href="/dev" class="block hover:text-rose-900 text-lg" on:click={() => (navbar = false)}>Dev</a></li>
-
       </ul>
     </nav>
   </Sheet.Content>

@@ -1,6 +1,24 @@
 <script>
   import Post from '$lib/components/post.svelte';
   import { threadStore } from '../../threadStore';
+  import { onMount } from 'svelte';
+
+  onMount(async function () {
+  try {
+    const response = await fetch(`http://localhost:8000/api/thread`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json(); 
+    threadStore.set(data); 
+    console.log(data);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+});
+
 </script>
 
 {#each $threadStore.slice().sort((a, b) => b.id - a.id) as thread}
