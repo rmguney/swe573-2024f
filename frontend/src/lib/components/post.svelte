@@ -5,15 +5,13 @@
 
   export let id;
   export let title;
-  export let tags;
+  export let tags = [];
   export let imageSrc;
   export let postedBy;
-  export let timeAgo;
+  export let postedDate;
   export let voteCount;  
   export let description;
   export let variant = "thumb";
-  export let handleDownvote;
-  export let handleUpvote;
 
   let tagDetails = writable([]);
 
@@ -46,7 +44,7 @@
     <div class="flex flex-row items-center">
       {#if variant !== 'thumb'}
       <div class="flex flex-col items-center justify-center p-2 -translate-x-3">
-        <button on:click={handleUpvote} class="block w-6 h-6 mb-2 hover:text-rose-900">
+        <button class="block w-6 h-6 mb-2 hover:text-rose-900">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-full h-full">
             <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
           </svg>
@@ -54,7 +52,7 @@
         <div class="py-1">
           {voteCount}
         </div>
-        <button on:click={handleDownvote}  class="block w-6 h-6 mt-2 hover:text-rose-900">
+        <button class="block w-6 h-6 mt-2 hover:text-rose-900">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-full h-full">
             <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
           </svg>        
@@ -74,7 +72,7 @@
             {voteCount} points •
           </small>
           <small class={`${variant === "thumb" ? 'text-ellipsis overflow-hidden whitespace-nowrap w-full max-w-full' : ''}`}>
-          {timeAgo} ago by {postedBy}
+          {postedDate} ago by {postedBy}
           </small>
           <div class={`${variant === "thumb" ? 'hidden' : 'pt-2'}`}>
             <ul>

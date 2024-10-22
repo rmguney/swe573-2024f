@@ -2,19 +2,12 @@ from django.shortcuts import render
 from rest_framework import generics
 from threef.models import Thread, Comment
 from threef.serializers import ThreadSerializer, CommentSerializer
+from rest_framework import viewsets
 
-class ThreadListAPIView(generics.ListAPIView):
+class ThreadViewSet(viewsets.ModelViewSet):
     queryset = Thread.objects.all()
     serializer_class = ThreadSerializer
 
-class CommentListAPIView(generics.ListAPIView):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
-
-class ThreadDetailAPIView(generics.RetrieveAPIView):
-    queryset = Thread.objects.all()
-    serializer_class = ThreadSerializer
-
-class CommentDetailAPIView(generics.RetrieveAPIView):
+class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer

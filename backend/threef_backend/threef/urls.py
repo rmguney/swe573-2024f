@@ -1,9 +1,8 @@
 from django.urls import path
-from threef.views import ThreadListAPIView, CommentListAPIView, ThreadDetailAPIView, CommentDetailAPIView
+from threef.views import ThreadViewSet, CommentViewSet
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
-    path('thread/', ThreadListAPIView.as_view(), name='thread_list'),
-    path('comment/', CommentListAPIView.as_view(), name='comment_list'),
-    path('thread/<int:pk>/', ThreadDetailAPIView.as_view(), name='thread_detail'),
-    path('comment/<int:pk>/', CommentDetailAPIView.as_view(), name='comment_detail'),
-]
+router = DefaultRouter()
+router.register(r'thread', ThreadViewSet)
+router.register(r'comment', CommentViewSet)
+urlpatterns = router.urls

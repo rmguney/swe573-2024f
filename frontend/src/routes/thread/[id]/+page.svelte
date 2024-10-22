@@ -9,62 +9,6 @@
   export let data;
   let comment = '';
 
-  let handleDownvote = () => {
-  threadStore.update((prev) => {
-    return prev.map((thread) => {
-      if (thread.id == id) {
-        return {
-          ...thread,
-          voteCount: thread.voteCount - 1
-        };
-      }
-      return thread;
-    });
-  });
-};
-
-let handleUpvote = () => {
-  threadStore.update((prev) => {
-    return prev.map((thread) => {
-      if (thread.id == id) {
-        return {
-          ...thread,
-          voteCount: thread.voteCount + 1
-        };
-      }
-      return thread;
-    });
-  });
-};
-
-let handleUpvoteComment = () => {
-  threadStore.update((prev) => {
-    return prev.map((thread) => {
-      if (thread.id == id) {
-        return {
-          ...thread,
-          voteCountComment: comment.voteCountComment + 1
-        };
-      }
-      return thread;
-    });
-  });
-};
-
-let handleDownvoteComment = () => {
-  threadStore.update((prev) => {
-    return prev.map((thread) => {
-      if (thread.id == id) {
-        return {
-          ...thread,
-          voteCountComment: comment.voteCountComment - 1
-        };
-      }
-      return thread;
-    });
-  });
-};
-
   let handleSend = () => {
     threadStore.update(prev => {
 
@@ -75,7 +19,7 @@ let handleDownvoteComment = () => {
         comment,
         voteCountComment: 0,
         commentator: 'Anonymous',
-        timeAgoComment: '0 hours'
+        postedDateComment: '0 hours'
       };
 
       return prev.map(thread => {
@@ -95,15 +39,14 @@ let handleDownvoteComment = () => {
 
 <div class="flex flex-col items-center bg-gradient-to-br from-[#c08081] to-[#49796b] p-8">
   <div class="w-full lg:w-2/3">
-    <Post bind:handleDownvote={handleDownvote}
-    bind:handleUpvote={handleUpvote}
+    <Post 
       id={data.id}
       title={thread.title}
       description={thread.description}
       tags={thread.tags}
       imageSrc={thread.imageSrc}
       postedBy={thread.postedBy}
-      timeAgo={thread.timeAgo}
+      postedDate={thread.postedDate}
       voteCount={thread.voteCount}
       variant="thread"
     />
@@ -116,13 +59,12 @@ let handleDownvoteComment = () => {
     <div class="flex flex-col justify-center pt-4">
       {#if thread.comments && thread.comments.length > 0}
         {#each thread.comments as comment}
-          <Comment bind:handleDownvoteComment={handleDownvoteComment}
-          bind:handleUpvoteComment={handleUpvoteComment}
+          <Comment
             commentId={comment.commentId}
             comment={comment.comment}
             voteCountComment={comment.voteCountComment}
             commentator={comment.commentator}
-            timeAgoComment={comment.timeAgoComment}
+            postedDateComment={comment.postedDateComment}
           />
         {/each}
       {:else}

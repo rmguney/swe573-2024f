@@ -8,7 +8,7 @@ export const threadStore = writable([
         tags: ["Q16338", "Q204370", "Q185157"],
         imageSrc: `https://picsum.photos/1200/3200?random=1`,
         postedBy: "User123",
-        timeAgo: "22 hours",
+        postedDate: "22 hours",
         voteCount: 150,
         comments: [
             {
@@ -16,14 +16,14 @@ export const threadStore = writable([
                 comment: "I think it's a very old object that was used in ancient times.",
                 voteCountComment: 10,
                 commentator: "User456",
-                timeAgoComment: "2 hours"
+                postedDateComment: "2 hours"
             },
             {
                 commentId: 2,
                 comment: "It might be an antique tool used for farming.",
                 voteCountComment: 15,
                 commentator: "Historian101",
-                timeAgoComment: "1 hour 45 minutes"
+                postedDateComment: "1 hour 45 minutes"
             }
         ]
     },
@@ -34,7 +34,7 @@ export const threadStore = writable([
         tags: ["Q340", "Q102866", "Q309"],
         imageSrc: `https://picsum.photos/800/1200?random=2`,
         postedBy: "ChefMaster",
-        timeAgo: "22 hours",
+        postedDate: "22 hours",
         voteCount: 95,
         comments: [
             {
@@ -42,14 +42,14 @@ export const threadStore = writable([
                 comment: "This looks like an old ceremonial item.",
                 voteCountComment: 20,
                 commentator: "User789",
-                timeAgoComment: "4 hours 30 minutes"
+                postedDateComment: "4 hours 30 minutes"
             },
             {
                 commentId: 2,
                 comment: "I have something similar in my collection!",
                 voteCountComment: 12,
                 commentator: "CollectorX",
-                timeAgoComment: "4 hours"
+                postedDateComment: "4 hours"
             }
         ]
     },
@@ -60,7 +60,7 @@ export const threadStore = writable([
         tags: ["Q280528", "Q7388", "Q220584"],
         imageSrc: `https://picsum.photos/2000/1500?random=3`,
         postedBy: "ArtLover",
-        timeAgo: "21 hours",
+        postedDate: "21 hours",
         voteCount: 200,
         comments: [
             {
@@ -68,7 +68,7 @@ export const threadStore = writable([
                 comment: "It’s definitely an art piece from the early 1900s.",
                 voteCountComment: 30,
                 commentator: "VintageFan",
-                timeAgoComment: "22 hours"
+                postedDateComment: "22 hours"
             }
         ]
     },
@@ -79,7 +79,7 @@ export const threadStore = writable([
         tags: ["Q106407", "Q3533467"],
         imageSrc: `https://picsum.photos/1200/3200?random=4`,
         postedBy: "Historian101",
-        timeAgo: "18 hours",
+        postedDate: "18 hours",
         voteCount: 175,
         comments: []
     },
@@ -90,7 +90,7 @@ export const threadStore = writable([
         tags: ["Q205818", "Q9136", "Q55678"],
         imageSrc: `https://picsum.photos/800/1200?random=5`,
         postedBy: "BargainHunter",
-        timeAgo: "16 hours",
+        postedDate: "16 hours",
         voteCount: 120,
         comments: []
     },
@@ -101,7 +101,7 @@ export const threadStore = writable([
         tags: ["Q223808", "Q204425"],
         imageSrc: `https://picsum.photos/2000/1500?random=6`,
         postedBy: "ExplorerX",
-        timeAgo: "12 hours",
+        postedDate: "12 hours",
         voteCount: 90,
         comments: []
     },
@@ -112,7 +112,7 @@ export const threadStore = writable([
         tags: ["Q83077", "Q174424"],
         imageSrc: `https://picsum.photos/1000/1600?random=7`,
         postedBy: "CuriosityCollector",
-        timeAgo: "12 hours",
+        postedDate: "12 hours",
         voteCount: 210,
         comments: []
     },
@@ -123,7 +123,7 @@ export const threadStore = writable([
         tags: ["Q222323", "Q619272"],
         imageSrc: `https://picsum.photos/800/1200?random=8`,
         postedBy: "GenealogyBuff",
-        timeAgo: "11 hours",
+        postedDate: "11 hours",
         voteCount: 145,
         comments: []
     },
@@ -134,7 +134,7 @@ export const threadStore = writable([
         tags: ["Q15381", "Q6256", "Q23787"],
         imageSrc: `https://picsum.photos/1500/2200?random=9`,
         postedBy: "ThriftShopper",
-        timeAgo: "8 hours",
+        postedDate: "8 hours",
         voteCount: 180,
         comments: []
     }

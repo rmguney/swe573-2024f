@@ -30,7 +30,7 @@
     tags={thread.tags}
     imageSrc={thread.imageSrc}
     postedBy={thread.postedBy}
-    timeAgo={thread.timeAgo}
+    postedDate={thread.postedDate}
     voteCount={thread.voteCount}
     variant="thumb"
   />

@@ -4,7 +4,7 @@
   export let comment;
   export let voteCountComment;
   export let commentator;
-  export let timeAgoComment;
+  export let postedDateComment;
   export let handleDownvoteComment;
   export let handleUpvoteComment;
 </script>
@@ -39,7 +39,7 @@
 
         <Card.Description class="w-full p-3 pl-6">
           <small>
-            {voteCountComment} by {commentator} {timeAgoComment} ago
+            {voteCountComment} by {commentator} {postedDateComment} ago
           </small>
           <small class="hidden">
             {commentId}
