@@ -4,9 +4,9 @@ from .models import Thread, Comment
 class ThreadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Thread
-        fields = ('id', 'title', 'description', 'tags', 'imageSrc', 'postedBy', 'timeAgo', 'voteCount')
+        fields = ('id', 'title', 'description', 'tags', 'imageSrc', 'postedBy', 'postedDate', 'voteCount')
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('id', 'thread', 'comment', 'vote_count', 'commentator', 'time_ago', 'selected')
+        fields = ('id', 'thread', 'comment', 'voteCountComment', 'commentator', 'postedDatecomment', 'selected')

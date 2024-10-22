@@ -7,7 +7,7 @@ class Thread(models.Model):
     tags = models.JSONField()  # IDs like ["Q16338", "Q204370"]
     imageSrc = models.ImageField(upload_to='images/')
     postedBy = models.CharField(max_length=255)
-    timeAgo = models.DateTimeField(default=timezone.now)
+    postedDate = models.DateTimeField(default=timezone.now)
     voteCount = models.IntegerField(default=0)
 
     def __str__(self):
@@ -16,9 +16,9 @@ class Thread(models.Model):
 class Comment(models.Model):
     thread = models.ForeignKey(Thread, related_name='comments', on_delete=models.CASCADE)
     comment = models.TextField()
-    vote_count = models.IntegerField(default=0)
+    voteCountComment = models.IntegerField(default=0)
     commentator = models.CharField(max_length=255)
-    time_ago = models.DateTimeField(default=timezone.now)
+    postedDateComment = models.DateTimeField(default=timezone.now)
     selected = models.BooleanField(default=False)
 
     def __str__(self):
