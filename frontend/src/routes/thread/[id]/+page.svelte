@@ -9,29 +9,54 @@
   export let data;
   let comment = '';
 
-  let handleSend = () => {
-    threadStore.update(prev => {
+  let handleSend = async () => {
+    if (!comment.trim()) {
+        console.error("Comment cannot be empty");
+        return;
+    }
 
-      const lastCommentId = prev.find(thread => thread.id == data.id)?.comments?.slice(-1)[0]?.commentId || 0;
-
-      let newComment = {
-        commentId: lastCommentId + 1,
-        comment,
+    const endPoint = `http://localhost:8000/api/comment/`;
+    const payload = {
+        thread: data.id,
+        comment: comment,
         voteCountComment: 0,
         commentator: 'Anonymous',
-        postedDateComment: '0 hours'
-      };
+        postedDateComment: new Date().toISOString(),
+    };
 
-      return prev.map(thread => {
-        if (thread.id == data.id) {
-          return {
-            ...thread,
-            comments: [...thread.comments, newComment]
-          };
+    try {
+        const response = await fetch(endPoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            const errData = await response.json();
+            throw new Error(JSON.stringify(errData));
         }
-        return thread;
-      });
-    });
+
+        const newComment = await response.json();
+
+        threadStore.update(prev => {
+            return prev.map(thread => {
+                if (thread.id == data.id) {
+                    const comments = thread.comments ? thread.comments : [];
+                    return {
+                        ...thread,
+                        comments: [...comments, newComment]
+                    };
+                }
+                return thread;
+            });
+        });
+
+        comment = ''; 
+    } catch (error) {
+        console.error('Error submitting comment:', error);
+    }
   };
 
   $: thread = $threadStore.find(thread => thread.id == data.id);
