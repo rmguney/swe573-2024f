@@ -19,12 +19,11 @@
     const endPoint = 'http://localhost:8000/api/thread/';
     let data = new FormData();
     
-    // Convert the tags array of objects to an array of IDs
     const tagIds = tags.map(tag => tag.id);
     
     data.append('title', title);
-    data.append('tags', JSON.stringify(tagIds));  // Append only the tag IDs as a JSON string
-    data.append('imageSrc', imageSrc);  // Ensure you're binding the file input to this
+    data.append('tags', JSON.stringify(tagIds));
+    data.append('imageSrc', imageSrc);
     data.append('postedBy', postedBy);
     data.append('voteCount', voteCount);
     data.append('description', description);
