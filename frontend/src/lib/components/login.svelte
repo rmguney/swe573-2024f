@@ -1,80 +1,200 @@
 <script>
-    import { Button } from "$lib/components/ui/button";
-    import { Input } from "$lib/components/ui/input";
-    import { Label } from "$lib/components/ui/label/index.js";
-    import * as Sheet from "$lib/components/ui/sheet";
-    import * as Tabs from "$lib/components/ui/tabs/index.js";
-    import * as Card from "$lib/components/ui/card/index.js";
-  
-    let loginBar = false;
-  </script>
+  import { Button } from "$lib/components/ui/button";
+  import { Input } from "$lib/components/ui/input";
+  import { Label } from "$lib/components/ui/label/index.js";
+  import * as Sheet from "$lib/components/ui/sheet";
+  import * as Tabs from "$lib/components/ui/tabs/index.js";
+  import * as Card from "$lib/components/ui/card/index.js";
+
+  let loginBar = false;
+
+  // Registration variables
+  let registerUsername = "";
+  let registerPassword = "";
+  let registerErrors = {};
+
+  // Login variables
+  let loginUsername = "";
+  let loginPassword = "";
+  let loginErrors = {};
+
+  // Handle Registration
+  let handleRegister = async () => {
+    registerErrors = {};
+
+    const endpoint = `http://localhost:8000/api/register/`;
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: registerUsername,
+        password: registerPassword,
+      }),
+    };
+
+    try {
+      const response = await fetch(endpoint, requestOptions);
+      const contentType = response.headers.get("content-type");
+      let data;
+
+      if (contentType && contentType.includes("application/json")) {
+        data = await response.json();
+      } else {
+        const textData = await response.text();
+        throw new Error(`Unexpected response format: ${textData}`);
+      }
+
+      if (response.ok) {
+        console.log("User registered successfully");
+        loginBar = false;
+        registerUsername = "";
+        registerPassword = "";
+      } else {
+        registerErrors = data;
+        console.error("Error registering user:", data);
+      }
+    } catch (error) {
+      console.error("Error registering user:", error);
+      registerErrors = { non_field_errors: ["An unexpected error occurred."] };
+    }
+  };
+
+  // Handle Login
+  let handleLogin = async () => {
+    loginErrors = {};
+
+    const endpoint = `http://localhost:8000/api/login/`;
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: loginUsername,
+        password: loginPassword,
+      }),
+    };
+
+    try {
+      const response = await fetch(endpoint, requestOptions);
+      const contentType = response.headers.get("content-type");
+      let data;
+
+      if (contentType && contentType.includes("application/json")) {
+        data = await response.json();
+      } else {
+        const textData = await response.text();
+        throw new Error(`Unexpected response format: ${textData}`);
+      }
+
+      if (response.ok) {
+        console.log("User logged in successfully");
+        loginBar = false;
+        loginUsername = "";
+        loginPassword = "";
+      } else {
+        loginErrors = data;
+        console.error("Error logging in:", data);
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
+      loginErrors = { non_field_errors: ["An unexpected error occurred."] };
+    }
+  };
+</script>
 
 <Button class="lg:px-12 hover:bg-rose-900" on:click={() => (loginBar = !loginBar)}>Sign In</Button>
 
 <Sheet.Root bind:open={loginBar}>
-    <Sheet.Overlay />
-    <Sheet.Content side="right" class="w-96">
-      <Sheet.Header>
-        <Sheet.Close/>
-      </Sheet.Header> 
-      <div class="pt-8">
-        <Tabs.Root value="login" class="w-full p-4">
-          <Tabs.List class="grid w-full grid-cols-2">
-            <Tabs.Trigger value="login">Login</Tabs.Trigger>
-            <Tabs.Trigger value="register">Register</Tabs.Trigger>
-          </Tabs.List>
-          <Tabs.Content value="login">
-            <Card.Root>
-              <Card.Header>
-                <Card.Title>Login</Card.Title>
-                <Card.Description>
-                  Do you already have an account? Login here!
-                </Card.Description>
-              </Card.Header>
-              <Card.Content class="space-y-2">
-                <div class="space-y-1">
-                  <Label for="email">E-mail</Label>
-                  <Input id="email" type="email" />
-                </div>
-                <div class="space-y-1">
-                  <Label for="password">Password</Label>
-                  <Input id="password" type="password" />
-                  <small><a href="/" class="hover:text-rose-900" on:click={() => (loginBar = false)}>Forgot your password?</a></small>
-                </div>
-              </Card.Content>
-              <Card.Footer>
-                <Button class="hover:bg-rose-900" on:click={() => (loginBar = false)}>Login</Button>
-              </Card.Footer>
-            </Card.Root>
-          </Tabs.Content>
-          <Tabs.Content value="register">
-            <Card.Root>
-              <Card.Header>
-                <Card.Title>Register</Card.Title>
-                <Card.Description>
-                  Create an account here to join the community!
-                </Card.Description>
-              </Card.Header>
-              <Card.Content class="space-y-2">
-                <div class="space-y-1">
-                  <Label for="email">E-mail</Label>
-                  <Input id="email" type="email"/>
-                </div>
-                <div class="space-y-1">
-                  <Label for="username">Display Name</Label>
-                  <Input id="username" type="username"/>
-                </div>
-                <div class="space-y-1">
-                  <Label for="password">Password</Label>
-                  <Input id="password" type="password" />
-                </div>
-              </Card.Content>
-              <Card.Footer>
-                <Button class="hover:bg-rose-900" on:click={() => (loginBar = false)}>Register</Button>
-              </Card.Footer>
-            </Card.Root>
-          </Tabs.Content>
-        </Tabs.Root>
-      </div>
-    </Sheet.Content>
-  </Sheet.Root>
+  <Sheet.Overlay />
+  <Sheet.Content side="right" class="w-96">
+    <Sheet.Header>
+      <Sheet.Close />
+    </Sheet.Header>
+    <div class="pt-8">
+      <Tabs.Root value="login" class="w-full p-4">
+        <Tabs.List class="grid w-full grid-cols-2">
+          <Tabs.Trigger value="login">Login</Tabs.Trigger>
+          <Tabs.Trigger value="register">Register</Tabs.Trigger>
+        </Tabs.List>
+
+        <!-- Login Tab Content -->
+        <Tabs.Content value="login">
+          <Card.Root>
+            <Card.Header>
+              <Card.Title>Login</Card.Title>
+              <Card.Description>
+                Enter your credentials to access your account.
+              </Card.Description>
+            </Card.Header>
+            <Card.Content class="space-y-2">
+              <!-- Username Input -->
+              <div class="space-y-1">
+                <Label for="login-username">Username</Label>
+                <Input id="login-username" type="text" bind:value={loginUsername} />
+                {#if loginErrors.username}
+                  <p class="text-red-500 text-sm">{loginErrors.username}</p>
+                {/if}
+              </div>
+              <!-- Password Input -->
+              <div class="space-y-1">
+                <Label for="login-password">Password</Label>
+                <Input id="login-password" type="password" bind:value={loginPassword} />
+                {#if loginErrors.password}
+                  <p class="text-red-500 text-sm">{loginErrors.password}</p>
+                {/if}
+                <small><a href="/" class="hover:text-rose-900">Forgot your password?</a></small>
+              </div>
+              <!-- Non-field Errors -->
+              {#if loginErrors.non_field_errors}
+                <p class="text-red-500 text-sm">{loginErrors.non_field_errors[0]}</p>
+              {/if}
+            </Card.Content>
+            <Card.Footer>
+              <Button class="hover:bg-rose-900" on:click={handleLogin}>Login</Button>
+            </Card.Footer>
+          </Card.Root>
+        </Tabs.Content>
+
+        <!-- Register Tab Content -->
+        <Tabs.Content value="register">
+          <Card.Root>
+            <Card.Header>
+              <Card.Title>Register</Card.Title>
+              <Card.Description>
+                Create a new account to join our community!
+              </Card.Description>
+            </Card.Header>
+            <Card.Content class="space-y-2">
+              <!-- Username Input -->
+              <div class="space-y-1">
+                <Label for="register-username">Username</Label>
+                <Input id="register-username" type="text" bind:value={registerUsername} />
+                {#if registerErrors.username}
+                  <p class="text-red-500 text-sm">{registerErrors.username}</p>
+                {/if}
+              </div>
+              <!-- Password Input -->
+              <div class="space-y-1">
+                <Label for="register-password">Password</Label>
+                <Input id="register-password" type="password" bind:value={registerPassword} />
+                {#if registerErrors.password}
+                  <p class="text-red-500 text-sm">{registerErrors.password}</p>
+                {/if}
+              </div>
+              <!-- Non-field Errors -->
+              {#if registerErrors.non_field_errors}
+                <p class="text-red-500 text-sm">{registerErrors.non_field_errors[0]}</p>
+              {/if}
+            </Card.Content>
+            <Card.Footer>
+              <Button class="hover:bg-rose-900" on:click={handleRegister}>Register</Button>
+            </Card.Footer>
+          </Card.Root>
+        </Tabs.Content>
+      </Tabs.Root>
+    </div>
+  </Sheet.Content>
+</Sheet.Root>
