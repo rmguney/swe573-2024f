@@ -129,7 +129,6 @@ CORS_ALLOWED_ORIGINS = [
     'https://threef.vercel.app',
     'https://threef-cvnflwjvb-rmguneys-projects.vercel.app/',
     'https://stufffinder.vercel.app',
-    'http://127.0.0.1',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -142,6 +141,6 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 
-ALLOWED_HOSTS = ['https://threef-cvnflwjvb-rmguneys-projects.vercel.app/', '127.0.0.1']
+ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app"]
 
 APPEND_SLASH = False
