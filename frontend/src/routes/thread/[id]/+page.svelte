@@ -5,10 +5,15 @@
   import Post from '$lib/components/post.svelte';
   import Comment from '$lib/components/comment.svelte';
   import { threadStore } from '../../../threadStore';
+  import { activeUser } from '../../../userStore'; // Import active user store
 
   export let data;
   let comment = '';
 
+  // Subscribe to activeUser to use as commentator
+  $: commentator = $activeUser || 'Anonymous';
+
+  // Function to handle comment posting
   let handleSend = async () => {
     if (!comment.trim()) {
         console.error("Comment cannot be empty");
@@ -20,7 +25,7 @@
         thread: data.id,
         comment: comment,
         voteCountComment: 0,
-        commentator: 'Anonymous',
+        commentator: commentator,
         postedDateComment: new Date().toISOString(),
     };
 
@@ -59,6 +64,47 @@
     }
   };
 
+  // Vote functionality
+  let hasVoted = localStorage.getItem(`voted_${data.id}`) === 'true';
+
+  let handleVote = async () => {
+    if (hasVoted) {
+      console.log("You've already voted on this post");
+      return;
+    }
+
+    const endPoint = `http://localhost:8000/api/thread/${data.id}/vote/`;
+    
+    try {
+        const response = await fetch(endPoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            const errData = await response.json();
+            throw new Error(JSON.stringify(errData));
+        }
+
+        const updatedThread = await response.json();
+
+        // Update threadStore with new vote count
+        threadStore.update(prev => {
+            return prev.map(thread => 
+                thread.id == data.id ? {...thread, voteCount: updatedThread.voteCount } : thread
+            );
+        });
+
+        // Set voting status in localStorage to prevent further votes
+        localStorage.setItem(`voted_${data.id}`, 'true');
+        hasVoted = true;
+    } catch (error) {
+        console.error('Error voting on thread:', error);
+    }
+  };
+
   $: thread = $threadStore.find(thread => thread.id == data.id);
 </script>
 
@@ -75,6 +121,8 @@
       voteCount={thread.voteCount}
       variant="thread"
     />
+    
+
     <Card.Root class="bg-opacity-90 hover:bg-opacity-100 p-4 mt-4 flex flex-col">
       <Textarea bind:value={comment} class="h-20 resize-none p-2" placeholder="Say stuff" />
 

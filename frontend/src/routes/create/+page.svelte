@@ -5,7 +5,8 @@
     import Query from '$lib/components/query.svelte';
     import { threadStore } from "../../threadStore";
     import { goto } from '$app/navigation';
-  
+    import { activeUser } from '../../userStore';
+
     let id;
     let title = '';
     let tags = [];
@@ -15,34 +16,36 @@
     let voteCount = 0;
     let description = '';
 
-    let handlePost = () => {
-    const endPoint = 'http://localhost:8000/api/thread/';
-    let data = new FormData();
-    
-    const tagIds = tags.map(tag => tag.id);
-    
-    data.append('title', title);
-    data.append('tags', JSON.stringify(tagIds));
-    data.append('imageSrc', imageSrc);
-    data.append('postedBy', postedBy);
-    data.append('voteCount', voteCount);
-    data.append('description', description);
+    $: postedBy = $activeUser;
 
-    fetch(endPoint, {
-        method: 'POST',
-        body: data
-    }).then(response => {
-        if (!response.ok) {
-            return response.json().then(err => { throw new Error(JSON.stringify(err)); });
-        }
-        return response.json();
-    })
-    .then(data => {
-        threadStore.update(prev => [...prev, data]);
-        goto(`/`);
-    })
-    .catch(error => console.error('Error:', error));
-};
+    let handlePost = () => {
+        const endPoint = 'http://localhost:8000/api/thread/';
+        let data = new FormData();
+
+        const tagIds = tags.map(tag => tag.id);
+
+        data.append('title', title);
+        data.append('tags', JSON.stringify(tagIds));
+        data.append('imageSrc', imageSrc);
+        data.append('postedBy', postedBy); 
+        data.append('voteCount', voteCount);
+        data.append('description', description);
+
+        fetch(endPoint, {
+            method: 'POST',
+            body: data
+        }).then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(JSON.stringify(err)); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            threadStore.update(prev => [...prev, data]);
+            goto(`/`);
+        })
+        .catch(error => console.error('Error:', error));
+    };
 </script>
 
 <div class="flex justify-center pt-8 px-4">

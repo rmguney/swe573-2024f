@@ -7,7 +7,7 @@
   import Moon from "lucide-svelte/icons/moon";
   import * as Sheet from "$lib/components/ui/sheet";
   import Login from '$lib/components/login.svelte';
-
+  import { activeUser } from '../../userStore'; 
   let navbar = false;
 </script>
 
@@ -26,8 +26,13 @@
       <Moon class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
       <span class="sr-only">Toggle theme</span>
     </Button>
-    <Login />
-  </div>
+    {#if $activeUser}
+      <span>Welcome, {$activeUser}!</span>
+      <button on:click={() => activeUser.set(null)}>Logout</button>
+    {:else}
+      <Login />
+    {/if}
+</div>
 </div>
 
 <Sheet.Root bind:open={navbar}>

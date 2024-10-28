@@ -5,6 +5,7 @@
   import * as Sheet from "$lib/components/ui/sheet";
   import * as Tabs from "$lib/components/ui/tabs/index.js";
   import * as Card from "$lib/components/ui/card/index.js";
+  import { activeUser } from '../../userStore'; 
 
   let loginBar = false;
 
@@ -91,6 +92,7 @@
 
       if (response.ok) {
         console.log("User logged in successfully");
+        activeUser.set(loginUsername); // Set the active user on successful login
         loginBar = false;
         loginUsername = "";
         loginPassword = "";

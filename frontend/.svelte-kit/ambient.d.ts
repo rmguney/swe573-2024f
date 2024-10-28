@@ -39,7 +39,7 @@ declare module '$env/static/private' {
 	export const ComSpec: string;
 	export const DriverData: string;
 	export const EDITOR: string;
-	export const EFC_19080: string;
+	export const EFC_17724: string;
 	export const FPS_BROWSER_APP_PROFILE_STRING: string;
 	export const FPS_BROWSER_USER_PROFILE_STRING: string;
 	export const GIT_ASKPASS: string;
@@ -106,17 +106,11 @@ declare module '$env/static/private' {
 	export const USERDOMAIN_ROAMINGPROFILE: string;
 	export const USERNAME: string;
 	export const USERPROFILE: string;
-	export const VIRTUAL_ENV: string;
-	export const VIRTUAL_ENV_PROMPT: string;
-	export const VSCODE_ENV_PREPEND: string;
-	export const VSCODE_ENV_REPLACE: string;
 	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
 	export const VSCODE_GIT_ASKPASS_NODE: string;
 	export const VSCODE_GIT_IPC_HANDLE: string;
 	export const VSCODE_INJECTION: string;
-	export const VSCODE_NONCE: string;
-	export const VSCODE_STABLE: string;
 	export const windir: string;
 	export const ZES_ENABLE_SYSMAN: string;
 }
@@ -163,7 +157,7 @@ declare module '$env/dynamic/private' {
 		ComSpec: string;
 		DriverData: string;
 		EDITOR: string;
-		EFC_19080: string;
+		EFC_17724: string;
 		FPS_BROWSER_APP_PROFILE_STRING: string;
 		FPS_BROWSER_USER_PROFILE_STRING: string;
 		GIT_ASKPASS: string;
@@ -230,17 +224,11 @@ declare module '$env/dynamic/private' {
 		USERDOMAIN_ROAMINGPROFILE: string;
 		USERNAME: string;
 		USERPROFILE: string;
-		VIRTUAL_ENV: string;
-		VIRTUAL_ENV_PROMPT: string;
-		VSCODE_ENV_PREPEND: string;
-		VSCODE_ENV_REPLACE: string;
 		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 		VSCODE_GIT_ASKPASS_MAIN: string;
 		VSCODE_GIT_ASKPASS_NODE: string;
 		VSCODE_GIT_IPC_HANDLE: string;
 		VSCODE_INJECTION: string;
-		VSCODE_NONCE: string;
-		VSCODE_STABLE: string;
 		windir: string;
 		ZES_ENABLE_SYSMAN: string;
 		[key: `PUBLIC_${string}`]: undefined;
