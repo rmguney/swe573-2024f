@@ -127,7 +127,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:5173',
     'http://127.0.0.1:5174',
     'https://threef.vercel.app',
-    'threef-200lankbf-rmguneys-projects.vercel.app',
+    'https://threef-200lankbf-rmguneys-projects.vercel.app',
     'https://stufffinder.vercel.app',
     'http://127.0.0.1',
 ]
@@ -135,9 +135,13 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = [
     'https://threef-200lankbf-rmguneys-projects.vercel.app',
     'https://threef.vercel.app',
-    'https://stufffinder.vercel.app'
+    'https://stufffinder.vercel.app',
+    'https://vercel.app',
+    'http://127.0.0.1',
+    'http://localhost:5173',
 ]
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'threef.vercel.app,threef-200lankbf-rmguneys-projects.vercel.app,127.0.0.1').split(',')
+
+ALLOWED_HOSTS = ['threef.vercel.app', 'threef-200lankbf-rmguneys-projects.vercel.app', '127.0.0.1']
 
 APPEND_SLASH = False
