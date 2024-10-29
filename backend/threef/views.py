@@ -1,14 +1,17 @@
 from django.shortcuts import render
-from rest_framework import generics
-from threef.models import Thread, Comment
-from threef.serializers import ThreadSerializer, CommentSerializer, RegisterationSerializer
-from rest_framework import viewsets
-from django.contrib.auth.models import User
-from rest_framework.generics import CreateAPIView
+from rest_framework import generics, status, viewsets
+from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.generics import CreateAPIView
 from django.contrib.auth import authenticate
+from threef.models import Thread, Comment
+from threef.serializers import ThreadSerializer, CommentSerializer, RegisterationSerializer
+from django.contrib.auth.models import User
+from django.core.files.storage import default_storage
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from .supabase_client import upload_to_supabase
 
 class ThreadViewSet(viewsets.ModelViewSet):
     queryset = Thread.objects.all()
@@ -43,3 +46,20 @@ class LoginAPIView(CreateAPIView):
                 {'non_field_errors': ['Invalid credentials']},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+@api_view(["POST"])
+def upload_file_view(request):
+    """
+    A view to handle file uploads to Supabase.
+    """
+    if 'file' not in request.FILES:
+        return JsonResponse({"error": "No file provided"}, status=400)
+    
+    file = request.FILES['file']
+    file_name = file.name
+
+    try:
+        file_url = upload_to_supabase(file, file_name)
+        return JsonResponse({"file_url": file_url}, status=200)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)

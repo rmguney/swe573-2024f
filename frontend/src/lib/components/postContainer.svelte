@@ -5,7 +5,7 @@
 
   onMount(async function () {
   try {
-    const response = await fetch(`http://localhost:8000/api/thread`);
+    const response = await fetch(`https://threef.vercel.app/api/thread`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

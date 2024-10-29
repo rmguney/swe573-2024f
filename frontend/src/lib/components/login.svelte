@@ -23,7 +23,7 @@
   let handleRegister = async () => {
     registerErrors = {};
 
-    const endpoint = `http://localhost:8000/api/register/`;
+    const endpoint = `https://threef.vercel.app/api/register/`;
     const requestOptions = {
       method: "POST",
       headers: {
@@ -66,7 +66,7 @@
   let handleLogin = async () => {
     loginErrors = {};
 
-    const endpoint = `http://localhost:8000/api/login/`;
+    const endpoint = `https://threef.vercel.app/api/login/`;
     const requestOptions = {
       method: "POST",
       headers: {

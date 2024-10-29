@@ -7,44 +7,75 @@
     import { goto } from '$app/navigation';
     import { activeUser } from '../../userStore';
 
-    let id;
     let title = '';
     let tags = [];
-    let imageSrc;
+    let imageSrc; 
     let postedBy;
-    let postedDate;
     let voteCount = 0;
     let description = '';
 
     $: postedBy = $activeUser;
 
-    let handlePost = () => {
-        const endPoint = 'http://localhost:8000/api/thread/';
-        let data = new FormData();
+    const uploadToSupabase = async (file) => {
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+    const bucketName = "threef_bucket";
+    const fileName = file.name;
 
-        const tagIds = tags.map(tag => tag.id);
+    const formData = new FormData();
+    formData.append("file", file);
 
-        data.append('title', title);
-        data.append('tags', JSON.stringify(tagIds));
-        data.append('imageSrc', imageSrc);
-        data.append('postedBy', postedBy); 
-        data.append('voteCount', voteCount);
-        data.append('description', description);
+    const response = await fetch(`${supabaseUrl}/storage/v1/object/${bucketName}/${fileName}`, {
+        method: "POST",
+        headers: {
+            "apikey": anonKey,
+            "Authorization": `Bearer ${anonKey}`
+        },
+        body: formData
+    });
 
-        fetch(endPoint, {
-            method: 'POST',
-            body: data
-        }).then(response => {
+    if (!response.ok) {
+        const errorDetails = await response.json();
+        console.error("Supabase upload error details:", errorDetails);
+        throw new Error("Failed to upload image to Supabase");
+    }
+
+    return `${supabaseUrl}/storage/v1/object/public/${bucketName}/${fileName}`;
+};
+
+    let handlePost = async () => {
+        const endPoint = 'https://threef.vercel.app/api/thread/';
+        
+        try {
+            // Upload image to Supabase first
+            const imageUrl = await uploadToSupabase(imageSrc);
+            
+            // Prepare data for backend API request
+            let data = new FormData();
+            const tagIds = tags.map(tag => tag.id);
+            data.append('title', title);
+            data.append('tags', JSON.stringify(tagIds));
+            data.append('imageSrc', imageUrl);  // Use the URL instead of the file
+            data.append('postedBy', postedBy); 
+            data.append('voteCount', voteCount);
+            data.append('description', description);
+
+            const response = await fetch(endPoint, {
+                method: 'POST',
+                body: data
+            });
+
             if (!response.ok) {
-                return response.json().then(err => { throw new Error(JSON.stringify(err)); });
+                const errorData = await response.json();
+                throw new Error(JSON.stringify(errorData));
             }
-            return response.json();
-        })
-        .then(data => {
-            threadStore.update(prev => [...prev, data]);
+
+            const responseData = await response.json();
+            threadStore.update(prev => [...prev, responseData]);
             goto(`/`);
-        })
-        .catch(error => console.error('Error:', error));
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 </script>
 
@@ -66,6 +97,8 @@
             <div class="p-4 pt-0 ">
                 <Query bind:tags={tags} />
             </div>
+            
+            <!-- File input for image -->
             <input type="file" on:change={e => imageSrc = e.target.files[0]} />
 
             <div class="p-4 pt-0">

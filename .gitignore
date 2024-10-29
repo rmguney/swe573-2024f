@@ -22,6 +22,8 @@ vite.config.ts.timestamp-*
 
 .idea
 
+.vs
+
 venv
 
 media

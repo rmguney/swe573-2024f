@@ -20,7 +20,7 @@
         return;
     }
 
-    const endPoint = `http://localhost:8000/api/comment/`;
+    const endPoint = `https://threef.vercel.app/api/comment/`;
     const payload = {
         thread: data.id,
         comment: comment,
@@ -73,7 +73,7 @@
       return;
     }
 
-    const endPoint = `http://localhost:8000/api/thread/${data.id}/vote/`;
+    const endPoint = `https://theef.vercel.app/api/thread/${data.id}/vote/`;
     
     try {
         const response = await fetch(endPoint, {

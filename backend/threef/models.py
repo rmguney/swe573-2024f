@@ -5,7 +5,7 @@ class Thread(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     tags = models.JSONField()  # IDs like ["Q16338", "Q204370"]
-    imageSrc = models.ImageField(upload_to='images/')
+    imageSrc = models.CharField(max_length=500)
     postedBy = models.CharField(max_length=255)
     postedDate = models.DateTimeField(default=timezone.now)
     voteCount = models.IntegerField(default=0)
