@@ -108,7 +108,7 @@
   $: thread = $threadStore.find(thread => thread.id == data.id);
 </script>
 
-<div class="flex flex-col items-center bg-gradient-to-br from-[#c08081] to-[#49796b] p-8">
+<div class="flex flex-col items-center bg-change dark:bg-dark shifting p-8">
   <div class="w-full lg:w-2/3">
     <Post 
       id={data.id}
@@ -122,13 +122,19 @@
       variant="thread"
     />
     
-
+    {#if $activeUser}
     <Card.Root class="bg-opacity-90 hover:bg-opacity-100 p-4 mt-4 flex flex-col">
       <Textarea bind:value={comment} class="h-20 resize-none p-2" placeholder="Say stuff" />
 
       <Button on:click={handleSend} class="w-full mt-2 hover:bg-rose-900">Send</Button>
     </Card.Root>
-
+    {:else}
+    <Card.Root class="bg-opacity-90 hover:bg-opacity-100 mt-4">
+      <Card.Header>
+        <Card.Title class="text-lg text-center pb-6">Sign in to comment</Card.Title>
+      </Card.Header>
+    </Card.Root>
+    {/if}
     <div class="flex flex-col justify-center pt-4">
       {#if thread.comments && thread.comments.length > 0}
         {#each thread.comments as comment}
@@ -146,7 +152,7 @@
             <Card.Title class="pb-2 text-lg text-center">There are no comments yet</Card.Title>
           </Card.Header>
           <Card.Description class="p-4 text-center">
-            Be the first to comment on this thread!
+            Be the first to comment!
           </Card.Description>
         </Card.Root>
       {/if}

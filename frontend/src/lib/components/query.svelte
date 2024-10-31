@@ -66,7 +66,7 @@
     placeholder="And add some relevant tags"
     bind:value={searchTerm}
     on:input={searchWikidata}
-    class="w-full p-3 border border-black dark:border-white rounded-md text-black dark:text-white bg-white dark:bg-black text-sm"
+    class="w-full p-3 border rounded-md text-black dark:text-white bg-white dark:bg-black text-sm"
   />
 
   {#if $isLoading}
@@ -74,7 +74,7 @@
   {/if}
 
   {#if $showResults && $searchResults.length > 0}
-    <ul class="list-none p-0 mt-2 border border-black dark:border-white bg-white dark:bg-black rounded-md absolute w-full max-h-60 overflow-y-auto shadow-lg z-10">
+    <ul class="list-none p-0 mt-2 border bg-white dark:bg-black rounded-md absolute w-full max-h-60 overflow-y-auto shadow-lg z-10">
       {#each $searchResults as result}
         <li class="mt-2">
           <button 
@@ -89,7 +89,7 @@
   {/if}
 
   <div class="selected-items mt-4">
-    <h3 class="text-lg font-semibold text-black dark:text-white">Tags:</h3>
+    <h3 class="text-lg font-semibold text-black dark:text-white">Selected Tags:</h3>
     <ul class="list-none p-0 mt-2">
       {#each $selectedItems as selectedItem}
         <li class="mt-2 flex items-center">
