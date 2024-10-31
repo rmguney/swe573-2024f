@@ -47,15 +47,13 @@
         const endPoint = 'https://threef.vercel.app/api/thread/';
         
         try {
-            // Upload image to Supabase first
             const imageUrl = await uploadToSupabase(imageSrc);
             
-            // Prepare data for backend API request
             let data = new FormData();
             const tagIds = tags.map(tag => tag.id);
             data.append('title', title);
             data.append('tags', JSON.stringify(tagIds));
-            data.append('imageSrc', imageUrl);  // Use the URL instead of the file
+            data.append('imageSrc', imageUrl); 
             data.append('postedBy', postedBy); 
             data.append('voteCount', voteCount);
             data.append('description', description);
@@ -124,7 +122,7 @@
                     on:click={() => document.getElementById('file-input').click()}
                     variant="outline"
                     size="icon"
-                    class="w-full flex items-center justify-center text-center whitespace-normal break-words bg-black dark:bg-white text-white dark:text-black hover:bg-rose-900 hover:dark:bg-rose-900 transition-colors"
+                    class="w-full flex items-center justify-center p-7 lg:p-4 text-center whitespace-normal break-words bg-black dark:bg-white text-white dark:text-black hover:bg-rose-900 hover:dark:bg-rose-900 transition-colors"
                     >
                     <span class="text-center">Let's upload an image of your object to wrap it up</span>
                 </Button>
@@ -136,13 +134,12 @@
                     on:click={handlePost}
                     variant="outline"
                     size="icon"
-                    class="hover:bg-rose-900 hover:dark:bg-rose-900 p-8 lg:p-4 w-full bg-black dark:bg-white text-white dark:text-black transition-colors flex items-center justify-center text-center whitespace-normal break-words"
+                    class="hover:bg-rose-900 hover:dark:bg-rose-900 p-7 lg:p-4 w-full bg-black dark:bg-white text-white dark:text-black transition-colors flex items-center justify-center text-center whitespace-normal break-words"
                     >
                     Check your details, and when you're ready, click here to post it!
               </Button>
-              
-              </div>
-              
+              </div> 
+
         </Card.Root>
     </form>
 </div>

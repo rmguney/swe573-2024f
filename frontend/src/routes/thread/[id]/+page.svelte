@@ -5,15 +5,13 @@
   import Post from '$lib/components/post.svelte';
   import Comment from '$lib/components/comment.svelte';
   import { threadStore } from '../../../threadStore';
-  import { activeUser } from '../../../userStore'; // Import active user store
+  import { activeUser } from '../../../userStore';
 
   export let data;
   let comment = '';
 
-  // Subscribe to activeUser to use as commentator
   $: commentator = $activeUser || 'Anonymous';
 
-  // Function to handle comment posting
   let handleSend = async () => {
     if (!comment.trim()) {
         console.error("Comment cannot be empty");
@@ -63,8 +61,8 @@
         console.error('Error submitting comment:', error);
     }
   };
-
-  // Vote functionality
+  
+  // vote functionality currently bugged
   let hasVoted = localStorage.getItem(`voted_${data.id}`) === 'true';
 
   let handleVote = async () => {
@@ -90,14 +88,12 @@
 
         const updatedThread = await response.json();
 
-        // Update threadStore with new vote count
         threadStore.update(prev => {
             return prev.map(thread => 
                 thread.id == data.id ? {...thread, voteCount: updatedThread.voteCount } : thread
             );
         });
 
-        // Set voting status in localStorage to prevent further votes
         localStorage.setItem(`voted_${data.id}`, 'true');
         hasVoted = true;
     } catch (error) {
