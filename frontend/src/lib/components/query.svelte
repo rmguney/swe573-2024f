@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { writable } from 'svelte/store';
+  import { Button } from "$lib/components/ui/button";
 
   let searchTerm = '';
   let searchResults = writable([]);
@@ -89,7 +90,7 @@
   {/if}
 
   <div class="selected-items mt-4">
-    <h3 class="text-lg font-semibold text-black dark:text-white">Selected Tags:</h3>
+    <h3 class="text-MD font-semibold text-black dark:text-white">Added Tags:</h3>
     <ul class="list-none p-0 mt-2">
       {#each $selectedItems as selectedItem}
         <li class="mt-2 flex items-center">
@@ -101,12 +102,12 @@
           >
             {selectedItem.label}: {selectedItem.description}
           </a>
-          <button 
+          <Button 
             on:click={() => removeSelectedItem(selectedItem.id)} 
-            class="ml-4 bg-black dark:bg-white text-white dark:text-black py-1 px-3 rounded-md hover:bg-rose-900 hover:text-white"
+            class="ml-4 bg-black dark:bg-white text-white dark:text-black hover:bg-rose-900 hover:text-white hover:dark:bg-rose-900 transition-colors duration-300"
           >
             Remove
-          </button>
+          </Button>
         </li>
       {/each}
     </ul>

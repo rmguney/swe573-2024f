@@ -104,7 +104,7 @@
   $: thread = $threadStore.find(thread => thread.id == data.id);
 </script>
 
-<div class="flex flex-col items-center bg-change dark:bg-dark shifting p-8">
+<div class="flex flex-col items-center bg-change dark:bg-dark shifting p-4 lg:p-8">
   <div class="w-full lg:w-2/3">
     <Post 
       id={data.id}

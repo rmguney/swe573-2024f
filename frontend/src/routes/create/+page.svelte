@@ -85,32 +85,27 @@
             </Card.Title>
 
             <div class="p-4 pt-0">
-                <Textarea class="min-h-10 h-10" bind:value={title} placeholder="First, we will start by titling it" />
+                <Textarea class="min-h-10 h-10" bind:value={title} placeholder="First, we will start by titling it. This is what people will see on their homepage so try to make it interesting" />
             </div>
 
             <div class="p-4 pt-0">
                 <Textarea 
                 bind:value={description} 
-                rows="10" 
+                rows="13" 
                 style="resize: vertical; white-space: pre-wrap;" 
-                placeholder="To create a comprehensive visual description, please include as much detail as possible about the object. These might include, but are not limited to:
-                
-                • Material: Specify what the object is made of (e.g., wood, metal, plastic)
-                • Size: Describe its dimensions or relative size
-                • Shape: Note the overall form or geometry (e.g., round, square, irregular)
-                • Color: Include main colors and any variations
-                • Patterns and Textures: Describe any distinct patterns or surface textures
-                • Weight: Mention if it's particularly heavy or light
-                • Smell/Taste: If applicable, describe any notable smell or taste
-                • Parts and Features: Outline any unique parts, images, icons, or symbols
-                • Text and Language: Include any written elements and the language
-                • Brand/Print: Mention any brands, prints, or logos
-                • Functionality: Explain its purpose or how it’s typically used
-                • Time Period: Specify any historical or cultural era it belongs to
-                • Location: Mention where it’s typically found or originates from
-                • Hardness: Describe if it’s soft, hard, or somewhere in between
-                • Manmade or Natural: State if it's manufactured or naturally occurring"
-            />
+                placeholder="Then we describe the object. To create a comprehensive visual description, please include as much detail as possible about the object. These might include, but are not limited to:
+    • Material: Specify what the object is made of (e.g., wood, metal, plastic)
+    • Size: Describe its dimensions or relative size
+    • Shape: Note the overall form or geometry (e.g., round, square, irregular)
+    • Color: Include main colors and any variations
+    • Patterns and Textures: Describe any distinct patterns or surface textures
+    • Weight: Mention if it's particularly heavy or light
+    • Smell/Taste: If applicable, describe any notable smell or taste
+    • Text and Language: Include any written elements and the language
+    • Functionality: Explain its purpose or how it’s typically used
+    • Time Period: Specify any historical or cultural era it belongs to
+    • Location: Mention where it’s typically found or originates from
+            "/>
             </div>
 
             <div class="p-4 pt-0 ">
@@ -122,9 +117,9 @@
                     on:click={() => document.getElementById('file-input').click()}
                     variant="outline"
                     size="icon"
-                    class="w-full flex items-center justify-center p-7 lg:p-4 text-center whitespace-normal break-words bg-black dark:bg-white text-white dark:text-black hover:bg-rose-900 hover:dark:bg-rose-900 transition-colors"
+                    class="w-full flex items-center justify-center p-7 lg:p-4 text-center whitespace-normal break-words bg-black dark:bg-white text-white dark:text-black hover:text-white hover:bg-rose-900 hover:dark:bg-rose-900 transition-colors"
                     >
-                    <span class="text-center">Let's upload an image of your object to wrap it up</span>
+                    <span class="text-center">Lastly, let us upload an image of your object to wrap it up</span>
                 </Button>
                 <input id="file-input" type="file" on:change={e => imageSrc = e.target.files[0]} class="hidden" />
               </div>
@@ -134,7 +129,7 @@
                     on:click={handlePost}
                     variant="outline"
                     size="icon"
-                    class="hover:bg-rose-900 hover:dark:bg-rose-900 p-7 lg:p-4 w-full bg-black dark:bg-white text-white dark:text-black transition-colors flex items-center justify-center text-center whitespace-normal break-words"
+                    class="hover:bg-rose-900 hover:dark:bg-rose-900 p-7 lg:p-4 w-full bg-black dark:bg-white text-white dark:text-black hover:text-white transition-colors flex items-center justify-center text-center whitespace-normal break-words"
                     >
                     Check your details, and when you're ready, click here to post it!
               </Button>

@@ -39,7 +39,7 @@
 
 <Card.Root 
   class={`shadow-lg hover:shadow-xl transition duration-300
-  ${variant === "thumb" ? 'grayscale hover:grayscale-0 bg-opacity-75 hover:bg-opacity-100 w-70 h-70 hover:scale-110' : 'bg-opacity-90 hover:bg-opacity-100'}`}>
+  ${variant === "thumb" ? 'grayscale hover:grayscale-0 bg-opacity-75 hover:bg-opacity-100 w-70 h-70 lg:hover:scale-110' : 'bg-opacity-90 hover:bg-opacity-100'}`}>
   <Card.Header>
     <div class="flex flex-row items-center">
       {#if variant !== 'thumb'}
@@ -71,8 +71,8 @@
           <small class={`${variant === "thumb" ? 'text-ellipsis overflow-hidden whitespace-nowrap w-full max-w-full' : 'hidden'}`}>
             {voteCount} points •
           </small>
-          <small class={`${variant === "thumb" ? 'text-ellipsis overflow-hidden whitespace-nowrap w-full max-w-full' : ''}`}>
-          at {postedDate} by {postedBy}
+          <small class={`${variant === "thumb" ? 'overflow-hidden whitespace-wrap w-full max-w-full' : ''}`}>
+          at {postedDate} by <a href="/" class="text-rose-900 hover:underline font-bold">{postedBy}</a>
           </small>
           <div class={`${variant === "thumb" ? 'hidden' : 'pt-2'}`}>
             <ul>
@@ -83,7 +83,7 @@
                     href={`https://www.wikidata.org/wiki/${tag.id}`} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    class="underline text-black dark:text-white hover:text-rose-700 dark:hover:text-rose-900"
+                    class="hover:underline text-black dark:text-white hover:text-rose-700 dark:hover:text-rose-900"
                   >
                     {tag.label}: {tag.description}
                   </a>

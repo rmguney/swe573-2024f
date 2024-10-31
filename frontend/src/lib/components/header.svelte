@@ -24,7 +24,7 @@
 
   <div class="flex items-center gap-2">
     {#if $activeUser}
-      <span class="lg:mr-0 -mr-3">Welcome, {$activeUser}!</span>
+      <span class="lg:mr-0 -mr-3">Welcome <a href="/" class="text-rose-900 hover:underline font-bold">{$activeUser}!</a></span>
       <Button class="lg:px-12 transition-all hover:bg-rose-900" on:click={() => activeUser.set(null)}>
         Logout
       </Button>
@@ -36,7 +36,7 @@
       on:click={toggleMode} 
       variant="outline" 
       size="icon" 
-      class="bg-black dark:bg-white text-white dark:text-black hover:bg-rose-900 dark:hover:bg-rose-900 transition-colors duration-300">
+      class="bg-black dark:bg-white text-white dark:text-black hover:bg-rose-900 dark:hover:bg-rose-900 hover:text-white transition-colors duration-300">
       
       <Sun class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-transform duration-300 dark:-rotate-90 dark:scale-0" />
       <Moon class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-transform duration-300 dark:rotate-0 dark:scale-100" />

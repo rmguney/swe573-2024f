@@ -37,7 +37,7 @@
 
         <Card.Description class="w-full p-3 pl-6">
           <small>
-            {voteCountComment} by {commentator} {postedDateComment} ago
+            at {postedDateComment} by <a href="/" class="text-rose-900 hover:underline font-bold">{commentator}</a>
           </small>
           <small class="hidden">
             {commentId}
