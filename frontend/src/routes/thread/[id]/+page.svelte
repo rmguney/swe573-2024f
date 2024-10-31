@@ -5,15 +5,13 @@
   import Post from '$lib/components/post.svelte';
   import Comment from '$lib/components/comment.svelte';
   import { threadStore } from '../../../threadStore';
-  import { activeUser } from '../../../userStore'; // Import active user store
+  import { activeUser } from '../../../userStore';
 
   export let data;
   let comment = '';
 
-  // Subscribe to activeUser to use as commentator
   $: commentator = $activeUser || 'Anonymous';
 
-  // Function to handle comment posting
   let handleSend = async () => {
     if (!comment.trim()) {
         console.error("Comment cannot be empty");
@@ -63,8 +61,8 @@
         console.error('Error submitting comment:', error);
     }
   };
-
-  // Vote functionality
+  
+  // vote functionality currently bugged
   let hasVoted = localStorage.getItem(`voted_${data.id}`) === 'true';
 
   let handleVote = async () => {
@@ -90,14 +88,12 @@
 
         const updatedThread = await response.json();
 
-        // Update threadStore with new vote count
         threadStore.update(prev => {
             return prev.map(thread => 
                 thread.id == data.id ? {...thread, voteCount: updatedThread.voteCount } : thread
             );
         });
 
-        // Set voting status in localStorage to prevent further votes
         localStorage.setItem(`voted_${data.id}`, 'true');
         hasVoted = true;
     } catch (error) {
@@ -108,7 +104,7 @@
   $: thread = $threadStore.find(thread => thread.id == data.id);
 </script>
 
-<div class="flex flex-col items-center bg-gradient-to-br from-[#c08081] to-[#49796b] p-8">
+<div class="flex flex-col items-center bg-change dark:bg-dark shifting p-8">
   <div class="w-full lg:w-2/3">
     <Post 
       id={data.id}
@@ -122,13 +118,19 @@
       variant="thread"
     />
     
-
+    {#if $activeUser}
     <Card.Root class="bg-opacity-90 hover:bg-opacity-100 p-4 mt-4 flex flex-col">
       <Textarea bind:value={comment} class="h-20 resize-none p-2" placeholder="Say stuff" />
 
       <Button on:click={handleSend} class="w-full mt-2 hover:bg-rose-900">Send</Button>
     </Card.Root>
-
+    {:else}
+    <Card.Root class="bg-opacity-90 hover:bg-opacity-100 mt-4">
+      <Card.Header>
+        <Card.Title class="text-lg text-center pb-6">Sign in to comment</Card.Title>
+      </Card.Header>
+    </Card.Root>
+    {/if}
     <div class="flex flex-col justify-center pt-4">
       {#if thread.comments && thread.comments.length > 0}
         {#each thread.comments as comment}
@@ -146,7 +148,7 @@
             <Card.Title class="pb-2 text-lg text-center">There are no comments yet</Card.Title>
           </Card.Header>
           <Card.Description class="p-4 text-center">
-            Be the first to comment on this thread!
+            Be the first to comment!
           </Card.Description>
         </Card.Root>
       {/if}

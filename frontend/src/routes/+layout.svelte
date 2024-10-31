@@ -11,7 +11,7 @@
 </script>
 
 <ModeWatcher />  
-<main class="">
+<main>
  <Header/>
  <slot/>
 </main>

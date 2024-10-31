@@ -9,17 +9,14 @@
 
   let loginBar = false;
 
-  // Registration variables
   let registerUsername = "";
   let registerPassword = "";
   let registerErrors = {};
 
-  // Login variables
   let loginUsername = "";
   let loginPassword = "";
   let loginErrors = {};
 
-  // Handle Registration
   let handleRegister = async () => {
     registerErrors = {};
 
@@ -62,7 +59,6 @@
     }
   };
 
-  // Handle Login
   let handleLogin = async () => {
     loginErrors = {};
 
@@ -89,10 +85,9 @@
         const textData = await response.text();
         throw new Error(`Unexpected response format: ${textData}`);
       }
-
       if (response.ok) {
         console.log("User logged in successfully");
-        activeUser.set(loginUsername); // Set the active user on successful login
+        activeUser.set(loginUsername);
         loginBar = false;
         loginUsername = "";
         loginPassword = "";
@@ -121,8 +116,6 @@
           <Tabs.Trigger value="login">Login</Tabs.Trigger>
           <Tabs.Trigger value="register">Register</Tabs.Trigger>
         </Tabs.List>
-
-        <!-- Login Tab Content -->
         <Tabs.Content value="login">
           <Card.Root>
             <Card.Header>
@@ -132,7 +125,6 @@
               </Card.Description>
             </Card.Header>
             <Card.Content class="space-y-2">
-              <!-- Username Input -->
               <div class="space-y-1">
                 <Label for="login-username">Username</Label>
                 <Input id="login-username" type="text" bind:value={loginUsername} />
@@ -140,7 +132,6 @@
                   <p class="text-red-500 text-sm">{loginErrors.username}</p>
                 {/if}
               </div>
-              <!-- Password Input -->
               <div class="space-y-1">
                 <Label for="login-password">Password</Label>
                 <Input id="login-password" type="password" bind:value={loginPassword} />
@@ -149,7 +140,6 @@
                 {/if}
                 <small><a href="/" class="hover:text-rose-900">Forgot your password?</a></small>
               </div>
-              <!-- Non-field Errors -->
               {#if loginErrors.non_field_errors}
                 <p class="text-red-500 text-sm">{loginErrors.non_field_errors[0]}</p>
               {/if}
@@ -159,8 +149,6 @@
             </Card.Footer>
           </Card.Root>
         </Tabs.Content>
-
-        <!-- Register Tab Content -->
         <Tabs.Content value="register">
           <Card.Root>
             <Card.Header>
@@ -170,7 +158,6 @@
               </Card.Description>
             </Card.Header>
             <Card.Content class="space-y-2">
-              <!-- Username Input -->
               <div class="space-y-1">
                 <Label for="register-username">Username</Label>
                 <Input id="register-username" type="text" bind:value={registerUsername} />
@@ -178,7 +165,6 @@
                   <p class="text-red-500 text-sm">{registerErrors.username}</p>
                 {/if}
               </div>
-              <!-- Password Input -->
               <div class="space-y-1">
                 <Label for="register-password">Password</Label>
                 <Input id="register-password" type="password" bind:value={registerPassword} />
@@ -186,7 +172,6 @@
                   <p class="text-red-500 text-sm">{registerErrors.password}</p>
                 {/if}
               </div>
-              <!-- Non-field Errors -->
               {#if registerErrors.non_field_errors}
                 <p class="text-red-500 text-sm">{registerErrors.non_field_errors[0]}</p>
               {/if}

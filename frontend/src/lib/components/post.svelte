@@ -72,7 +72,7 @@
             {voteCount} points •
           </small>
           <small class={`${variant === "thumb" ? 'text-ellipsis overflow-hidden whitespace-nowrap w-full max-w-full' : ''}`}>
-          {postedDate} ago by {postedBy}
+          at {postedDate} by {postedBy}
           </small>
           <div class={`${variant === "thumb" ? 'hidden' : 'pt-2'}`}>
             <ul>
