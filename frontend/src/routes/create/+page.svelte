@@ -13,39 +13,40 @@
     let postedBy;
     let voteCount = 0;
     let description = '';
+    let anonymous = false; 
 
     $: postedBy = $activeUser;
 
     const uploadToSupabase = async (file) => {
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-    const bucketName = "threef_bucket";
-    const fileName = file.name;
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+        const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+        const bucketName = "threef_bucket";
+        const fileName = file.name;
 
-    const formData = new FormData();
-    formData.append("file", file);
+        const formData = new FormData();
+        formData.append("file", file);
 
-    const response = await fetch(`${supabaseUrl}/storage/v1/object/${bucketName}/${fileName}`, {
-        method: "POST",
-        headers: {
-            "apikey": anonKey,
-            "Authorization": `Bearer ${anonKey}`
-        },
-        body: formData
-    });
+        const response = await fetch(`${supabaseUrl}/storage/v1/object/${bucketName}/${fileName}`, {
+            method: "POST",
+            headers: {
+                "apikey": anonKey,
+                "Authorization": `Bearer ${anonKey}`
+            },
+            body: formData
+        });
 
-    if (!response.ok) {
-        const errorDetails = await response.json();
-        console.error("Supabase upload error details:", errorDetails);
-        throw new Error("Failed to upload image to Supabase");
-    }
+        if (!response.ok) {
+            const errorDetails = await response.json();
+            console.error("Supabase upload error details:", errorDetails);
+            throw new Error("Failed to upload image to Supabase");
+        }
 
-    return `${supabaseUrl}/storage/v1/object/public/${bucketName}/${fileName}`;
-};
+        return `${supabaseUrl}/storage/v1/object/public/${bucketName}/${fileName}`;
+    };
 
     let handlePost = async () => {
         const endPoint = 'https://threef.vercel.app/api/thread/';
-        
+
         try {
             const imageUrl = await uploadToSupabase(imageSrc);
             
@@ -54,7 +55,7 @@
             data.append('title', title);
             data.append('tags', JSON.stringify(tagIds));
             data.append('imageSrc', imageUrl); 
-            data.append('postedBy', postedBy); 
+            data.append('postedBy', anonymous ? 'Anonymous' : postedBy);
             data.append('voteCount', voteCount);
             data.append('description', description);
 
@@ -113,6 +114,11 @@
             </div>
 
             <div class="p-4 pt-0">
+                <input type="checkbox" bind:checked={anonymous} id="anonymous-checkbox" />
+                <label for="anonymous-checkbox" class="ml-2">If you wish you can check this box to post anonymously, otherwise you may leave it unchecked</label>
+            </div>
+
+            <div class="p-4 pt-0">
                 <Button
                     on:click={() => document.getElementById('file-input').click()}
                     variant="outline"
@@ -122,9 +128,9 @@
                     <span class="text-center">Lastly, let us upload an image of your object to wrap it up</span>
                 </Button>
                 <input id="file-input" type="file" on:change={e => imageSrc = e.target.files[0]} class="hidden" />
-              </div>
-              
-              <div class="p-4 pt-0">
+            </div>
+
+            <div class="p-4 pt-0">
                 <Button
                     on:click={handlePost}
                     variant="outline"
@@ -133,7 +139,7 @@
                     >
                     Check your details, and when you're ready, click here to post it!
               </Button>
-              </div> 
+            </div> 
 
         </Card.Root>
     </form>
