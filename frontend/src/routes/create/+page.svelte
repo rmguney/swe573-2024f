@@ -17,11 +17,21 @@
 
     $: postedBy = $activeUser;
 
+    function generateRandomString(length) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
+    }
+
     const uploadToSupabase = async (file) => {
         const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
         const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
         const bucketName = "threef_bucket";
-        const fileName = file.name;
+        const fileExtension = file.name.split('.').pop();
+        const fileName = `${generateRandomString(5)}.${fileExtension}`;
 
         const formData = new FormData();
         formData.append("file", file);
@@ -125,7 +135,7 @@
                     size="icon"
                     class="w-full flex items-center justify-center p-7 lg:p-4 text-center whitespace-normal break-words bg-black dark:bg-white text-white dark:text-black hover:text-white hover:bg-rose-900 hover:dark:bg-rose-900 transition-colors"
                     >
-                    <span class="text-center">Lastly, let us upload an image of your object to wrap it up</span>
+                    <span class="text-center">Lastly, let us upload an image or a video of your object to wrap it up</span>
                 </Button>
                 <input id="file-input" type="file" on:change={e => imageSrc = e.target.files[0]} class="hidden" />
             </div>
