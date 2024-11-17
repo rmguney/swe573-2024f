@@ -95,18 +95,27 @@
       </div>
     </div>
   </Card.Header>
-  <Card.Content>
-    <div class={`${variant === "thumb" ? 'hidden' : ''}`}>
-      {description}
-    </div>
-    <div class={`${variant === "thumb" ? 'overflow-hidden flex justify-center items-center' : ''}`}>
-      {#if variant !== 'thumb'}
-        <a href={imageSrc} target="_blank" rel="noopener noreferrer">
+<Card.Content>
+  <div class={`${variant === "thumb" ? 'hidden' : ''}`}>
+    {description}
+  </div>
+  <div class={`${variant === "thumb" ? 'overflow-hidden flex justify-center items-center' : ''}`}>
+    {#if variant !== 'thumb'}
+      <a href={imageSrc} target="_blank" rel="noopener noreferrer">
+        {#if imageSrc.endsWith('.mp4') || imageSrc.endsWith('.webm') || imageSrc.endsWith('.ogg')}
+          <video class="object-cover w-full h-80 pt-6" src={imageSrc} controls />
+        {:else}
           <img class="object-cover w-full h-80 pt-6" src={imageSrc} alt={title} />
-        </a>
+        {/if}
+      </a>
+    {:else}
+      {#if imageSrc.endsWith('.mp4') || imageSrc.endsWith('.webm') || imageSrc.endsWith('.ogg')}
+        <video class="object-cover w-full h-44" src={imageSrc} controls />
       {:else}
         <img class="object-cover w-full h-44" src={imageSrc} alt={title} />
       {/if}
-    </div>
-  </Card.Content>
+    {/if}
+  </div>
+</Card.Content>
+
 </Card.Root>
