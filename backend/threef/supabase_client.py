@@ -1,6 +1,6 @@
 import os
-from supabase import create_client
-from dotenv import load_dotenv
+from supabase import create_client # type: ignore
+from dotenv import load_dotenv # type: ignore
 import requests
 from django.conf import settings
 

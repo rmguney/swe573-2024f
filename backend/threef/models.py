@@ -8,7 +8,7 @@ class Thread(models.Model):
     imageSrc = models.CharField(max_length=500)
     postedBy = models.CharField(max_length=255)
     postedDate = models.DateTimeField(default=timezone.now)
-    voteCount = models.IntegerField(default=0)
+    voteCount = models.IntegerField(default=0)  # Stores total votes for a thread
     material = models.CharField(max_length=255, blank=True, null=True)
     size = models.CharField(max_length=255, blank=True, null=True)
     shape = models.CharField(max_length=255, blank=True, null=True)
@@ -24,10 +24,11 @@ class Thread(models.Model):
     def __str__(self):
         return self.title
 
+
 class Comment(models.Model):
     thread = models.ForeignKey(Thread, related_name='comments', on_delete=models.CASCADE)
     comment = models.TextField()
-    voteCountComment = models.IntegerField(default=0)
+    voteCountComment = models.IntegerField(default=0)  # Stores total votes for a comment
     commentator = models.CharField(max_length=255)
     postedDateComment = models.DateTimeField(default=timezone.now)
     selected = models.BooleanField(default=False)

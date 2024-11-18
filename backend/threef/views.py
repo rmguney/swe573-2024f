@@ -5,27 +5,34 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from django.contrib.auth import authenticate
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
 from threef.models import Thread, Comment
 from threef.serializers import ThreadSerializer, CommentSerializer, RegisterationSerializer
 from django.contrib.auth.models import User
-from django.core.files.storage import default_storage
-from django.http import JsonResponse
-from rest_framework.decorators import api_view
 from .supabase_client import upload_to_supabase
 
+
+# Thread ViewSet
 class ThreadViewSet(viewsets.ModelViewSet):
     queryset = Thread.objects.all()
     serializer_class = ThreadSerializer
 
+
+# Comment ViewSet
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
+
+# User Registration
 class RegisterationAPIView(CreateAPIView):
     serializer_class = RegisterationSerializer
     model = User
     permission_classes = [AllowAny]
 
+
+# User Login
 class LoginAPIView(CreateAPIView):
     def post(self, request):
         username = request.data.get('username')
@@ -47,14 +54,13 @@ class LoginAPIView(CreateAPIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+
+# File Upload to Supabase
 @api_view(["POST"])
 def upload_file_view(request):
-    """
-    A view to handle file uploads to Supabase.
-    """
     if 'file' not in request.FILES:
         return JsonResponse({"error": "No file provided"}, status=400)
-    
+
     file = request.FILES['file']
     file_name = file.name
 
@@ -63,3 +69,60 @@ def upload_file_view(request):
         return JsonResponse({"file_url": file_url}, status=200)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+
+# post method is not allowed for some reason
+
+# Voting for Threads
+@api_view(["POST"])
+def voteCount(request):
+    try:
+        thread_id = request.data.get("id")  # Fetch thread ID from request
+        vote_type = request.data.get("vote_type")  # Fetch vote type ('upvote' or 'downvote')
+
+        if not thread_id or not vote_type:
+            return Response({"error": "id and vote_type are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        thread = Thread.objects.get(id=thread_id)
+
+        if vote_type == "upvote":
+            thread.voteCount += 1
+        elif vote_type == "downvote":
+            thread.voteCount -= 1
+        else:
+            return Response({"error": "Invalid vote type"}, status=status.HTTP_400_BAD_REQUEST)
+
+        thread.save()
+        return Response({"voteCount": thread.voteCount}, status=status.HTTP_200_OK)
+
+    except Thread.DoesNotExist:
+        return Response({"error": "Thread not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# Voting for Comments
+@api_view(["POST"])
+def voteCountComment(request):
+    try:
+        comment_id = request.data.get("id")  # Fetch comment ID from request
+        vote_type = request.data.get("vote_type")  # Fetch vote type ('upvote' or 'downvote')
+
+        if not comment_id or not vote_type:
+            return Response({"error": "id and vote_type are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        comment = Comment.objects.get(id=comment_id)
+
+        if vote_type == "upvote":
+            comment.voteCountComment += 1
+        elif vote_type == "downvote":
+            comment.voteCountComment -= 1
+        else:
+            return Response({"error": "Invalid vote type"}, status=status.HTTP_400_BAD_REQUEST)
+
+        comment.save()
+        return Response({"voteCountComment": comment.voteCountComment}, status=status.HTTP_200_OK)
+
+    except Comment.DoesNotExist:
+        return Response({"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

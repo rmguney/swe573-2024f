@@ -1,7 +1,8 @@
 <script>
   import * as Card from "$lib/components/ui/card";
-  import { onMount } from 'svelte';
-  import { writable } from 'svelte/store';
+  import { onMount } from "svelte";
+  import { updateThreadVote } from "../../threadStore";
+  import { writable } from "svelte/store";
 
   export let id = '';
   export let title = '';
@@ -43,20 +44,38 @@
         };
       }));
       tagDetails.set(fetchedTags);
-      console.log("Fetched Tags:", fetchedTags);
     } catch (error) {
       console.error("Failed to fetch tag details:", error);
     }
   };
 
-  onMount(() => {
-    console.log("Received Props:", {
-      id, title, tags, imageSrc, postedBy, postedDate, voteCount,
-      description, material, size, shape, color, texture, weight,
-      smell, marking, functionality, period, location, variant
-    });
-    fetchTagDetails();
-  });
+  const threadVoteEndPoint = 'https://threef.vercel.app/api/voteCount/'; // Updated endpoint
+
+  async function handleVote(voteType) {
+    try {
+      const response = await fetch(threadVoteEndPoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: id, vote_type: voteType }), // Pass only `id` and `vote_type`
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response from server:", errorText);
+        return;
+      }
+
+      const data = await response.json();
+      updateThreadVote(id, data.voteCount);
+      voteCount = data.voteCount; // Update local state for immediate feedback
+    } catch (error) {
+      console.error("Error during voting:", error);
+    }
+  }
+
+  onMount(fetchTagDetails);
 </script>
 
 <Card.Root 
@@ -66,15 +85,21 @@
     <div class="flex flex-row items-center">
       {#if variant !== 'thumb'}
       <div class="flex flex-col items-center justify-center p-2 -translate-x-3">
-        <button class="block w-6 h-6 mb-2 hover:text-rose-900">
+        <button 
+          class="block w-6 h-6 mb-2 hover:text-rose-900"
+          on:click={() => handleVote('upvote')}
+        >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-full h-full">
             <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
           </svg>
         </button>
         <div class="py-1">
-          {#if voteCount !== undefined}{voteCount}{/if}
+          {voteCount}
         </div>
-        <button class="block w-6 h-6 mt-2 hover:text-rose-900">
+        <button 
+          class="block w-6 h-6 mt-2 hover:text-rose-900"
+          on:click={() => handleVote('downvote')}
+        >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-full h-full">
             <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
           </svg>        
@@ -84,35 +109,18 @@
 
       <div class="flex-1 min-w-0">
         <Card.Title>
-          <div class="hidden">{#if id}{id}{/if}</div>
+          <div class="hidden">{id}</div>
           <div class={`${variant === "thumb" ? 'text-ellipsis overflow-hidden whitespace-nowrap w-full max-w-full' : ''}`}>
-            {#if title}{title}{/if}
+            {title}
           </div>
         </Card.Title>
         <Card.Description class="pt-3">
           <small class={`${variant === "thumb" ? 'text-ellipsis overflow-hidden whitespace-nowrap w-full max-w-full' : 'hidden'}`}>
-            {#if voteCount !== undefined}{voteCount} points •{/if}
+            {voteCount} points •
           </small>
           <small class={`${variant === "thumb" ? 'overflow-hidden whitespace-wrap w-full max-w-full' : ''}`}>
-          {#if postedDate}at {postedDate}{/if} by {#if postedBy}<a href="/" class="text-rose-900 hover:underline font-bold">{postedBy}</a>{/if}
+            at {postedDate} by <a href="/" class="text-rose-900 hover:underline font-bold">{postedBy}</a>
           </small>
-          <div class={`${variant === "thumb" ? 'hidden' : 'pt-2'}`}>
-            <ul>
-              <h2 class="text-md font-semibold text-black dark:text-white">Tags:</h2>
-              {#each $tagDetails as tag}
-                <li class="mt-2">
-                  <a 
-                    href={`https://www.wikidata.org/wiki/${tag.id}`} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    class="hover:underline text-black dark:text-white hover:text-rose-700 dark:hover:text-rose-900"
-                  >
-                    {tag.label}: {tag.description}
-                  </a>
-                </li>
-              {/each}
-            </ul>
-          </div>
         </Card.Description>
       </div>
     </div>

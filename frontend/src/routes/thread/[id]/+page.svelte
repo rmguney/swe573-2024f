@@ -61,45 +61,6 @@
         console.error('Error submitting comment:', error);
     }
   };
-  
-  // vote functionality currently bugged
-  let hasVoted = localStorage.getItem(`voted_${data.id}`) === 'true';
-
-  let handleVote = async () => {
-    if (hasVoted) {
-      console.log("You've already voted on this post");
-      return;
-    }
-
-    const endPoint = `https://theef.vercel.app/api/thread/${data.id}/vote/`;
-    
-    try {
-        const response = await fetch(endPoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            const errData = await response.json();
-            throw new Error(JSON.stringify(errData));
-        }
-
-        const updatedThread = await response.json();
-
-        threadStore.update(prev => {
-            return prev.map(thread => 
-                thread.id == data.id ? {...thread, voteCount: updatedThread.voteCount } : thread
-            );
-        });
-
-        localStorage.setItem(`voted_${data.id}`, 'true');
-        hasVoted = true;
-    } catch (error) {
-        console.error('Error voting on thread:', error);
-    }
-  };
 
   $: thread = $threadStore.find(thread => thread.id == data.id);
 </script>
