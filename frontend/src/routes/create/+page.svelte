@@ -13,6 +13,17 @@
     let postedBy;
     let voteCount = 0;
     let description = '';
+    let material = '';
+    let size = '';
+    let shape = '';
+    let color = '';
+    let texture = '';
+    let weight = '';
+    let smell = '';
+    let marking = '';
+    let functionality = '';
+    let period = '';
+    let location = '';
     let anonymous = false; 
 
     $: postedBy = $activeUser;
@@ -69,6 +80,7 @@
             data.append('voteCount', voteCount);
             data.append('description', description);
 
+
             const response = await fetch(endPoint, {
                 method: 'POST',
                 body: data
@@ -95,35 +107,109 @@
                 Let's help you post new stuff!
             </Card.Title>
 
-            <div class="p-4 pt-0">
+            <div class="p-4 pt-2">
                 <Textarea class="min-h-10 h-10" bind:value={title} placeholder="First, we will start by titling it. This is what people will see on their homepage so try to make it interesting" />
             </div>
+            <div class="p-4 pt-0">
+                <Textarea 
+                bind:value={material} 
+                placeholder="What is the object made of?"
+                class="min-h-10 h-10" />
+            </div>
+            
+            <div class="p-4 pt-0">
+                <Textarea 
+                bind:value={size} 
+                style="resize: vertical; white-space: pre-wrap;" 
+                placeholder="What are the dimensions of the object?"
+                class="min-h-10 h-10" />
+            </div>
+            
+            <div class="p-4 pt-0">
+                <Textarea 
+                bind:value={shape} 
+                style="resize: vertical; white-space: pre-wrap;" 
+                placeholder="What is the shape of the object?"
+                class="min-h-10 h-10" />
+            </div>
+            
+            <div class="p-4 pt-0">
+                <Textarea 
+                bind:value={color} 
+                style="resize: vertical; white-space: pre-wrap;" 
+                placeholder="What is the color of the object?"
+                class="min-h-10 h-10" />
+            </div>
+            
+            <div class="p-4 pt-0">
+                <Textarea 
+                bind:value={texture} 
+                style="resize: vertical; white-space: pre-wrap;" 
+                placeholder="What is the texture of the object?"
+                class="min-h-10 h-10" />
+            </div>
+            
+            <div class="p-4 pt-0">
+                <Textarea 
+                bind:value={weight} 
+                style="resize: vertical; white-space: pre-wrap;" 
+                placeholder="What is the weight of the object?"
+                class="min-h-10 h-10" />
+            </div>
+            
+            <div class="p-4 pt-0">
+                <Textarea 
+                bind:value={smell} 
+                style="resize: vertical; white-space: pre-wrap;" 
+                placeholder="What is the smell of the object?"
+                class="min-h-10 h-10" />
+            </div>
+            
+            <div class="p-4 pt-0">
+                <Textarea 
+                bind:value={marking} 
+                style="resize: vertical; white-space: pre-wrap;" 
+                placeholder="What are the markings on the object?"
+                class="min-h-10 h-10" />
+            </div>
+            
+            <div class="p-4 pt-0">
+                <Textarea 
+                bind:value={functionality} 
+                style="resize: vertical; white-space: pre-wrap;" 
+                placeholder="What is the functionality of the object?"
+                class="min-h-10 h-10" />
+            </div>
+            
+            <div class="p-4 pt-0">
+                <Textarea 
+                bind:value={period} 
+                style="resize: vertical; white-space: pre-wrap;" 
+                placeholder="What is the period of the object?"
+                class="min-h-10 h-10" />
+            </div>
+            
+            <div class="p-4 pt-0">
+                <Textarea 
+                bind:value={location} 
+                style="resize: vertical; white-space: pre-wrap;" 
+                placeholder="Where is it typically found?"
+                class="min-h-10 h-10" />
+            </div>            
 
             <div class="p-4 pt-0">
                 <Textarea 
                 bind:value={description} 
-                rows="13" 
                 style="resize: vertical; white-space: pre-wrap;" 
-                placeholder="Then we describe the object. To create a comprehensive visual description, please include as much detail as possible about the object. These might include, but are not limited to:
-    • Material: Specify what the object is made of (e.g., wood, metal, plastic)
-    • Size: Describe its dimensions or relative size
-    • Shape: Note the overall form or geometry (e.g., round, square, irregular)
-    • Color: Include main colors and any variations
-    • Patterns and Textures: Describe any distinct patterns or surface textures
-    • Weight: Mention if it's particularly heavy or light
-    • Smell/Taste: If applicable, describe any notable smell or taste
-    • Text and Language: Include any written elements and the language
-    • Functionality: Explain its purpose or how it’s typically used
-    • Time Period: Specify any historical or cultural era it belongs to
-    • Location: Mention where it’s typically found or originates from
-            "/>
-            </div>
-
-            <div class="p-4 pt-0 ">
-                <Query bind:tags={tags} />
+                placeholder="Then maybe some additional description about the object you're posting. This is optional, but it can help people understand what you're posting better"
+                class="min-h-10 h-10" />
             </div>
 
             <div class="p-4 pt-0">
+                <Query bind:tags={tags} />
+            </div>
+
+            <div class="p-4 pt-2">
                 <input type="checkbox" bind:checked={anonymous} id="anonymous-checkbox" />
                 <label for="anonymous-checkbox" class="ml-2">If you wish you can check this box to post anonymously, otherwise you may leave it unchecked</label>
             </div>

@@ -9,6 +9,17 @@ class Thread(models.Model):
     postedBy = models.CharField(max_length=255)
     postedDate = models.DateTimeField(default=timezone.now)
     voteCount = models.IntegerField(default=0)
+    material = models.CharField(max_length=255, blank=True, null=True)
+    size = models.CharField(max_length=255, blank=True, null=True)
+    shape = models.CharField(max_length=255, blank=True, null=True)
+    color = models.CharField(max_length=255, blank=True, null=True)
+    texture = models.CharField(max_length=255, blank=True, null=True)
+    weight = models.CharField(max_length=255, blank=True, null=True)
+    smell = models.CharField(max_length=255, blank=True, null=True)
+    marking = models.TextField(blank=True, null=True)
+    functionality = models.TextField(blank=True, null=True)
+    period = models.CharField(max_length=255, blank=True, null=True)
+    location = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.title

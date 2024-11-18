@@ -11,6 +11,17 @@
   export let postedDate;
   export let voteCount;  
   export let description;
+  export let material;
+  export let size;
+  export let shape;
+  export let color;
+  export let texture;
+  export let weight;
+  export let smell;
+  export let marking;
+  export let functionality;
+  export let period;
+  export let location;
   export let variant = "thumb";
 
   let tagDetails = writable([]);
@@ -96,17 +107,56 @@
     </div>
   </Card.Header>
 <Card.Content>
-  <div class={`${variant === "thumb" ? 'hidden' : ''}`}>
-    {description}
+  <div class={`${variant !== "thumb" ? 'flex flex-col' : ''}`}>
+    <div class={`${variant === "thumb" ? 'hidden' : 'p-4'}`}>
+      <h2 class="text-md font-semibold text-black dark:text-white">Properties:</h2>
+      <ul>
+        <li class="mt-2">
+          Material: {material}
+        </li>
+        <li class="mt-2">
+          Size: {size}
+        </li>
+        <li class="mt-2">
+          Shape: {shape}
+        </li>
+        <li class="mt-2">
+          Color: {color}
+        </li>
+        <li class="mt-2">
+          Texture: {texture}
+        </li>
+        <li class="mt-2">
+          Weight: {weight}
+        </li>
+        <li class="mt-2">
+          Smell: {smell}
+        </li>
+        <li class="mt-2">
+          Marking: {marking}
+        </li>
+        <li class="mt-2">
+          Functionality: {functionality}
+        </li>
+        <li class="mt-2">
+          Period: {period}
+        </li>
+        <li class="mt-2">
+          Location: {location}
+        </li>
+        <li class="mt-2">
+          Description: {description}
+        </li>
+      </ul>
   </div>
   <div class={`${variant === "thumb" ? 'overflow-hidden flex justify-center items-center' : ''}`}>
     {#if variant !== 'thumb'}
       <a href={imageSrc} target="_blank" rel="noopener noreferrer">
         {#if imageSrc.endsWith('.mp4') || imageSrc.endsWith('.webm') || imageSrc.endsWith('.ogg')}
           <!-- svelte-ignore a11y-media-has-caption -->
-          <video class="object-cover w-full h-80 pt-6" src={imageSrc} controls />
+          <video class="object-cover w-full pt-6" src={imageSrc} controls />
         {:else}
-          <img class="object-cover w-full h-80 pt-6" src={imageSrc} alt={title} />
+          <img class="object-cover w-full pt-6" src={imageSrc} alt={title} />
         {/if}
       </a>
     {:else}
@@ -118,6 +168,7 @@
       {/if}
     {/if}
   </div>
+</div>
 </Card.Content>
 
 </Card.Root>
