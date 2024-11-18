@@ -3,32 +3,36 @@
   import { onMount } from 'svelte';
   import { writable } from 'svelte/store';
 
-  export let id;
-  export let title;
+  export let id = '';
+  export let title = '';
   export let tags = [];
-  export let imageSrc;
-  export let postedBy;
-  export let postedDate;
-  export let voteCount;  
-  export let description;
-  export let material;
-  export let size;
-  export let shape;
-  export let color;
-  export let texture;
-  export let weight;
-  export let smell;
-  export let marking;
-  export let functionality;
-  export let period;
-  export let location;
+  export let imageSrc = '';
+  export let postedBy = '';
+  export let postedDate = '';
+  export let voteCount = 0;
+  export let description = '';
+  export let material = '';
+  export let size = '';
+  export let shape = '';
+  export let color = '';
+  export let texture = '';
+  export let weight = '';
+  export let smell = '';
+  export let marking = '';
+  export let functionality = '';
+  export let period = '';
+  export let location = '';
   export let variant = "thumb";
 
   let tagDetails = writable([]);
 
   const fetchTagDetails = async () => {
-    let fetchedTags = await Promise.all(tags.map(async (qcode) => {
-      try {
+    if (!tags.length) {
+      console.log("No tags provided.");
+      return;
+    }
+    try {
+      let fetchedTags = await Promise.all(tags.map(async (qcode) => {
         const response = await fetch(`https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${qcode}&format=json&languages=en&props=labels|descriptions&origin=*`);
         const data = await response.json();
         const entity = data.entities[qcode];
@@ -37,15 +41,22 @@
           description: entity.descriptions?.en?.value || 'No description',
           id: qcode
         };
-      } catch (error) {
-        console.error('Failed to fetch tag details:', error);
-        return { label: 'Unknown label', description: 'No description', id: qcode };
-      }
-    }));
-    tagDetails.set(fetchedTags);
+      }));
+      tagDetails.set(fetchedTags);
+      console.log("Fetched Tags:", fetchedTags);
+    } catch (error) {
+      console.error("Failed to fetch tag details:", error);
+    }
   };
 
-  onMount(fetchTagDetails);
+  onMount(() => {
+    console.log("Received Props:", {
+      id, title, tags, imageSrc, postedBy, postedDate, voteCount,
+      description, material, size, shape, color, texture, weight,
+      smell, marking, functionality, period, location, variant
+    });
+    fetchTagDetails();
+  });
 </script>
 
 <Card.Root 
@@ -61,7 +72,7 @@
           </svg>
         </button>
         <div class="py-1">
-          {#if voteCount}{voteCount}{/if}
+          {#if voteCount !== undefined}{voteCount}{/if}
         </div>
         <button class="block w-6 h-6 mt-2 hover:text-rose-900">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-full h-full">
@@ -80,7 +91,7 @@
         </Card.Title>
         <Card.Description class="pt-3">
           <small class={`${variant === "thumb" ? 'text-ellipsis overflow-hidden whitespace-nowrap w-full max-w-full' : 'hidden'}`}>
-            {#if voteCount}{voteCount} points •{/if}
+            {#if voteCount !== undefined}{voteCount} points •{/if}
           </small>
           <small class={`${variant === "thumb" ? 'overflow-hidden whitespace-wrap w-full max-w-full' : ''}`}>
           {#if postedDate}at {postedDate}{/if} by {#if postedBy}<a href="/" class="text-rose-900 hover:underline font-bold">{postedBy}</a>{/if}
@@ -123,27 +134,26 @@
         {#if location}<li class="mt-2"><strong>Location:</strong> {location}</li>{/if}
         {#if description}<li class="mt-2"><strong>Description:</strong> {description}</li>{/if}
       </ul>      
-  </div>
-  <div class={`${variant === "thumb" ? 'overflow-hidden flex justify-center items-center' : ''}`}>
-    {#if variant !== 'thumb'}
-      <a href={imageSrc} target="_blank" rel="noopener noreferrer">
-        {#if imageSrc && (imageSrc.endsWith('.mp4') || imageSrc.endsWith('.webm') || imageSrc.endsWith('.ogg'))}
-          <!-- svelte-ignore a11y-media-has-caption -->
-          <video class="object-cover w-full pt-6" src={imageSrc} controls />
-        {:else if imageSrc}
-          <img class="object-cover w-full pt-6" src={imageSrc} alt={title} />
+    </div>
+    <div class={`${variant === "thumb" ? 'overflow-hidden flex justify-center items-center' : ''}`}>
+      {#if variant !== 'thumb'}
+        <a href={imageSrc} target="_blank" rel="noopener noreferrer">
+          {#if imageSrc && (imageSrc.endsWith('.mp4') || imageSrc.endsWith('.webm') || imageSrc.endsWith('.ogg'))}
+            <!-- svelte-ignore a11y-media-has-caption -->
+            <video class="object-cover w-full pt-6" src={imageSrc} controls />
+          {:else if imageSrc}
+            <img class="object-cover w-full pt-6" src={imageSrc} alt={title} />
+          {/if}
+        </a>
+      {:else if imageSrc}
+        <!-- svelte-ignore a11y-media-has-caption -->
+        {#if imageSrc.endsWith('.mp4') || imageSrc.endsWith('.webm') || imageSrc.endsWith('.ogg')}
+          <video class="object-cover w-full h-44" src={imageSrc}/>
+        {:else}
+          <img class="object-cover w-full h-44" src={imageSrc} alt={title} />
         {/if}
-      </a>
-    {:else if imageSrc}
-      <!-- svelte-ignore a11y-media-has-caption -->
-      {#if imageSrc.endsWith('.mp4') || imageSrc.endsWith('.webm') || imageSrc.endsWith('.ogg')}
-        <video class="object-cover w-full h-44" src={imageSrc}/>
-      {:else}
-        <img class="object-cover w-full h-44" src={imageSrc} alt={title} />
       {/if}
-    {/if}
+    </div>
   </div>
-</div>
 </Card.Content>
-
 </Card.Root>

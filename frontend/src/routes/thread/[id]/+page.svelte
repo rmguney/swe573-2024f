@@ -115,6 +115,16 @@
       postedBy={thread.postedBy}
       postedDate={thread.postedDate}
       voteCount={thread.voteCount}
+      material={thread.material}
+      size={thread.size}
+      shape={thread.shape}
+      color={thread.color}
+      texture={thread.texture}
+      weight={thread.weight}
+      smell={thread.smell}
+      functionality={thread.functionality}
+      period={thread.period}
+      location={thread.location}
       variant="thread"
     />
     
