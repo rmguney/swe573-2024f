@@ -3,7 +3,7 @@ from django.utils import timezone
 
 class Thread(models.Model):
     title = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.CharField(max_length=255, blank=True, null=True)
     tags = models.JSONField()  # IDs like ["Q16338", "Q204370"]
     imageSrc = models.CharField(max_length=500)
     postedBy = models.CharField(max_length=255)
@@ -16,8 +16,8 @@ class Thread(models.Model):
     texture = models.CharField(max_length=255, blank=True, null=True)
     weight = models.CharField(max_length=255, blank=True, null=True)
     smell = models.CharField(max_length=255, blank=True, null=True)
-    marking = models.TextField(blank=True, null=True)
-    functionality = models.TextField(blank=True, null=True)
+    marking = models.CharField(max_length=255, blank=True, null=True)
+    functionality = models.CharField(max_length=255, blank=True, null=True)
     period = models.CharField(max_length=255, blank=True, null=True)
     location = models.CharField(max_length=255, blank=True, null=True)
 

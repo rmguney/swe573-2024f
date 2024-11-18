@@ -61,7 +61,7 @@
           </svg>
         </button>
         <div class="py-1">
-          {voteCount}
+          {#if voteCount}{voteCount}{/if}
         </div>
         <button class="block w-6 h-6 mt-2 hover:text-rose-900">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-full h-full">
@@ -73,17 +73,17 @@
 
       <div class="flex-1 min-w-0">
         <Card.Title>
-          <div class="hidden">{id}</div>
+          <div class="hidden">{#if id}{id}{/if}</div>
           <div class={`${variant === "thumb" ? 'text-ellipsis overflow-hidden whitespace-nowrap w-full max-w-full' : ''}`}>
-            {title}
+            {#if title}{title}{/if}
           </div>
         </Card.Title>
         <Card.Description class="pt-3">
           <small class={`${variant === "thumb" ? 'text-ellipsis overflow-hidden whitespace-nowrap w-full max-w-full' : 'hidden'}`}>
-            {voteCount} points •
+            {#if voteCount}{voteCount} points •{/if}
           </small>
           <small class={`${variant === "thumb" ? 'overflow-hidden whitespace-wrap w-full max-w-full' : ''}`}>
-          at {postedDate} by <a href="/" class="text-rose-900 hover:underline font-bold">{postedBy}</a>
+          {#if postedDate}at {postedDate}{/if} by {#if postedBy}<a href="/" class="text-rose-900 hover:underline font-bold">{postedBy}</a>{/if}
           </small>
           <div class={`${variant === "thumb" ? 'hidden' : 'pt-2'}`}>
             <ul>
@@ -109,57 +109,32 @@
 <Card.Content>
   <div class={`${variant !== "thumb" ? 'flex flex-col' : ''}`}>
     <div class={`${variant === "thumb" ? 'hidden' : 'p-4'}`}>
-      <h2 class="text-md font-semibold text-black dark:text-white">Properties:</h2>
       <ul>
-        <li class="mt-2">
-          Material: {material}
-        </li>
-        <li class="mt-2">
-          Size: {size}
-        </li>
-        <li class="mt-2">
-          Shape: {shape}
-        </li>
-        <li class="mt-2">
-          Color: {color}
-        </li>
-        <li class="mt-2">
-          Texture: {texture}
-        </li>
-        <li class="mt-2">
-          Weight: {weight}
-        </li>
-        <li class="mt-2">
-          Smell: {smell}
-        </li>
-        <li class="mt-2">
-          Marking: {marking}
-        </li>
-        <li class="mt-2">
-          Functionality: {functionality}
-        </li>
-        <li class="mt-2">
-          Period: {period}
-        </li>
-        <li class="mt-2">
-          Location: {location}
-        </li>
-        <li class="mt-2">
-          Description: {description}
-        </li>
-      </ul>
+        {#if material}<li class="mt-2"><strong>Material:</strong> {material}</li>{/if}
+        {#if size}<li class="mt-2"><strong>Size:</strong> {size}</li>{/if}
+        {#if shape}<li class="mt-2"><strong>Shape:</strong> {shape}</li>{/if}
+        {#if color}<li class="mt-2"><strong>Color:</strong> {color}</li>{/if}
+        {#if texture}<li class="mt-2"><strong>Texture:</strong> {texture}</li>{/if}
+        {#if weight}<li class="mt-2"><strong>Weight:</strong> {weight}</li>{/if}
+        {#if smell}<li class="mt-2"><strong>Smell:</strong> {smell}</li>{/if}
+        {#if marking}<li class="mt-2"><strong>Marking:</strong> {marking}</li>{/if}
+        {#if functionality}<li class="mt-2"><strong>Functionality:</strong> {functionality}</li>{/if}
+        {#if period}<li class="mt-2"><strong>Period:</strong> {period}</li>{/if}
+        {#if location}<li class="mt-2"><strong>Location:</strong> {location}</li>{/if}
+        {#if description}<li class="mt-2"><strong>Description:</strong> {description}</li>{/if}
+      </ul>      
   </div>
   <div class={`${variant === "thumb" ? 'overflow-hidden flex justify-center items-center' : ''}`}>
     {#if variant !== 'thumb'}
       <a href={imageSrc} target="_blank" rel="noopener noreferrer">
-        {#if imageSrc.endsWith('.mp4') || imageSrc.endsWith('.webm') || imageSrc.endsWith('.ogg')}
+        {#if imageSrc && (imageSrc.endsWith('.mp4') || imageSrc.endsWith('.webm') || imageSrc.endsWith('.ogg'))}
           <!-- svelte-ignore a11y-media-has-caption -->
           <video class="object-cover w-full pt-6" src={imageSrc} controls />
-        {:else}
+        {:else if imageSrc}
           <img class="object-cover w-full pt-6" src={imageSrc} alt={title} />
         {/if}
       </a>
-    {:else}
+    {:else if imageSrc}
       <!-- svelte-ignore a11y-media-has-caption -->
       {#if imageSrc.endsWith('.mp4') || imageSrc.endsWith('.webm') || imageSrc.endsWith('.ogg')}
         <video class="object-cover w-full h-44" src={imageSrc}/>

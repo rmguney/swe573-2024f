@@ -79,7 +79,17 @@
             data.append('postedBy', anonymous ? 'Anonymous' : postedBy);
             data.append('voteCount', voteCount);
             data.append('description', description);
-
+            data.append('material', material);
+            data.append('size', size);
+            data.append('shape', shape);
+            data.append('color', color);
+            data.append('texture', texture);
+            data.append('weight', weight);
+            data.append('smell', smell);
+            data.append('marking', marking);
+            data.append('functionality', functionality);
+            data.append('period', period);
+            data.append('location', location);
 
             const response = await fetch(endPoint, {
                 method: 'POST',
