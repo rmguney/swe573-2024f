@@ -103,14 +103,16 @@
     {#if variant !== 'thumb'}
       <a href={imageSrc} target="_blank" rel="noopener noreferrer">
         {#if imageSrc.endsWith('.mp4') || imageSrc.endsWith('.webm') || imageSrc.endsWith('.ogg')}
+          <!-- svelte-ignore a11y-media-has-caption -->
           <video class="object-cover w-full h-80 pt-6" src={imageSrc} controls />
         {:else}
           <img class="object-cover w-full h-80 pt-6" src={imageSrc} alt={title} />
         {/if}
       </a>
     {:else}
+      <!-- svelte-ignore a11y-media-has-caption -->
       {#if imageSrc.endsWith('.mp4') || imageSrc.endsWith('.webm') || imageSrc.endsWith('.ogg')}
-        <video class="object-cover w-full h-44" src={imageSrc} controls />
+        <video class="object-cover w-full h-44" src={imageSrc}/>
       {:else}
         <img class="object-cover w-full h-44" src={imageSrc} alt={title} />
       {/if}
