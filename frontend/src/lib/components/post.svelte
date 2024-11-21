@@ -115,11 +115,12 @@
           </div>
         </Card.Title>
         <Card.Description class="pt-3">
-          <small class={`${variant === "thumb" ? 'text-ellipsis overflow-hidden whitespace-nowrap w-full max-w-full' : 'hidden'}`}>
-            {voteCount} points •
+          <small class={`${variant === "thumb" ? 'overflow-hidden whitespace-nowrap w-full max-w-full' : ''}`}>
+            <a href="/" class="text-rose-900 hover:underline font-bold">{postedBy}</a> at {postedDate}
           </small>
-          <small class={`${variant === "thumb" ? 'overflow-hidden whitespace-wrap w-full max-w-full' : ''}`}>
-            at {postedDate} by <a href="/" class="text-rose-900 hover:underline font-bold">{postedBy}</a>
+          <br>
+          <small class={`${variant === "thumb" ? 'text-ellipsis overflow-hidden whitespace-nowrap w-full max-w-full' : 'hidden'}`}>
+            {voteCount} points
           </small>
         </Card.Description>
       </div>
