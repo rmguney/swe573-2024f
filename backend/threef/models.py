@@ -3,7 +3,7 @@ from django.utils import timezone
 
 class Thread(models.Model):
     title = models.CharField(max_length=255)
-    description = models.CharField(max_length=255, blank=True, null=True)
+    description = models.CharField(max_length=1000, blank=True, null=True)
     tags = models.JSONField()  # IDs like ["Q16338", "Q204370"]
     imageSrc = models.CharField(max_length=500)
     postedBy = models.CharField(max_length=255)

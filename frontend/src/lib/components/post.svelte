@@ -122,13 +122,30 @@
           <small class={`${variant === "thumb" ? 'text-ellipsis overflow-hidden whitespace-nowrap w-full max-w-full' : 'hidden'}`}>
             {voteCount} points
           </small>
+          <div class={`${variant === "thumb" ? 'hidden' : 'pt-2'}`}>
+            <ul>
+              <h2 class="text-md font-semibold text-black dark:text-white">Tags:</h2>
+              {#each $tagDetails as tag}
+                <li class="mt-2">
+                  <a 
+                    href={`https://www.wikidata.org/wiki/${tag.id}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="hover:underline text-black dark:text-white hover:text-rose-700 dark:hover:text-rose-900"
+                  >
+                    {tag.label}: {tag.description}
+                  </a>
+                </li>
+              {/each}
+            </ul>
+          </div>
         </Card.Description>
       </div>
     </div>
   </Card.Header>
 <Card.Content>
   <div class={`${variant !== "thumb" ? 'flex flex-col' : ''}`}>
-    <div class={`${variant === "thumb" ? 'hidden' : 'p-4'}`}>
+    <div class={`${variant === "thumb" ? 'hidden' : 'p-4 pt-0'}`}>
       <ul>
         {#if material}<li class="mt-2"><strong>Material:</strong> {material}</li>{/if}
         {#if size}<li class="mt-2"><strong>Size:</strong> {size}</li>{/if}
