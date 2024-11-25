@@ -20,7 +20,7 @@
     </svg>
     <h1 class="text-2xl font-bold hover:text-rose-900 hidden lg:block">= Stufffinder</h1>
   </button>
-  <Input type="search" placeholder="Search stuff" class="max-w-xs" />
+<!--   <Input type="search" placeholder="Search stuff" class="max-w-xs" /> -->
 
   <div class="flex items-center gap-2">
     {#if $activeUser}

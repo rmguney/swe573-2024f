@@ -7,6 +7,7 @@ from rest_framework.generics import CreateAPIView
 from django.contrib.auth import authenticate
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
+from django.db.models import Q
 from threef.models import Thread, Comment
 from threef.serializers import ThreadSerializer, CommentSerializer, RegisterationSerializer
 from django.contrib.auth.models import User
@@ -70,7 +71,6 @@ def upload_file_view(request):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
-# post method is not allowed for some reason
 
 # Voting for Threads
 @api_view(["POST"])
@@ -126,3 +126,38 @@ def voteCountComment(request):
         return Response({"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# Search Functionality
+@api_view(["GET"])
+def search(request):
+    query = request.GET.get('q', '')
+    if not query:
+        return JsonResponse({'error': 'Query parameter is required'}, status=400)
+
+    # Searching in Thread and Comment models
+    threads = Thread.objects.filter(
+        Q(title__icontains=query) | Q(content__icontains=query)
+    )
+    comments = Comment.objects.filter(content__icontains=query)
+
+    results = {
+        'threads': list(threads.values('id', 'title', 'content')),
+        'comments': list(comments.values('id', 'content', 'thread_id'))
+    }
+    return JsonResponse(results)
+
+
+@api_view(["GET"])
+def get_user(request, id):
+    try:
+        user = User.objects.get(id=id)
+        user_data = {
+            "id": user.id,
+            "name": user.username,
+            "email": user.email,
+            # Add more user fields if needed
+        }
+        return Response(user_data, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
