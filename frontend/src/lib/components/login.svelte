@@ -138,8 +138,8 @@
                 {#if loginErrors.password}
                   <p class="text-red-500 text-sm">{loginErrors.password}</p>
                 {/if}
-                <small><a href="/" class="hover:text-rose-900">Forgot your password?</a></small>
-              </div>
+<!--                 <small><a href="/" class="hover:text-rose-900">Forgot your password?</a></small>
+ -->              </div>
               {#if loginErrors.non_field_errors}
                 <p class="text-red-500 text-sm">{loginErrors.non_field_errors[0]}</p>
               {/if}

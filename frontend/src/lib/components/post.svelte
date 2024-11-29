@@ -157,7 +157,8 @@
           </div>
           {/if}
           <small class={`${variant === "thumb" ? 'overflow-hidden whitespace-nowrap w-full max-w-full' : ''}`}>
-            <a href="/" class="hover:text-rose-900 hover:underline font-bold">{postedBy}</a> at {postedDate}
+            <a href={`/user/${postedBy}`}
+              class="hover:text-rose-900 hover:underline font-bold">{postedBy}</a> at {postedDate}
           </small>
           <div class={`${variant === "thumb" ? 'hidden' : 'pt-2'}`}>
             <ul>

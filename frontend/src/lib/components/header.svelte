@@ -126,7 +126,7 @@
       type="search"
       placeholder="Search stuff"
       bind:value={searchQuery}
-      class="w-96"
+      class="lg:w-96"
       on:input={filterThreads}
       on:focus={() => (showDropdown = searchQuery.trim().length >= 3)}
       aria-autocomplete="list"
@@ -169,7 +169,8 @@
 
   <div class="flex items-center gap-2">
     {#if $activeUser}
-      <span class="lg:mr-0 -mr-3">Welcome <a href="/" class="text-rose-900 hover:underline font-bold">{$activeUser}!</a></span>
+      <span class="lg:mr-0 -mr-3">Welcome <a href={`/user/${$activeUser}`}
+        class="text-rose-900 hover:underline font-bold">{$activeUser}!</a></span>
       <Button class="lg:px-12 transition-all hover:bg-rose-900" on:click={() => activeUser.set(null)}>
         Logout
       </Button>
