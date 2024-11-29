@@ -12,7 +12,7 @@ class ThreadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Thread
-        fields = ('id', 'title', 'description', 'tags', 'imageSrc', 'postedBy', 'postedDate', 'voteCount', 'comments', 'material', 'size', 'shape', 'color', 'texture', 'weight', 'smell', 'marking', 'functionality', 'period', 'location')
+        fields = ('id', 'title', 'description', 'tags', 'imageSrc', 'postedBy', 'postedDate', 'voteCount', 'comments', 'material', 'size', 'shape', 'color', 'texture', 'weight', 'smell', 'marking', 'functionality', 'period', 'location', 'resolved')
 
 class RegisterationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=64, min_length=8, write_only=True)

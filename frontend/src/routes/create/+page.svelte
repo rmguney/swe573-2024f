@@ -25,6 +25,8 @@
     let period = '';
     let location = '';
     let anonymous = false; 
+    let resolved = false;
+
 
     $: postedBy = $activeUser;
 
@@ -90,6 +92,7 @@
             data.append('functionality', functionality);
             data.append('period', period);
             data.append('location', location);
+            data.append('resolved', resolved);
 
             const response = await fetch(endPoint, {
                 method: 'POST',

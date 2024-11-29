@@ -20,6 +20,7 @@ class Thread(models.Model):
     functionality = models.CharField(max_length=255, blank=True, null=True)
     period = models.CharField(max_length=255, blank=True, null=True)
     location = models.CharField(max_length=255, blank=True, null=True)
+    resolved = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title

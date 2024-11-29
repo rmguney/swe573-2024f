@@ -33,6 +33,7 @@
     postedDate={thread.postedDate}
     voteCount={thread.voteCount}
     variant="thumb"
+    resolved={thread.resolved}
   />
 </a>
 {/each}

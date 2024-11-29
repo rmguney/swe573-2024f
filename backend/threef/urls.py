@@ -23,6 +23,8 @@ urlpatterns += [
     path('register/', RegisterationAPIView.as_view(), name='register'),
     path('login/', LoginAPIView.as_view(), name='login'),
     path('upload/', views.upload_file_view, name='upload_file'),
+    path('threads/<int:thread_id>/updateResolved', views.update_resolved_status, name='update_resolved'),
+
     path('voteCount/', views.voteCount, name='voteCount'),  # Dedicated thread voting endpoint
     path('voteCountComment/', views.voteCountComment, name='voteCountComment'),  # Dedicated comment voting endpoint
     path('search/', search, name='search'),

@@ -2,11 +2,12 @@
   import * as Card from "$lib/components/ui/card";
   export let commentId;
   export let comment;
-  export let voteCountComment;
   export let commentator;
   export let postedDateComment;
 
-  const endPoint = 'https://threef.vercel.app/api/voteCountComment/'; // Updated endpoint for comment voting
+/*   export let voteCountComment;
+  
+const endPoint = 'https://threef.vercel.app/api/voteCountComment/';
 
   // Function to handle voting
   async function handleVote(voteType) {
@@ -30,13 +31,13 @@
     } catch (error) {
       console.error("Error during voting:", error);
     }
-  }
+  } */
 </script>
 
 <div class="flex w-full pb-2">
   <Card.Root class="w-full bg-opacity-90 hover:bg-opacity-100">
     <div class="flex items-center w-full">
-      <div class="flex flex-col items-center justify-center w-12 h-24 translate-x-4">
+<!--       <div class="flex flex-col items-center justify-center w-12 h-24 translate-x-4">
         <button 
           class="block w-10 h-6 hover:text-rose-900"
           on:click={() => handleVote('upvote')}
@@ -58,9 +59,9 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
           </svg>
         </button>
-      </div>
+      </div> -->
 
-      <div class="flex flex-col pl-4 w-full">
+      <div class="flex flex-col pb-2 w-full">
         <Card.Header>
           <Card.Title class="w-full">
             {comment}

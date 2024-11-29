@@ -87,6 +87,7 @@
       period={thread.period}
       location={thread.location}
       variant="thread"
+      resolved={thread.resolved}
     />
     
     {#if $activeUser}

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics, status, viewsets
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from django.contrib.auth import authenticate
@@ -72,6 +72,42 @@ def upload_file_view(request):
         return JsonResponse({"error": str(e)}, status=500)
 
 
+@api_view(["GET"])
+def get_user(request, id):
+    try:
+        user = User.objects.get(id=id)
+        user_data = {
+            "id": user.id,
+            "name": user.username,
+            "email": user.email,
+            # Add more user fields if needed
+        }
+        return Response(user_data, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["PATCH"])
+def update_resolved_status(request, thread_id):
+    try:
+        thread = Thread.objects.get(id=thread_id)
+        resolved = request.data.get("resolved", None)
+
+        if resolved is None:
+            return Response({"error": "Resolved status is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        thread.resolved = resolved
+        thread.save()
+
+        serializer = ThreadSerializer(thread)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Thread.DoesNotExist:
+        return Response({"error": "Thread not found."}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
 # Voting for Threads
 @api_view(["POST"])
 def voteCount(request):
@@ -128,7 +164,7 @@ def voteCountComment(request):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-# Search Functionality
+        # Search Functionality
 @api_view(["GET"])
 def search(request):
     query = request.GET.get('q', '')
@@ -148,16 +184,23 @@ def search(request):
     return JsonResponse(results)
 
 
-@api_view(["GET"])
-def get_user(request, id):
-    try:
-        user = User.objects.get(id=id)
-        user_data = {
-            "id": user.id,
-            "name": user.username,
-            "email": user.email,
-            # Add more user fields if needed
-        }
-        return Response(user_data, status=status.HTTP_200_OK)
-    except User.DoesNotExist:
-        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+class ToggleResolvedView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, thread_id):
+        try:
+            thread = Thread.objects.get(id=thread_id)
+
+            # Update the `resolved` field
+            resolved_status = request.data.get('resolved', None)
+            if resolved_status is not None:
+                thread.resolved = resolved_status
+                thread.save()
+
+                serializer = ThreadSerializer(thread)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({"detail": "Invalid data provided."}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Thread.DoesNotExist:
+            return Response({"detail": "Thread not found."}, status=status.HTTP_404_NOT_FOUND)
