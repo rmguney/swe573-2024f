@@ -5,6 +5,7 @@
   import { writable } from "svelte/store";
   import { activeUser } from "../../userStore";
   import { Button } from "$lib/components/ui/button";
+  import { Separator } from "$lib/components/ui/separator";
 
   export let id = '';
   export let title = '';
@@ -160,6 +161,7 @@
           </small>
           <div class={`${variant === "thumb" ? 'hidden' : 'pt-2'}`}>
             <ul>
+              <Separator  class="mb-2"/>
               <h2 class="text-md font-semibold text-black dark:text-white">Tags:</h2>
               {#each $tagDetails as tag}
                 <li class="mt-2">
@@ -180,6 +182,7 @@
     </div>
   </Card.Header>
 <Card.Content>
+  <Separator />
   <div class={`${variant !== "thumb" ? 'flex flex-col' : ''}`}>
     <div class={`${variant === "thumb" ? 'hidden' : 'pt-0 pb-2'}`}>
       <ul>
