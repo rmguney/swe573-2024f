@@ -118,6 +118,19 @@
     }
 };
 
+const formatDate = (isoDate) => {
+    if (!isoDate) return "";
+    const date = new Date(isoDate);
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    }).format(date);
+  };
+
   $: activeUser.subscribe((value) => {
     currentUser = value;
   });
@@ -140,73 +153,75 @@
             {title}
           </div>
         </Card.Title>
-        <Card.Description class="pt-3">
+        <Card.Description class={`${variant === "thumb" ? 'lg:translate-y-2' : 'my-2.5'}`}>
+          <span class={`${variant === "thumb" ? 'overflow-hidden whitespace-nowrap w-full max-w-full' : ''}`}>
+            <a href={`/user/${postedBy}`}
+              class="hover:text-rose-900 hover:underline font-bold">{postedBy}</a> at {formatDate(postedDate)}
+          </span>
+          <div class={`${variant === "thumb" ? 'mt-1' : 'mt-1.5'}`}>
           {#if resolved}
-          <div class="flex items-center text-teal-600 font-semibold">
-            <small class="text-teal-600 font-bold">Resolved</small>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+          <div class="flex items-center text-teal-800 font-semibold">
+            <span class="text-teal-800 font-bold">Resolved</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
           {:else}
           <div class="flex items-center text-rose-900 font-semibold">
-            <small class="text-rose-900 font-bold">Unresolved</small>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+            <span class="text-rose-900 font-bold">Unresolved</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </div>
           {/if}
-          <small class={`${variant === "thumb" ? 'overflow-hidden whitespace-nowrap w-full max-w-full' : ''}`}>
-            <a href={`/user/${postedBy}`}
-              class="hover:text-rose-900 hover:underline font-bold">{postedBy}</a> at {postedDate}
-          </small>
-          <div class={`${variant === "thumb" ? 'hidden' : 'pt-2'}`}>
-            <ul>
-              <Separator  class="mb-2"/>
-              <h2 class="text-md font-semibold text-black dark:text-white">Tags:</h2>
-              {#each $tagDetails as tag}
-                <li class="mt-2">
-                  <a 
-                    href={`https://www.wikidata.org/wiki/${tag.id}`} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    class="hover:underline text-black dark:text-white hover:text-rose-700 dark:hover:text-rose-900"
-                  >
-                    {tag.label}: {tag.description}
-                  </a>
-                </li>
-              {/each}
-            </ul>
-          </div>
+        </div>
+          <Separator class={`${variant === "thumb" ? 'hidden' : 'mt-4'}`}/>
         </Card.Description>
       </div>
     </div>
   </Card.Header>
 <Card.Content>
-  <Separator />
+  <div class={`${variant === "thumb" ? 'hidden' : '-mt-2'}`}>
+    <ul>
+      <span class="text-md font-semibold text-black dark:text-white">Tags:</span>
+      {#each $tagDetails as tag}
+        <li>
+          <a 
+            href={`https://www.wikidata.org/wiki/${tag.id}`} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="hover:underline text-black dark:text-white hover:text-rose-700 dark:hover:text-rose-900 text-md"
+          >
+            {tag.label}: {tag.description}
+          </a>
+        </li>
+      {/each}
+    </ul>
+  </div>
+  <Separator class={`${variant === "thumb" ? 'hidden' : 'mt-4 mb-2'}`}/>
   <div class={`${variant !== "thumb" ? 'flex flex-col' : ''}`}>
-    <div class={`${variant === "thumb" ? 'hidden' : 'pt-0 pb-2'}`}>
+    <div class={`${variant === "thumb" ? 'hidden' : ''}`}>
       <ul>
-        {#if material}<li class="mt-2"><strong>Material:</strong> {material}</li>{/if}
-        {#if size}<li class="mt-2"><strong>Size:</strong> {size}</li>{/if}
-        {#if shape}<li class="mt-2"><strong>Shape:</strong> {shape}</li>{/if}
-        {#if color}<li class="mt-2"><strong>Color:</strong> {color}</li>{/if}
-        {#if texture}<li class="mt-2"><strong>Texture:</strong> {texture}</li>{/if}
-        {#if weight}<li class="mt-2"><strong>Weight:</strong> {weight}</li>{/if}
-        {#if smell}<li class="mt-2"><strong>Smell:</strong> {smell}</li>{/if}
-        {#if marking}<li class="mt-2"><strong>Marking:</strong> {marking}</li>{/if}
-        {#if functionality}<li class="mt-2"><strong>Functionality:</strong> {functionality}</li>{/if}
-        {#if period}<li class="mt-2"><strong>Period:</strong> {period}</li>{/if}
-        {#if location}<li class="mt-2"><strong>Location:</strong> {location}</li>{/if}
-        {#if description}<li class="mt-2"><strong>Description:</strong> {description}</li>{/if}
-      </ul> 
-</div>     
-    </div>
+          {#if material}<li class="mt-2 text-md"><span class="font-semibold text-md">Material:</span> {material}</li>{/if}
+          {#if size}<li class="mt-2"><span class="font-semibold text-md">Size:</span> {size}</li>{/if}
+          {#if shape}<li class="mt-2"><span class="font-semibold text-md">Shape:</span> {shape}</li>{/if}
+          {#if color}<li class="mt-2"><span class="font-semibold text-md">Color:</span> {color}</li>{/if}
+          {#if texture}<li class="mt-2"><span class="font-semibold text-md">Texture:</span> {texture}</li>{/if}
+          {#if weight}<li class="mt-2"><span class="font-semibold text-md">Weight:</span> {weight}</li>{/if}
+          {#if smell}<li class="mt-2"><span class="font-semibold text-md">Smell:</span> {smell}</li>{/if}
+          {#if marking}<li class="mt-2"><span class="font-semibold text-md">Marking:</span> {marking}</li>{/if}
+          {#if functionality}<li class="mt-2"><span class="font-semibold text-md">Functionality:</span> {functionality}</li>{/if}
+          {#if period}<li class="mt-2"><span class="font-semibold text-md">Period:</span> {period}</li>{/if}
+          {#if location}<li class="mt-2"><span class="font-semibold text-md">Location:</span> {location}</li>{/if}
+          {#if description}<li class="mt-2"><span class="font-semibold text-md">Description:</span> {description}</li>{/if}
+        </ul>  
+    </div>     
+ </div>
     <div class={`${variant === "thumb" ? 'overflow-hidden flex justify-center items-center' : ''}`}>
       {#if currentUser === postedBy}
       <Button 
         on:click={toggleResolved} 
-        class={`${variant === "thumb" ? 'hidden' : 'w-full mt-2 hover:bg-rose-900'}`}>
+        class={`${variant === "thumb" ? 'hidden' : 'w-full mt-4 hover:bg-rose-900'}`}>
         {resolved ? "Mark as Unresolved" : "Mark as Resolved"}
       </Button>
     {/if}
@@ -214,9 +229,9 @@
         <a href={imageSrc} target="_blank" rel="noopener noreferrer">
           {#if imageSrc && (imageSrc.endsWith('.mp4') || imageSrc.endsWith('.webm') || imageSrc.endsWith('.ogg'))}
             <!-- svelte-ignore a11y-media-has-caption -->
-            <video class="object-cover w-full pt-6" src={imageSrc} controls />
+            <video class="object-cover w-full pt-4" src={imageSrc} controls />
           {:else if imageSrc}
-            <img class="object-cover w-full pt-6" src={imageSrc} alt={title} />
+            <img class="object-cover w-full pt-4" src={imageSrc} alt={title} />
           {/if}
         </a>
       {:else if imageSrc}

@@ -12,6 +12,7 @@ from threef.models import Thread, Comment
 from threef.serializers import ThreadSerializer, CommentSerializer, RegisterationSerializer
 from django.contrib.auth.models import User
 from .supabase_client import upload_to_supabase
+from django.shortcuts import get_object_or_404
 
 
 # Thread ViewSet
@@ -107,6 +108,23 @@ def update_resolved_status(request, thread_id):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+@api_view(['PATCH'])
+def toggle_comment_selected(request, comment_id):
+    """
+    Toggles the 'selected' field of a comment.
+    """
+    try:
+        # Get the comment object
+        comment = get_object_or_404(Comment, id=comment_id)
+
+        # Toggle the 'selected' field
+        comment.selected = not comment.selected
+        comment.save()
+
+        return Response({'success': True, 'selected': comment.selected}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
 
 # Voting for Threads
 @api_view(["POST"])

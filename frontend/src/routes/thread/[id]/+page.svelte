@@ -107,11 +107,13 @@
       {#if thread.comments && thread.comments.length > 0}
         {#each thread.comments as comment}
           <Comment
-            commentId={comment.commentId}
+            commentId={comment.id}
             comment={comment.comment}
             voteCountComment={comment.voteCountComment}
             commentator={comment.commentator}
             postedDateComment={comment.postedDateComment}
+            selected={comment.selected}
+            threadOwner={thread.postedBy}
           />
         {/each}
       {:else}

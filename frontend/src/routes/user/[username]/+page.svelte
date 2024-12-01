@@ -44,7 +44,7 @@
   });
 </script>
 
-<div class="flex justify-center p-4 lg:py-8 bg-change dark:bg-dark shifting">
+<div class="flex justify-center p-4 pb-0 lg:py-8 bg-change dark:bg-dark shifting">
   <div class="w-full lg:w-2/3">
     <!-- Threads Section -->
     <div class="flex flex-col items-center mb-8">
@@ -88,7 +88,7 @@
     <!-- Comments Section -->
     <div class="flex flex-col items-center">
       {#if !loadingComments && comments.length > 0}
-        <div class="flex flex-col gap-4 w-full">
+        <div class="flex flex-col w-full">
           {#each comments as comment}
             <a href={`/thread/${comment.thread}`} class="block">
               <Comment
