@@ -8,7 +8,7 @@
     import { activeUser } from '../../userStore';
 
     let title = '';
-    let tags = [];
+    let tags = []; // Tags will include detailed info after fetching
     let imageSrc; 
     let postedBy;
     let description = '';
@@ -25,7 +25,6 @@
     let location = '';
     let anonymous = false; 
     let resolved = false;
-
 
     $: postedBy = $activeUser;
 
@@ -66,16 +65,37 @@
         return `${supabaseUrl}/storage/v1/object/public/${bucketName}/${fileName}`;
     };
 
-    let handlePost = async () => {
+    const fetchTagDetails = async (tagIds) => {
+        const details = [];
+        for (const id of tagIds) {
+            const response = await fetch(`https://www.wikidata.org/wiki/Special:EntityData/${id}.json`);
+            if (response.ok) {
+                const data = await response.json();
+                const entity = data.entities[id];
+                details.push({
+                    id,
+                    title: entity.labels?.en?.value || "Unknown",
+                    description: entity.descriptions?.en?.value || "No description available"
+                });
+            } else {
+                console.error(`Failed to fetch data for tag ID: ${id}`);
+            }
+        }
+        return details;
+    };
+
+    const handlePost = async () => {
         const endPoint = 'https://threef.vercel.app/api/thread/';
 
         try {
+            // Fetch titles and descriptions for the tags
+            const detailedTags = await fetchTagDetails(tags.map(tag => tag.id));
+            
             const imageUrl = await uploadToSupabase(imageSrc);
             
             let data = new FormData();
-            const tagIds = tags.map(tag => tag.id);
             data.append('title', title);
-            data.append('tags', JSON.stringify(tagIds));
+            data.append('tags', JSON.stringify(detailedTags)); // Send detailed tags
             data.append('imageSrc', imageUrl); 
             data.append('postedBy', anonymous ? 'Anonymous' : postedBy);
             data.append('description', description);
@@ -121,7 +141,7 @@
             <div class="p-4 pt-2">
                 <Textarea class="min-h-10 h-10" bind:value={title} placeholder="First, we will start by titling it. This is what people will see on their homepage so try to make it interesting" />
             </div>
-            
+
             <div class="p-4 pt-0">
                 <Textarea 
                 bind:value={material} 

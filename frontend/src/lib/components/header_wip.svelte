@@ -18,14 +18,48 @@
   let showDropdown = false; // Controls the visibility of the dropdown
   let highlightedIndex = -1; // For keyboard navigation
 
-  // Function to fetch all threads initially
+  async function fetchTagDetails(tagIds) {
+    const details = [];
+    for (const id of tagIds) {
+      try {
+        const response = await fetch(`https://www.wikidata.org/wiki/Special:EntityData/${id}.json`);
+        if (response.ok) {
+          const data = await response.json();
+          const entity = data.entities[id];
+          details.push({
+            id,
+            title: entity.labels?.en?.value || "Unknown",
+            description: entity.descriptions?.en?.value || "No description available"
+          });
+        } else {
+          console.error(`Failed to fetch data for tag ID: ${id}`);
+        }
+      } catch (error) {
+        console.error(`Error fetching tag details for ${id}:`, error);
+      }
+    }
+    return details;
+  }
+
+  // Function to fetch all threads and enrich them with tag details
   async function fetchAllThreads() {
     loading = true;
     try {
       const response = await fetch("https://threef.vercel.app/api/thread/");
       if (response.ok) {
-        allThreads = await response.json();
-        searchResults = allThreads; // Initialize results with all threads
+        const threads = await response.json();
+        
+        // Enrich threads with detailed tag information
+        for (const thread of threads) {
+          if (thread.tags && thread.tags.length > 0) {
+            thread.detailedTags = await fetchTagDetails(thread.tags);
+          } else {
+            thread.detailedTags = [];
+          }
+        }
+
+        allThreads = threads;
+        searchResults = threads; // Initialize results with all threads
       } else {
         console.error("Failed to fetch threads");
       }
@@ -50,10 +84,11 @@
 
       searchResults = allThreads
         .map((thread) => {
+          const tagContent = thread.detailedTags.map(tag => `${tag.title} ${tag.description}`).join(" ");
           const content = `
             ${thread.title} 
             ${thread.description || ""} 
-            ${thread.tags.join(" ")} 
+            ${tagContent}
             ${thread.material || ""} 
             ${thread.size || ""} 
             ${thread.shape || ""} 
@@ -105,6 +140,7 @@
   // Fetch threads on component mount
   fetchAllThreads();
 </script>
+
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div

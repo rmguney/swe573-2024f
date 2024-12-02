@@ -4,11 +4,12 @@
   import { Button } from "$lib/components/ui/button";
 
   let searchTerm = '';
-  let searchResults = writable([]);
-  let selectedItems = writable([]);
-  let isLoading = writable(false);
-  let showResults = writable(false);
+  let searchResults = writable([]); // Stores search results from Wikidata
+  let selectedItems = writable([]); // Stores selected tags with format { id, label, description }
+  let isLoading = writable(false); // Tracks loading state
+  let showResults = writable(false); // Toggles search results dropdown visibility
 
+  // Function to search Wikidata
   const searchWikidata = async () => {
     if (!searchTerm) {
       searchResults.set([]);
@@ -22,7 +23,13 @@
     try {
       const response = await fetch(`https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(searchTerm)}&language=en&format=json&origin=*`);
       const data = await response.json();
-      searchResults.set(data.search);
+      // Map results to desired format
+      const formattedResults = data.search.map(item => ({
+        id: item.id,
+        label: item.label,
+        description: item.description || "No description available"
+      }));
+      searchResults.set(formattedResults);
     } catch (error) {
       console.error('Search failed', error);
       searchResults.set([]);
@@ -31,6 +38,7 @@
     }
   };
 
+  // Add a tag to the selected list
   const selectItem = (item) => {
     selectedItems.update((items) => {
       if (!items.find((i) => i.id === item.id)) {
@@ -41,10 +49,12 @@
     showResults.set(false);
   };
 
+  // Remove a tag from the selected list
   const removeSelectedItem = (itemId) => {
     selectedItems.update((items) => items.filter((i) => i.id !== itemId));
   };
 
+  // Hide search results dropdown when clicking outside
   onMount(() => {
     const handleClickOutside = (event) => {
       const searchContainer = document.querySelector('.search-container');
@@ -56,24 +66,27 @@
     return () => document.removeEventListener('click', handleClickOutside);
   });
 
+  // Reflect changes in `selectedItems` to `tags`
   $: tags = $selectedItems;
-  export let tags;
-
+  export let tags; // Passed down to the parent component
 </script>
 
 <div class="w-full mx-auto relative search-container">
+  <!-- Search Input -->
   <input
     type="text"
-    placeholder="And add some relevant tags"
+    placeholder="Add relevant tags"
     bind:value={searchTerm}
     on:input={searchWikidata}
     class="w-full p-3 border rounded-md text-black dark:text-white bg-white dark:bg-black text-sm"
   />
 
+  <!-- Loading Indicator -->
   {#if $isLoading}
     <p class="mt-2 text-black dark:text-white">Loading...</p>
   {/if}
 
+  <!-- Search Results -->
   {#if $showResults && $searchResults.length > 0}
     <ul class="list-none p-0 mt-2 border bg-white dark:bg-black rounded-md absolute w-full max-h-60 overflow-y-auto shadow-lg z-10">
       {#each $searchResults as result}
@@ -89,8 +102,9 @@
     </ul>
   {/if}
 
+  <!-- Selected Items -->
   <div class="selected-items mt-4">
-    <h3 class="text-MD font-semibold text-black dark:text-white">Added Tags:</h3>
+    <h3 class="text-md font-semibold text-black dark:text-white">Added Tags:</h3>
     <ul class="list-none p-0 mt-2">
       {#each $selectedItems as selectedItem}
         <li class="mt-2 flex items-center">

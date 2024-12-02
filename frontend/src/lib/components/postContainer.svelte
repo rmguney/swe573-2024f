@@ -13,7 +13,6 @@
 
     const data = await response.json(); 
     threadStore.set(data); 
-    console.log(data);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
@@ -31,7 +30,6 @@
     imageSrc={thread.imageSrc}
     postedBy={thread.postedBy}
     postedDate={thread.postedDate}
-    voteCount={thread.voteCount}
     variant="thumb"
     resolved={thread.resolved}
   />

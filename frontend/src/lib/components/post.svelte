@@ -32,24 +32,9 @@
   let tagDetails = writable([]);
   let currentUser = null; 
 
-  const fetchThreadDetails = async () => {
-    try {
-        const response = await fetch(`https://threef.vercel.app/api/threads/${id}`);
-        if (!response.ok) {
-            throw new Error("Failed to fetch thread details");
-        }
-        const threadData = await response.json();
-
-        resolved = threadData.resolved;
-    } catch (error) {
-        console.error("Error fetching thread details:", error);
-    }
-};
-
-
   const fetchTagDetails = async () => {
     if (!tags.length) {
-      console.log("No tags provided.");
+      // console.log("No tags provided.");
       return;
     }
     try {
@@ -69,9 +54,9 @@
     }
   };
 
-  const threadVoteEndPoint = 'https://threef.vercel.app/api/voteCount/';
+ /*  const threadVoteEndPoint = 'https://threef.vercel.app/api/voteCount/';
 
-/*   async function handleVote(voteType) {
+  async function handleVote(voteType) {
     try {
       const response = await fetch(threadVoteEndPoint, {
         method: "POST",
@@ -119,24 +104,30 @@
 };
 
 const formatDate = (isoDate) => {
-    if (!isoDate) return "";
-    const date = new Date(isoDate);
-    return new Intl.DateTimeFormat("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    }).format(date);
-  };
+  if (!isoDate) return "";
+  const date = new Date(isoDate);
+
+  // Extract time components
+  const timeOptions = { hour: "numeric", minute: "numeric", hour12: false };
+  const timeString = new Intl.DateTimeFormat("en-US", timeOptions).format(date);
+
+  // Extract date components with day before month and full year
+  const day = date.getDate();
+  const shortMonth = date.toLocaleString("en-US", { month: "short" }); // Shortened month
+  const fullYear = date.getFullYear(); // Full year
+
+  // Combine components with time first
+  return `${timeString}, ${day} ${shortMonth} ${fullYear}`;
+};
+
+
 
   $: activeUser.subscribe((value) => {
     currentUser = value;
   });
 
   onMount(() => {
-    fetchThreadDetails(); 
+/*     fetchThreadDetails();  */
     fetchTagDetails(); 
   });
 </script>
@@ -153,8 +144,8 @@ const formatDate = (isoDate) => {
             {title}
           </div>
         </Card.Title>
-        <Card.Description class={`${variant === "thumb" ? 'lg:translate-y-2' : 'my-2.5'}`}>
-          <span class={`${variant === "thumb" ? 'overflow-hidden whitespace-nowrap w-full max-w-full' : ''}`}>
+        <Card.Description class={`${variant === "thumb" ? 'lg:translate-y-2 text-ellipsis overflow-hidden whitespace-nowrap' : 'my-2.5'}`}>
+          <span class={`${variant === "thumb" ? '' : ''}`}>
             <a href={`/user/${postedBy}`}
               class="hover:text-rose-900 hover:underline font-bold">{postedBy}</a> at {formatDate(postedDate)}
           </span>
@@ -181,7 +172,7 @@ const formatDate = (isoDate) => {
     </div>
   </Card.Header>
 <Card.Content>
-  <div class={`${variant === "thumb" ? 'hidden' : '-mt-2'}`}>
+  <div class={`${variant === "thumb" ? 'hidden' : '-mt-5'}`}>
     <ul>
       <span class="text-md font-semibold text-black dark:text-white">Tags:</span>
       {#each $tagDetails as tag}

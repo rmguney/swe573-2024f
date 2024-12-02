@@ -71,7 +71,6 @@
                 imageSrc={thread.imageSrc}
                 postedBy={thread.postedBy}
                 postedDate={thread.postedDate}
-                voteCount={thread.voteCount}
                 variant="thumb"
                 resolved={thread.resolved}
               />
@@ -94,9 +93,10 @@
               <Comment
                 commentId={comment.id}
                 comment={comment.comment}
-                voteCountComment={comment.voteCountComment}
                 commentator={comment.commentator}
                 postedDateComment={comment.postedDateComment}
+                threadOwner={comment.threadOwner}
+                selected={comment.selected}
               />
             </a>
           {/each}

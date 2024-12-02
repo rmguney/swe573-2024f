@@ -22,7 +22,6 @@
     const payload = {
         thread: data.id,
         comment: comment,
-        voteCountComment: 0,
         commentator: commentator,
         postedDateComment: new Date().toISOString(),
     };
@@ -75,7 +74,6 @@
       imageSrc={thread.imageSrc}
       postedBy={thread.postedBy}
       postedDate={thread.postedDate}
-      voteCount={thread.voteCount}
       material={thread.material}
       size={thread.size}
       shape={thread.shape}
