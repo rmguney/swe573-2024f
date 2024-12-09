@@ -53,10 +53,10 @@ def run_tests(test_labels=None):
 def display_menu():
     """Display the test options menu"""
     print("Choose a test category:")
-    print("1. Run model tests")
-    print("2. Run serializer tests")
-    print("3. Run view tests")
-    print("4. Run URL tests")
+    print("1. Run xx tests")
+    print("2. Run xx tests")
+    print("3. Run xx tests")
+    print("4. Run xx tests")
     print("5. Exit")
 
 def main():
@@ -70,16 +70,16 @@ def main():
         # Run corresponding tests based on user's choice
         if choice == "1":
             print("Running model tests...")
-            failures = run_tests(["threef.tests.test_models"])
+            failures = run_tests([""])
         elif choice == "2":
             print("Running serializer tests...")
-            failures = run_tests(["threef.tests.test_serializers"])
+            failures = run_tests([""])
         elif choice == "3":
             print("Running view tests...")
-            failures = run_tests(["threef.tests.test_views"])
+            failures = run_tests([""])
         elif choice == "4":
             print("Running URL tests...")
-            failures = run_tests(["threef.tests.test_urls"])
+            failures = run_tests([""])
         elif choice == "5":
             print("Exiting the test runner.")
             sys.exit(0)

@@ -1,11 +1,11 @@
 <script>
     import * as Card from "$lib/components/ui/card/index.js";
-    import { Textarea } from "$lib/components/ui/textarea";
     import { Button } from "$lib/components/ui/button";
     import Query from '$lib/components/query.svelte';
     import { threadStore } from "../../threadStore";
     import { goto } from '$app/navigation';
     import { activeUser } from '../../userStore';
+    import { Input } from "$lib/components/ui/input/index.js";
 
     let title = '';
     let tags = [];
@@ -26,6 +26,10 @@
     let anonymous = false; 
     let resolved = false;
 
+    let errors = {
+        title: '',
+        image: ''
+    };
 
     $: postedBy = $activeUser;
 
@@ -67,11 +71,28 @@
     };
 
     let handlePost = async () => {
+        // Reset errors
+        errors.title = '';
+        errors.image = '';
+
+        // Validation
+        if (!title.trim()) {
+            errors.title = 'Title is required.';
+        }
+        if (!imageSrc) {
+            errors.image = 'Image is required.';
+        }
+
+        // Stop submission if there are errors
+        if (errors.title || errors.image) {
+            return;
+        }
+
         const endPoint = 'https://threef.vercel.app/api/thread/';
 
         try {
             const imageUrl = await uploadToSupabase(imageSrc);
-            
+
             let data = new FormData();
             const tagIds = tags.map(tag => tag.id);
             data.append('title', title);
@@ -111,144 +132,132 @@
     };
 </script>
 
-<div class="flex justify-center p-4 lg:py-8 bg-change dark:bg-dark shifting">
+<div class="flex justify-center p-6 lg:py-10 bg-change dark:bg-dark shifting">
     <form class="w-full lg:w-2/3">
-        <Card.Root class="bg-opacity-90 hover:bg-opacity-100">
-            <Card.Title class="p-4 text-2xl">
+        <Card.Root class="bg-opacity-90">
+            <Card.Title class="p-4 text-2xl mt-6 text-center">
                 Let's help you post new stuff!
             </Card.Title>
+        <div class="bg-opacity-95 rounded-lg shadow-lg p-6">
 
-            <div class="p-4 pt-2">
-                <Textarea class="min-h-10 h-10" bind:value={title} placeholder="First, we will start by titling it. This is what people will see on their homepage so try to make it interesting" />
-            </div>
-            
-            <div class="p-4 pt-0">
-                <Textarea 
-                bind:value={material} 
-                placeholder="What is the object made of? (e.g. wood, metal, etc.)"
-                class="min-h-10 h-10" />
-            </div>
-            
-            <div class="p-4 pt-0">
-                <Textarea 
-                bind:value={size} 
-                style="resize: vertical; white-space: pre-wrap;" 
-                placeholder="What are the dimensions? (e.g. 10cm x 5cm x 3cm)"
-                class="min-h-10 h-10" />
-            </div>
-            
-            <div class="p-4 pt-0">
-                <Textarea 
-                bind:value={shape} 
-                style="resize: vertical; white-space: pre-wrap;" 
-                placeholder="What is the shape? (e.g. round, square, etc.)"
-                class="min-h-10 h-10" />
-            </div>
-            
-            <div class="p-4 pt-0">
-                <Textarea 
-                bind:value={color} 
-                style="resize: vertical; white-space: pre-wrap;" 
-                placeholder="What is the color? (e.g. red, blue, etc.)"
-                class="min-h-10 h-10" />
-            </div>
-            
-            <div class="p-4 pt-0">
-                <Textarea 
-                bind:value={texture} 
-                style="resize: vertical; white-space: pre-wrap;" 
-                placeholder="What is the texture? (e.g. smooth, rough, etc.)"
-                class="min-h-10 h-10" />
-            </div>
-            
-            <div class="p-4 pt-0">
-                <Textarea 
-                bind:value={weight} 
-                style="resize: vertical; white-space: pre-wrap;" 
-                placeholder="What is the weight? (e.g. 100g, 1kg, etc.)"
-                class="min-h-10 h-10" />
-            </div>
-            
-            <div class="p-4 pt-0">
-                <Textarea 
-                bind:value={smell} 
-                style="resize: vertical; white-space: pre-wrap;" 
-                placeholder="What is the smell? (e.g. sweet, sour, etc.)"
-                class="min-h-10 h-10" />
-            </div>
-            
-            <div class="p-4 pt-0">
-                <Textarea 
-                bind:value={marking} 
-                style="resize: vertical; white-space: pre-wrap;" 
-                placeholder="What are the markings? (e.g. logo, text, etc.)"
-                class="min-h-10 h-10" />
-            </div>
-            
-            <div class="p-4 pt-0">
-                <Textarea 
-                bind:value={functionality} 
-                style="resize: vertical; white-space: pre-wrap;" 
-                placeholder="What is the functionality? (e.g. cutting, writing, etc. or maybe it does something unique)"
-                class="min-h-10 h-10" />
-            </div>
-            
-            <div class="p-4 pt-0">
-                <Textarea 
-                bind:value={period} 
-                style="resize: vertical; white-space: pre-wrap;" 
-                placeholder="What is the period? (e.g. 1800s, 1900s, etc.)"
-                class="min-h-10 h-10" />
-            </div>
-            
-            <div class="p-4 pt-0">
-                <Textarea 
-                bind:value={location} 
-                style="resize: vertical; white-space: pre-wrap;" 
-                placeholder="Where is it typically found? (e.g. Europe, Asia, etc. or you can be more precise if you can.)"
-                class="min-h-10 h-10" />
-            </div>            
-
-            <div class="p-4 pt-0">
-                <Textarea 
-                bind:value={description} 
-                style="resize: vertical; white-space: pre-wrap;" 
-                placeholder="Then maybe some additional description about the object you're posting."
-                class="min-h-10 h-10" />
+            <!-- Title -->
+            <div class="mb-4">
+                <label for="title" class="block text-sm font-medium mb-2">Title</label>
+                <Input id="title" class="w-full p-2 border rounded dark:border-gray-600" bind:value={title} placeholder="Give your post an interesting title" />
             </div>
 
-            <div class="p-4 pt-0">
+            <!-- Object Details -->
+            <div class="mb-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div>
+                    <label for="material" class="block text-sm font-medium mb-2">Material</label>
+                    <Input id="material" class="w-full p-2 border rounded dark:border-gray-600" bind:value={material} placeholder="E.g., wood, metal" />
+                </div>
+                <div>
+                    <label for="shape" class="block text-sm font-medium mb-2">Shape</label>
+                    <Input id="shape" class="w-full p-2 border rounded dark:border-gray-600" bind:value={shape} placeholder="E.g., round, square" />
+                </div>
+                <div>
+                    <label for="color" class="block text-sm font-medium mb-2">Color</label>
+                    <Input id="color" class="w-full p-2 border rounded dark:border-gray-600" bind:value={color} placeholder="E.g., red, blue" />
+                </div>
+                <div>
+                    <label for="texture" class="block text-sm font-medium mb-2">Texture</label>
+                    <Input id="texture" class="w-full p-2 border rounded dark:border-gray-600" bind:value={texture} placeholder="E.g., smooth, rough" />
+                </div>
+                <div>
+                    <label for="smell" class="block text-sm font-medium mb-2">Smell/Taste</label>
+                    <Input id="smell" class="w-full p-2 border rounded dark:border-gray-600" bind:value={smell} placeholder="E.g., sweet, sour" />
+                </div>
+                <div>
+                    <label for="marking" class="block text-sm font-medium mb-2">Marking</label>
+                    <Input id="marking" class="w-full p-2 border rounded dark:border-gray-600" bind:value={marking} placeholder="E.g., logo, text" />
+                </div>
+                <div>
+                    <label for="functionality" class="block text-sm font-medium mb-2">Functionality</label>
+                    <Input id="functionality" class="w-full p-2 border rounded dark:border-gray-600" bind:value={functionality} placeholder="E.g., cutting, writing" />
+                </div>
+                <div>
+                    <label for="period" class="block text-sm font-medium mb-2">Period</label>
+                    <Input id="period" class="w-full p-2 border rounded dark:border-gray-600" bind:value={period} placeholder="E.g., 1800s, 1900s" />
+                </div>
+                <div>
+                    <label for="location" class="block text-sm font-medium mb-2">Location</label>
+                    <Input id="location" class="w-full p-2 border rounded dark:border-gray-600" bind:value={location} placeholder="E.g., Europe, Asia" />
+                </div>
+                <div>
+                    <label for="location" class="block text-sm font-medium mb-2">Description</label>
+                    <Input id="description" class="w-full p-2 border rounded dark:border-gray-600" bind:value={description} placeholder="Add any additional context about your object"/>
+                </div>
+            </div>
+
+            <!-- Dropdowns for Size and Weight -->
+            <div class="mb-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div>
+                    <label for="size-select" class="block text-sm font-medium mb-2">Size</label>
+                    <select id="size-select" bind:value={size} class="w-full p-2 rounded border dark:border-gray-600">
+                        <option value="" disabled selected>Select a size range</option>
+                        <option value="Tiny (under 5cm)">Tiny (under 5cm)</option>
+                        <option value="Small (5cm to 20cm)">Small (5cm to 20cm)</option>
+                        <option value="Medium (20cm to 50cm)">Medium (20cm to 50cm)</option>
+                        <option value="Large (50cm to 1m)">Large (50cm to 1m)</option>
+                        <option value="Very Large (1m to 3m)">Very Large (1m to 3m)</option>
+                        <option value="Huge (over 3m)">Huge (over 3m)</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="weight-select" class="block text-sm font-medium mb-2">Weight</label>
+                    <select id="weight-select" bind:value={weight} class="w-full p-2 rounded border dark:border-gray-600">
+                        <option value="" disabled selected>Select a weight range</option>
+                        <option value="Very Light (under 100g)">Very Light (under 100g)</option>
+                        <option value="Light (100g to 500g)">Light (100g to 500g)</option>
+                        <option value="Moderate (500g to 2kg)">Moderate (500g to 2kg)</option>
+                        <option value="Heavy (2kg to 10kg)">Heavy (2kg to 10kg)</option>
+                        <option value="Very Heavy (10kg to 50kg)">Very Heavy (10kg to 50kg)</option>
+                        <option value="Extremely Heavy (over 50kg)">Extremely Heavy (over 50kg)</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <!-- Tags -->
+            <div class="mb-4">
+                <label for="tags" class="block text-sm font-medium mb-2">Tags</label>
                 <Query bind:tags={tags} />
             </div>
 
-            <div class="p-4 pt-2">
-                <input type="checkbox" bind:checked={anonymous} id="anonymous-checkbox" />
-                <label for="anonymous-checkbox" class="ml-2">If you wish you can check this box to post anonymously, otherwise you may leave it unchecked</label>
+
+            <!-- Anonymous Checkbox -->
+            <div class="mb-6 flex items-center">
+                <input type="checkbox" bind:checked={anonymous} id="anonymous-checkbox" class="mr-2" />
+                <label for="anonymous-checkbox" class="text-sm">Post anonymously</label>
             </div>
 
-            <div class="p-4 pt-0">
+            <!-- Upload Button -->
+            <div class="mb-6">
                 <Button
-                    on:click={() => document.getElementById('file-input').click()}
-                    variant="outline"
-                    size="icon"
-                    class="w-full flex items-center justify-center p-7 lg:p-4 text-center whitespace-normal break-words bg-black dark:bg-white text-white dark:text-black hover:text-white hover:bg-rose-900 hover:dark:bg-rose-900 transition-colors"
-                    >
-                    <span class="text-center">Lastly, let us upload an image or a video of your object to wrap it up</span>
-                </Button>
-                <input id="file-input" type="file" on:change={e => imageSrc = e.target.files[0]} class="hidden" />
+                on:click={() => document.getElementById('file-input').click()}
+                variant="outline"
+                size="icon"
+                class="w-full flex items-center justify-center p-4 bg-black dark:bg-white text-white dark:text-black hover:text-white hover:bg-rose-900 hover:dark:bg-rose-900 transition-colors rounded shadow">
+                Upload Media
+            </Button>
+            <input id="file-input" type="file" on:change={e => imageSrc = e.target.files[0]} class="hidden" />
+            {#if errors.image}
+                <p class="text-red-500 text-sm mt-1">{errors.image}</p>
+            {/if}
             </div>
 
-            <div class="p-4 pt-0">
+            <!-- Submit Button -->
+            <div>
                 <Button
-                    on:click={handlePost}
-                    variant="outline"
-                    size="icon"
-                    class="hover:bg-rose-900 hover:dark:bg-rose-900 p-7 lg:p-4 w-full bg-black dark:bg-white text-white dark:text-black hover:text-white transition-colors flex items-center justify-center text-center whitespace-normal break-words"
-                    >
-                    Check your details, and when you're ready, click here to post it!
-              </Button>
-            </div> 
-
-        </Card.Root>
+                on:click={handlePost}
+                variant="outline"
+                size="icon"
+                class="w-full p-4 bg-black dark:bg-white text-white dark:text-black hover:bg-rose-900 hover:dark:bg-rose-900 hover:text-white transition-colors rounded shadow">
+                Post Your Object
+            </Button>
+            </div>
+        </div>
+    </Card.Root>
     </form>
 </div>

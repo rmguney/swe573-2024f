@@ -53,33 +53,7 @@
       console.error("Failed to fetch tag details:", error);
     }
   };
-
- /*  const threadVoteEndPoint = 'https://threef.vercel.app/api/voteCount/';
-
-  async function handleVote(voteType) {
-    try {
-      const response = await fetch(threadVoteEndPoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: id, vote_type: voteType }), 
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Error response from server:", errorText);
-        return;
-      }
-
-      const data = await response.json();
-      updateThreadVote(id, data.voteCount);
-      voteCount = data.voteCount; 
-    } catch (error) {
-      console.error("Error during voting:", error);
-    }
-  } */
-
+  
   const toggleResolved = async () => {
     if (currentUser !== postedBy) return;
     try {
@@ -195,11 +169,11 @@ const formatDate = (isoDate) => {
       <ul>
           {#if material}<li class="mt-2 text-md"><span class="font-semibold text-md">Material:</span> {material}</li>{/if}
           {#if size}<li class="mt-2"><span class="font-semibold text-md">Size:</span> {size}</li>{/if}
+          {#if weight}<li class="mt-2"><span class="font-semibold text-md">Weight:</span> {weight}</li>{/if}
           {#if shape}<li class="mt-2"><span class="font-semibold text-md">Shape:</span> {shape}</li>{/if}
           {#if color}<li class="mt-2"><span class="font-semibold text-md">Color:</span> {color}</li>{/if}
           {#if texture}<li class="mt-2"><span class="font-semibold text-md">Texture:</span> {texture}</li>{/if}
-          {#if weight}<li class="mt-2"><span class="font-semibold text-md">Weight:</span> {weight}</li>{/if}
-          {#if smell}<li class="mt-2"><span class="font-semibold text-md">Smell:</span> {smell}</li>{/if}
+          {#if smell}<li class="mt-2"><span class="font-semibold text-md">Smell/Taste:</span> {smell}</li>{/if}
           {#if marking}<li class="mt-2"><span class="font-semibold text-md">Marking:</span> {marking}</li>{/if}
           {#if functionality}<li class="mt-2"><span class="font-semibold text-md">Functionality:</span> {functionality}</li>{/if}
           {#if period}<li class="mt-2"><span class="font-semibold text-md">Period:</span> {period}</li>{/if}
