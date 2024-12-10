@@ -9,6 +9,7 @@
 
     let title = '';
     let tags = [];
+    let labels = [];
     let imageSrc; 
     let postedBy;
     let description = '';
@@ -70,6 +71,30 @@
         return `${supabaseUrl}/storage/v1/object/public/${bucketName}/${fileName}`;
     };
 
+    async function fetchLabelForQcode(qcode) {
+        const wikidataApiUrl = `https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${qcode}&format=json&languages=en&origin=*`;
+        try {
+            const response = await fetch(wikidataApiUrl);
+            const data = await response.json();
+            const label = data.entities[qcode]?.labels?.en?.value;
+            if (!label) throw new Error(`Label not found for qcode: ${qcode}`);
+            return label;
+        } catch (error) {
+            console.error('Error fetching label:', error);
+            return null;
+        }
+    }
+
+    async function enrichTagsWithLabels(tags) {
+        const enrichedTags = [];
+        for (const tag of tags) {
+            const label = await fetchLabelForQcode(tag.id);
+            if (label) {
+                enrichedTags.push({ id: tag.id, label });
+            }
+        }
+        return enrichedTags;
+    }
     let handlePost = async () => {
         // Reset errors
         errors.title = '';
@@ -93,10 +118,16 @@
         try {
             const imageUrl = await uploadToSupabase(imageSrc);
 
+            // Fetch labels for qcodes
+            const enrichedTags = await enrichTagsWithLabels(tags);
+
+            const tagIds = enrichedTags.map(tag => tag.id);
+            const labelValues = enrichedTags.map(tag => tag.label);
+
             let data = new FormData();
-            const tagIds = tags.map(tag => tag.id);
             data.append('title', title);
             data.append('tags', JSON.stringify(tagIds));
+            data.append('labels', JSON.stringify(labelValues));
             data.append('imageSrc', imageUrl); 
             data.append('postedBy', anonymous ? 'Anonymous' : postedBy);
             data.append('description', description);
@@ -222,7 +253,7 @@
             <!-- Tags -->
             <div class="mb-4">
                 <label for="tags" class="block text-sm font-medium mb-2">Tags</label>
-                <Query bind:tags={tags} />
+                <Query bind:tags={tags} bind:labels={labels} />
             </div>
 
 

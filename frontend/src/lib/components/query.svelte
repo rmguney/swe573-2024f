@@ -66,9 +66,13 @@
     return () => document.removeEventListener('click', handleClickOutside);
   });
 
-  // Reflect changes in `selectedItems` to `tags`
+  // Reflect changes in `selectedItems` to `tags` and 'labels'
   $: tags = $selectedItems;
-  export let tags; // Passed down to the parent component
+  $: labels = $selectedItems;
+
+  // Passed down to the parent component
+  export let tags;
+  export let labels; 
 </script>
 
 <div class="w-full mx-auto relative search-container">
