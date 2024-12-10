@@ -89,10 +89,10 @@
     />
     
     {#if $activeUser}
-    <Card.Root class="bg-opacity-90 hover:bg-opacity-100 p-4 mt-4 flex flex-col">
+    <Card.Root class="bg-opacity-90 hover:bg-opacity-100 p-4 mt-4 flex flex-row justify-center items-center">
       <Textarea bind:value={comment} class="h-20 resize-none p-2" placeholder="Say stuff" />
 
-      <Button on:click={handleSend} class="w-full mt-2 hover:bg-rose-900">Send</Button>
+      <Button on:click={handleSend} class="ml-4 hover:bg-rose-900">Send</Button>
     </Card.Root>
     {:else}
     <Card.Root class="bg-opacity-90 hover:bg-opacity-100 mt-4">
@@ -103,15 +103,16 @@
     {/if}
     <div class="flex flex-col justify-center pt-4">
       {#if thread.comments && thread.comments.length > 0}
-        {#each thread.comments as comment}
+        <!-- Only display top-level comments (parent is null) -->
+        {#each thread.comments.filter(c => !c.parent) as comment}
           <Comment
             commentId={comment.id}
             comment={comment.comment}
-            voteCountComment={comment.voteCountComment}
             commentator={comment.commentator}
             postedDateComment={comment.postedDateComment}
             selected={comment.selected}
             threadOwner={thread.postedBy}
+            replies={comment.replies || []}
           />
         {/each}
       {:else}
@@ -125,5 +126,6 @@
         </Card.Root>
       {/if}
     </div>
+    
   </div>
 </div>

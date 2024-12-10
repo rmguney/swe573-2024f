@@ -23,8 +23,41 @@ class ThreadViewSet(viewsets.ModelViewSet):
 
 # Comment ViewSet
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.filter(parent=None)  # Fetch only top-level comments by default
     serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        """
+        Override to allow fetching all comments, including nested ones, for a thread.
+        """
+        thread_id = self.request.query_params.get('thread_id', None)
+        if thread_id:
+            return Comment.objects.filter(thread_id=thread_id, parent=None)
+        return self.queryset
+
+
+@api_view(['POST'])
+def add_reply(request, comment_id):
+    """
+    Add a reply to a specific comment.
+    """
+    try:
+        parent_comment = get_object_or_404(Comment, id=comment_id)
+        thread = parent_comment.thread
+        data = request.data
+
+        reply = Comment.objects.create(
+            thread=thread,
+            parent=parent_comment,
+            comment=data.get('comment', ''),
+            commentator=data.get('commentator', 'Anonymous'),
+        )
+
+        serializer = CommentSerializer(reply)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # User Registration
@@ -182,7 +215,7 @@ def voteCountComment(request):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-        # Search Functionality
+# Search Functionality
 @api_view(["GET"])
 def search(request):
     query = request.GET.get('q', '')
@@ -222,3 +255,5 @@ class ToggleResolvedView(APIView):
 
         except Thread.DoesNotExist:
             return Response({"detail": "Thread not found."}, status=status.HTTP_404_NOT_FOUND)
+        
+        
