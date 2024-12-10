@@ -60,37 +60,46 @@
     }
   }
 
-  // Debounced filter function
   let debounceTimeout;
+
   function filterThreads() {
-    clearTimeout(debounceTimeout);
-    debounceTimeout = setTimeout(() => {
-      const terms = searchQuery.trim().toLowerCase().split(/\s+/);
-      if (terms.length < 1 || terms[0].length < 3) {
-        searchResults = [];
-        showDropdown = false;
-        return;
-      }
+  clearTimeout(debounceTimeout);
+  debounceTimeout = setTimeout(() => {
+    const terms = searchQuery.trim().toLowerCase().split(/\s+/); // Normalize the search query to lowercase
+    if (terms.length < 1 || terms[0].length < 3) {
+      searchResults = [];
+      showDropdown = false;
+      return;
+    }
 
-      searchResults = allThreads
-        .map((thread) => {
-          const content = selectedFields
-            .map((field) => (thread[field] || "").toString().toLowerCase())
-            .join(" ");
+    searchResults = allThreads
+      .map((thread) => {
+        const content = selectedFields
+          .map((field) => {
+            const value = thread[field];
+            if (Array.isArray(value)) {
+              // Join array values, e.g., for "labels", and normalize to lowercase
+              return value.map((item) => item.toLowerCase()).join(" ");
+            }
+            // Handle non-array fields safely and normalize to lowercase
+            return value ? value.toString().toLowerCase() : "";
+          })
+          .join(" ");
 
-          const matchCount = terms.reduce(
-            (count, term) => (content.includes(term) ? count + 1 : count),
-            0
-          );
-          return { thread, matchCount };
-        })
-        .filter((item) => item.matchCount > 0)
-        .sort((a, b) => b.matchCount - a.matchCount)
-        .map((item) => item.thread);
+        // Count matches by checking if content includes each search term
+        const matchCount = terms.reduce(
+          (count, term) => (content.includes(term) ? count + 1 : count),
+          0
+        );
+        return { thread, matchCount };
+      })
+      .filter((item) => item.matchCount > 0) // Only include threads with matches
+      .sort((a, b) => b.matchCount - a.matchCount) // Sort by match count
+      .map((item) => item.thread);
 
-      showDropdown = searchResults.length > 0;
-    }, 300); // Adjust debounce delay as needed
-  }
+    showDropdown = searchResults.length > 0;
+  }, 300); // Adjust debounce delay as needed
+}
 
   // Highlight matching terms
   function highlightMatches(text, query) {
@@ -186,7 +195,7 @@
     {#if showDropdown}
       <ul
         id="search-results"
-        class="absolute top-full mt-2 w-full bg-white dark:bg-black shadow-md rounded-md overflow-hidden z-50"
+        class="absolute top-full w-full bg-white dark:bg-black shadow-md rounded-md overflow-hidden z-50"
         role="listbox"
         aria-label="Search Results"
       >
