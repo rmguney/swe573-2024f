@@ -31,6 +31,10 @@
   - **2.2.2 Testing**:        
     - `tester.py`: Main script for running unit tests as a centralized CLI 
 
+- ### 2.3 Footnotes About Local Deployment        
+  - Frontend and backend run on different severs. Due to that, API endpoints are staticly coded into the frontend. You need to change the endpoints to use local directories or test them individually.       
+  - If you want to test the containerization, you might need to change the name of "dockerfile" into "Dockerfile". It works without any necessary change on Windows machines since they are case insensitive but Linux and Mac users might be required to make that adjustment.    
+
 ## 3. Documentation       
 
 [Wiki](https://github.com/rmguney/SWE573-2024F/wiki) contains further information about the lifecycle of the project. Main contents of information are:       

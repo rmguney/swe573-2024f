@@ -78,7 +78,9 @@ def main():
             test_labels = ["threef.tests.test_urls"]
         elif choice == "4":
             print("Running all tests...")
-            test_labels = None  # Run all tests
+            test_labels = ["threef.tests.test_urls"]
+            test_labels = ["threef.tests.test_serializers"]
+            test_labels = ["threef.tests.test_models"]
         elif choice == "5":
             print("Exiting the test runner.")
             sys.exit(0)
