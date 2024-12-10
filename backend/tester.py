@@ -1,85 +1,84 @@
 import os
 import sys
-import unittest
 import django
 from django.test.utils import get_runner
 from django.conf import settings
 from django.db import connection
-import time
 
 # Set the settings module for Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'threef_backend.settings')
 
-# Now set up Django
+# Initialize Django
 django.setup()
 
-# Ensure Django settings are configured
-if not settings.configured:
-    import django
-    django.setup()
 
-def terminate_active_connections(retries=5, delay=2):
-    """Terminate active connections to the test database."""
-    for _ in range(retries):
+def terminate_test_database_connections():
+    """Forcefully terminate all connections to the test database."""
+    try:
         with connection.cursor() as cursor:
             cursor.execute("""
-                SELECT pg_terminate_backend(pg_stat_activity.pid)
-                FROM pg_stat_activity
-                WHERE pg_stat_activity.datname = 'test_postgres'
-                AND pid <> pg_backend_pid();
+                SELECT pg_terminate_backend(pid) 
+                FROM pg_stat_activity 
+                WHERE datname = current_database()
+                AND pid <> pg_backend_pid()
             """)
-        time.sleep(delay)
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                SELECT COUNT(*)
-                FROM pg_stat_activity
-                WHERE pg_stat_activity.datname = 'test_postgres'
-                AND pid <> pg_backend_pid();
-            """)
-            active_connections = cursor.fetchone()[0]
-            if active_connections == 0:
-                break
-    else:
-        raise Exception("Failed to terminate all active connections to the test database.")
+    except Exception as e:
+        print(f"Warning: Could not terminate connections: {e}")
+
 
 def run_tests(test_labels=None):
     """Run the specified test cases or all tests."""
-    settings.DATABASES['default'] = settings.DATABASES['test']
-    terminate_active_connections()  # Terminate active connections before running tests
-    test_runner = get_runner(settings)()
-    failures = test_runner.run_tests(test_labels)
-    return failures
+    try:
+        # Ensure clean connections
+        terminate_test_database_connections()
+        connection.close()
+
+        # Configure test settings
+        settings.TEST_RUNNER = 'threef.tests.test_runner.NoDbTestRunner'
+        
+        # Initialize and run tests
+        test_runner = get_runner(settings)(keepdb=True, interactive=False)
+        failures = test_runner.run_tests(test_labels)
+        
+        return failures
+
+    except Exception as e:
+        print(f"Error running tests: {e}")
+        if input("Would you like to try again? (y/n): ").lower() == 'y':
+            return run_tests(test_labels)
+        return 1
+
 
 def display_menu():
-    """Display the test options menu"""
-    print("Choose a test category:")
-    print("1. Run xx tests")
-    print("2. Run xx tests")
-    print("3. Run xx tests")
-    print("4. Run xx tests")
+    print("\nChoose a test category:")
+    print("1. Run model tests")
+    print("2. Run serializer tests")
+    print("3. Run URL tests")
+    print("4. Run all tests")
     print("5. Exit")
+
 
 def main():
     while True:
         # Display menu
         display_menu()
-        
+
         # Get user input
         choice = input("Enter your choice (1/2/3/4/5): ").strip()
 
-        # Run corresponding tests based on user's choice
+        # Define test paths based on user choice
         if choice == "1":
             print("Running model tests...")
-            failures = run_tests([""])
+            test_labels = ["threef.tests.test_models"]
         elif choice == "2":
             print("Running serializer tests...")
-            failures = run_tests([""])
+            test_labels = ["threef.tests.test_serializers"]
         elif choice == "3":
-            print("Running view tests...")
-            failures = run_tests([""])
-        elif choice == "4":
             print("Running URL tests...")
-            failures = run_tests([""])
+            test_labels = ["threef.tests.test_urls"]
+        elif choice == "4":
+            print("Running all tests...")
+            test_labels = None  # Run all tests
         elif choice == "5":
             print("Exiting the test runner.")
             sys.exit(0)
@@ -87,17 +86,20 @@ def main():
             print("Invalid choice, please try again.")
             continue
 
-        # Check if there were failures
-        if failures:
-            print(f"{failures} test(s) failed!")
+        # Run tests and handle results
+        failures = run_tests(test_labels)
+
+        if failures is None or failures > 0:
+            print(f"Test run failed or {failures} test(s) failed!")
         else:
             print("All tests passed!")
-        
+
         # Ask if the user wants to run more tests
-        run_again = input("Do you want to run more tests? (y/n): ").strip().lower()
+        run_again = input("\nDo you want to run more tests? (y/n): ").strip().lower()
         if run_again != 'y':
             print("Exiting the test runner.")
             sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

@@ -51,12 +51,22 @@ DATABASES = {
     },
     'test': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'test_postgres',
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
+        'NAME': os.getenv('TEST_DB_NAME', 'test_postgres'),
+        'USER': os.getenv('DB_USER', 'postgres'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'postgres'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
         'PORT': os.getenv('DB_PORT', '5432'),
     }
+}
+
+# Test Runner Configuration
+TEST_RUNNER = 'threef.tests.test_runner.NoDbTestRunner'
+
+# Test Database Settings
+TEST = {
+    'NAME': None,  # Use default test database name
+    'SERIALIZE': False,
+    'MIRROR': False,
 }
 
 # Password Validators

@@ -29,11 +29,7 @@
     - `urls.py`: Maps API endpoints to their corresponding views.         
     - `supabase_client.py`: Interfaces with Supabase to handle file uploads and storage.        
   - **2.2.2 Testing**:        
-    - `tester.py`: Main script for running unit tests as a centralized CLI:   
-    - `tests/test_models.py`        
-    - `tests/test_serializers.py`       
-    - `tests/test_views.py`       
-    - `tests/test_urls.py`        
+    - `tester.py`: Main script for running unit tests as a centralized CLI 
 
 ## 3. Documentation       
 

@@ -4,10 +4,6 @@ from threef.views import (
     CommentViewSet,
     RegisterationAPIView,
     LoginAPIView,
-    voteCount,
-    voteCountComment,
-    search,  # Import the search view
-    get_user,  # Import the get_user view
 )
 from . import views
 from rest_framework.routers import DefaultRouter
@@ -25,9 +21,4 @@ urlpatterns += [
     path('upload/', views.upload_file_view, name='upload_file'),
     path('threads/<int:thread_id>/updateResolved', views.update_resolved_status, name='update_resolved'),
     path('comments/<int:comment_id>/toggle-selected/', views.toggle_comment_selected, name='toggle_comment_selected'),
-
-    path('voteCount/', views.voteCount, name='voteCount'),  # Dedicated thread voting endpoint
-    path('voteCountComment/', views.voteCountComment, name='voteCountComment'),  # Dedicated comment voting endpoint
-    path('search/', search, name='search'),
-    path('user/<int:id>/', get_user, name='get_user'),  # User details endpoint
 ]
