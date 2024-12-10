@@ -8,6 +8,7 @@
   import * as Sheet from "$lib/components/ui/sheet";
   import Login from "$lib/components/login.svelte";
   import { activeUser } from "../../userStore";
+  import * as Popover from "$lib/components/ui/popover/index.js";
 
   let navbar = false;
   let loginBar = false;
@@ -17,6 +18,29 @@
   let loading = false; // Loading state
   let showDropdown = false; // Controls the visibility of the dropdown
   let highlightedIndex = -1; // For keyboard navigation
+  let selectedFields = [
+    "title",
+    "description",
+    "labels",
+  ]; // Default fields to search in
+
+  const availableFields = [
+    "title",
+    "description",
+    "labels",
+    "material",
+    "size",
+    "shape",
+    "color",
+    "texture",
+    "weight",
+    "smell",
+    "marking",
+    "functionality",
+    "period",
+    "location",
+    "postedBy",
+  ]; // All available fields
 
   // Function to fetch all threads initially
   async function fetchAllThreads() {
@@ -50,22 +74,9 @@
 
       searchResults = allThreads
         .map((thread) => {
-          const content = `
-            ${thread.title} 
-            ${thread.description || ""} 
-            ${thread.tags.join(" ")} 
-            ${thread.material || ""} 
-            ${thread.size || ""} 
-            ${thread.shape || ""} 
-            ${thread.color || ""} 
-            ${thread.texture || ""} 
-            ${thread.weight || ""} 
-            ${thread.smell || ""} 
-            ${thread.marking || ""} 
-            ${thread.functionality || ""} 
-            ${thread.period || ""} 
-            ${thread.location || ""} 
-          `.toLowerCase();
+          const content = selectedFields
+            .map((field) => (thread[field] || "").toString().toLowerCase())
+            .join(" ");
 
           const matchCount = terms.reduce(
             (count, term) => (content.includes(term) ? count + 1 : count),
@@ -85,6 +96,16 @@
   function highlightMatches(text, query) {
     const terms = query.trim().toLowerCase().split(/\s+/);
     return text.replace(new RegExp(`(${terms.join("|")})`, "gi"), "<mark>$1</mark>");
+  }
+
+  // Toggle selected fields for filtering
+  function toggleField(field) {
+    if (selectedFields.includes(field)) {
+      selectedFields = selectedFields.filter((f) => f !== field);
+    } else {
+      selectedFields = [...selectedFields, field];
+    }
+    filterThreads();
   }
 
   // Keyboard navigation
@@ -134,9 +155,34 @@
       aria-owns="search-results"
       aria-controls="search-results"
     />
-    {#if loading}
-<!--       <span class="absolute right-4 text-sm">Loading...</span>
- -->    {/if}
+
+    <Popover.Root>
+      <Popover.Trigger>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 hover:text-rose-900">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+      </svg>
+      </Popover.Trigger>
+      <Popover.Content>
+        <div class="p-4">
+          <h4 class="mb-2">Search Fields</h4>
+          <ul>
+            {#each availableFields as field}
+              <li>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={selectedFields.includes(field)}
+                    on:change={() => toggleField(field)}
+                  />
+                  {field}
+                </label>
+              </li>
+            {/each}
+          </ul>
+        </div>
+      </Popover.Content>
+    </Popover.Root>  
+
     {#if showDropdown}
       <ul
         id="search-results"
