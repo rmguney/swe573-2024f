@@ -90,17 +90,21 @@
 
   // Format the date to a human-readable format
   const formatDate = (isoDate) => {
-    if (!isoDate) return "";
-    const date = new Date(isoDate);
-    return new Intl.DateTimeFormat("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    }).format(date);
-  };
+  if (!isoDate) return "";
+  const date = new Date(isoDate);
+
+  // Extract time components
+  const timeOptions = { hour: "numeric", minute: "numeric", hour12: false };
+  const timeString = new Intl.DateTimeFormat("en-US", timeOptions).format(date);
+
+  // Extract date components with day before month and full year
+  const day = date.getDate();
+  const shortMonth = date.toLocaleString("en-US", { month: "short" }); // Shortened month
+  const fullYear = date.getFullYear(); // Full year
+
+  // Combine components with time first
+  return `${timeString}, ${day} ${shortMonth} ${fullYear}`;
+};
 
   // Function to toggle the helpful status
   const toggleHelpful = async () => {
@@ -128,9 +132,9 @@
   };
 </script>
 
-<div class="flex w-full pb-2">
+<div class="flex w-full py-1">
   <Card.Root class={`w-full bg-opacity-90 hover:bg-opacity-100 relative ${selected ? 'border-4 border-teal-600 dark:border-teal-800' : ''}`}>
-    <div class="flex flex-col pb-2 w-full">
+    <div class="flex flex-col w-full">
       <Card.Header>
         <Card.Title class="w-full flex items-center">
           {comment}
@@ -142,7 +146,7 @@
         </Card.Title>
       </Card.Header>
 
-      <Card.Description class="flex flex-col w-full p-3 pl-6">
+      <Card.Description class="flex flex-col w-full px-6">
         <span>
           <a href={`/user/${commentator}`} class="hover:text-rose-900 hover:underline font-bold">
             {commentator}
@@ -179,7 +183,7 @@
         {/if}
 
         <!-- Render Nested Replies -->
-        <div class="mt-4 pl-4 border-l">
+        <div class="mt-4 px-4 border-l">
           {#each replies as reply}
             <Comment 
               commentId={reply.id}

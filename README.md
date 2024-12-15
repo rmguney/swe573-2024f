@@ -33,18 +33,17 @@
 
 - ### 2.3 Footnotes About Local Deployment        
   - Frontend and backend run on different severs. Due to that, API endpoints are staticly coded into the frontend. You need to change the endpoints to use local directories or test them individually.       
-  - If you want to test the containerization, you might need to change the name of "dockerfile" into "Dockerfile". It works without any necessary change on Windows machines since they are case insensitive but Linux and Mac users might be required to make that adjustment.    
 
 ## 3. Documentation       
 
 [Wiki](https://github.com/rmguney/SWE573-2024F/wiki) contains further information about the lifecycle of the project. Main contents of information are:       
 
-- [3.1 Progress Tracking:](https://github.com/rmguney/SWE573-2024F/wiki/0.-Progress-Tracking) Weekly updates on what has been done through timetables.        
+-[3.1. Progress Tracking](https://github.com/rmguney/SWE573-2024F/wiki/0.-Progress-Tracking) Will be updated gradually, providing brief explanations of the work done on a weekly basis.
 
-- [3.2 Use Case:](https://github.com/rmguney/SWE573-2024F/wiki/1.-Use-Case) Contains mockup scenarios which serve for requirements elicitation process.       
+-[3.2. Use Case:](https://github.com/rmguney/SWE573-2024F/wiki/1.-Use-Case) Contains mockup scenarios which serve for requirements elicitation process.
 
-- [3.3 Requirements:](https://github.com/rmguney/SWE573-2024F/wiki/2.-Requirements) Requirements gathered through elicitation.        
+-[3.3. Requirements:](https://github.com/rmguney/SWE573-2024F/wiki/2.-Requirements) Requirements gathered through elicitation.
 
-- [3.4 Architecture and Mockups:](https://github.com/rmguney/SWE573-2024F/wiki/3.-Architecture-and-Mockups) System diagram and early mockup pages.        
+-[3.4. Early Mockups:](https://github.com/rmguney/SWE573-2024F/wiki/3.-Early-Mockups) Early UI mockups.
 
-- [3.5 Tech Stack:](https://github.com/rmguney/SWE573-2024F/wiki/4.-Tech-Stack) Necessary research notes and major tech choices.        
+-[3.5 System Architecture and Tech Stack:](https://github.com/rmguney/SWE573-2024F/wiki/4.-System-Architecture-and-Tech-Stack) Research notes on major tech choices and system flow of them in this project.

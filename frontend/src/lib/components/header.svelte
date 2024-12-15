@@ -22,24 +22,25 @@
     "title",
     "description",
     "labels",
+    "material",
+    "color",
   ]; // Default fields to search in
 
   const availableFields = [
-    "title",
-    "description",
-    "labels",
-    "material",
-    "size",
-    "shape",
-    "color",
-    "texture",
-    "weight",
-    "smell",
-    "marking",
-    "functionality",
-    "period",
-    "location",
-    "postedBy",
+    { value: "title", label: "Title of the Post" },
+    { value: "description", label: "Description" },
+    { value: "labels", label: "Wikidata Tags" },
+    { value: "material", label: "Material" },
+    { value: "color", label: "Color" },
+    { value: "shape", label: "Shape" },
+    { value: "texture", label: "Texture or Markings" },
+    { value: "smell", label: "Smell/Taste" },
+    { value: "functionality", label: "Functionality" },
+    { value: "period", label: "Time Period" },
+    { value: "location", label: "Location" },
+    { value: "size", label: "Size & Dimensions" },
+    { value: "weight", label: "Weight" },
+    { value: "postedBy", label: "Posted By User" },
   ]; // All available fields
 
   // Function to fetch all threads initially
@@ -108,11 +109,20 @@
   }
 
   // Toggle selected fields for filtering
-  function toggleField(field) {
-    if (selectedFields.includes(field)) {
-      selectedFields = selectedFields.filter((f) => f !== field);
+  function toggleField(fieldValue) {
+    if (selectedFields.includes(fieldValue)) {
+      selectedFields = selectedFields.filter((f) => f !== fieldValue);
     } else {
-      selectedFields = [...selectedFields, field];
+      selectedFields = [...selectedFields, fieldValue];
+    }
+    filterThreads();
+  }
+
+  function toggleAllFields(selectAll) {
+    if (selectAll) {
+      selectedFields = availableFields.map(field => field.value);
+    } else {
+      selectedFields = [];
     }
     filterThreads();
   }
@@ -172,18 +182,37 @@
       </svg>
       </Popover.Trigger>
       <Popover.Content>
-        <div class="p-4">
-          <h4 class="mb-2">Search Fields</h4>
+        <div class="px-4">
+          <h4>Search Fields</h4>
+          <Separator class="my-2"/>
+          <div class="flex gap-2 mb-2">
+            <Button 
+            class="hover:bg-rose-900"
+              variant="outline" 
+              size="sm" 
+              on:click={() => toggleAllFields(true)}
+            >
+              Check All
+            </Button>
+            <Button 
+            class="hover:bg-rose-900"
+              variant="outline" 
+              size="sm" 
+              on:click={() => toggleAllFields(false)}
+            >
+              Uncheck All
+            </Button>
+          </div>
           <ul>
             {#each availableFields as field}
               <li>
-                <label>
+                <label class="flex items-center gap-2">
                   <input
                     type="checkbox"
-                    checked={selectedFields.includes(field)}
-                    on:change={() => toggleField(field)}
+                    checked={selectedFields.includes(field.value)}
+                    on:change={() => toggleField(field.value)}
                   />
-                  {field}
+                  {field.label}
                 </label>
               </li>
             {/each}
@@ -250,7 +279,7 @@
   <Sheet.Content side="left" class="w-48">
     <Sheet.Header>
       <Sheet.Title>
-        <h3 class="text-8xl mt-8 mb-4 bold text-center">3F</h3>
+        <h3 class="text-8xl mt-8 mb-4 font-bold text-center">3F</h3>
       </Sheet.Title>
       <Sheet.Close />
     </Sheet.Header>
@@ -258,11 +287,11 @@
 
     <nav class="mt-8 text-center">
       <ul class="space-y-8">
-        <li><a href="/" class="block hover:text-rose-900 text-lg" on:click={() => (navbar = false)}>Home</a></li>
+        <li><a href="/" class="block hover:text-rose-900 text-lg font-semibold" on:click={() => (navbar = false)}>Home</a></li>
         {#if $activeUser}
-        <li><a href="/create" class="block hover:text-rose-900 text-lg" on:click={() => (navbar = false)}>Create</a></li>
+        <li><a href="/create" class="block hover:text-rose-900 text-lg font-semibold" on:click={() => (navbar = false)}>Create</a></li>
         {/if}
-        <li><a href="/about" class="block hover:text-rose-900 text-lg" on:click={() => (navbar = false)}>About</a></li>
+        <li><a href="/about" class="block hover:text-rose-900 text-lg font-semibold" on:click={() => (navbar = false)}>About</a></li>
       </ul>
     </nav>
   </Sheet.Content>

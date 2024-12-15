@@ -75,14 +75,14 @@
   export let labels; 
 </script>
 
-<div class="w-full mx-auto relative search-container">
+<div class="w-full mx-auto relative search-container text-sm">
   <!-- Search Input -->
   <input
     type="text"
     placeholder="Add relevant tags"
     bind:value={searchTerm}
     on:input={searchWikidata}
-    class="w-full p-3 border rounded-md text-black dark:text-white bg-white dark:bg-black text-sm"
+    class="w-full p-3 border border-gray-300 rounded-md bg-white dark:border-gray-600 dark:bg-neutral-950 text-sm text-black dark:text-white"
   />
 
   <!-- Loading Indicator -->
@@ -92,7 +92,7 @@
 
   <!-- Search Results -->
   {#if $showResults && $searchResults.length > 0}
-    <ul class="list-none p-0 mt-2 border bg-white dark:bg-black rounded-md absolute w-full max-h-60 overflow-y-auto shadow-lg z-10">
+    <ul class="list-none p-0 mt-2 border bg-white dark:bg-neutral-950 rounded-md absolute w-full max-h-60 overflow-y-auto shadow-lg z-10">
       {#each $searchResults as result}
         <li class="mt-2">
           <button 
@@ -122,7 +122,7 @@
           </a>
           <Button 
             on:click={() => removeSelectedItem(selectedItem.id)} 
-            class="ml-4 bg-black dark:bg-white text-white dark:text-black hover:bg-rose-900 hover:text-white hover:dark:bg-rose-900 transition-colors duration-300"
+            class="ml-4 bg-neutral-950 dark:bg-white text-white dark:text-black hover:bg-rose-900 hover:text-white hover:dark:bg-rose-900 transition-colors duration-300"
           >
             Remove
           </Button>

@@ -93,7 +93,6 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'  # Adjust base
 
 # CORS and CSRF Settings
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
     'https://threef.vercel.app',
     'https://stufffinder.vercel.app',
     'https://vercel.app',

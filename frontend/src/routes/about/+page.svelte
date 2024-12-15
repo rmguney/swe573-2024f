@@ -12,8 +12,7 @@
             <Separator class="my-2"/>
 
             <Card.Description class="p-4 text-lg">
-                This project was done as a part of Bogazici University Software Engineering Master's Degree Program. Both the source code and the wiki dedicated on documenting the process can be found on my Github repository.
-            </Card.Description>
+                Stufffinder is a web application developed as part of the Bogazici University Software Engineering Master's Degree Program to demonstrate foundationary software engineering concepts, including requirements gathering process, modular architecture, frontend-backend integration, containerization, and testing practices and it is open sourced under MIT license for educational purposes.  It's main use case is helping users identify and explore objects using Wikidata, several other user defined properties, and community feedback the in the form of comments.           </Card.Description>
             <Separator class="my-2"/>
 
             <Card.Footer>

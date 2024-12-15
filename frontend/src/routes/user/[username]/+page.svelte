@@ -34,7 +34,15 @@
         throw new Error(`HTTP error! status: ${commentResponse.status}`);
       }
       const allComments = await commentResponse.json();
-      comments = allComments.filter(comment => comment.commentator === username);
+      
+      // Get user's direct comments and extract their replies from other comments
+      const directComments = allComments.filter(comment => comment.commentator === username);
+      const repliesFromOthersComments = allComments
+        .flatMap(comment => comment.replies || [])
+        .filter(reply => reply.commentator === username);
+      
+      comments = [...directComments, ...repliesFromOthersComments];
+
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -88,6 +96,7 @@
     <div class="flex flex-col items-center">
       {#if !loadingComments && comments.length > 0}
         <div class="flex flex-col w-full">
+          <!-- User's direct comments -->
           {#each comments as comment}
             <a href={`/thread/${comment.thread}`} class="block">
               <Comment
@@ -104,7 +113,7 @@
       {/if}
 
       {#if !loadingComments && comments.length === 0}
-        <p class="font-bold text-lg">No comments found for {username}.</p>
+        <p class="font-bold text-lg">No comments or replies found for {username}.</p>
       {/if}
     </div>
   </div>

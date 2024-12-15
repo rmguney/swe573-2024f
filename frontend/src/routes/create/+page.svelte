@@ -6,6 +6,7 @@
     import { goto } from '$app/navigation';
     import { activeUser } from '../../userStore';
     import { Input } from "$lib/components/ui/input/index.js";
+    import { Textarea } from "$lib/components/ui/textarea/index.js";
 
     let title = '';
     let tags = [];
@@ -167,65 +168,58 @@
     <form class="w-full lg:w-2/3">
         <Card.Root class="bg-opacity-90">
             <Card.Title class="p-4 text-2xl mt-6 text-center">
-                Let's help you post new stuff!
+                Let's help you post new stuff
+                <small class="block text-sm mt-2 font-semibold">Fill in the details about your object, you can leave any blank if you are not sure, but try to be as precise as possible</small>
             </Card.Title>
         <div class="bg-opacity-95 rounded-lg shadow-lg p-6">
 
             <!-- Title -->
             <div class="mb-4">
                 <label for="title" class="block text-sm font-medium mb-2">Title</label>
-                <Input id="title" class="w-full p-2 border rounded dark:border-gray-600" bind:value={title} placeholder="Give your post an interesting title" />
+                <Textarea id="title" class="w-full p-2 border rounded dark:border-gray-600 h-auto" bind:value={title} placeholder="This is what people will see on their homepage so try to make it interesting" />
             </div>
 
             <!-- Object Details -->
             <div class="mb-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
                     <label for="material" class="block text-sm font-medium mb-2">Material</label>
-                    <Input id="material" class="w-full p-2 border rounded dark:border-gray-600" bind:value={material} placeholder="E.g., wood, metal" />
+                    <Input id="material" class="w-full p-2 border rounded dark:border-gray-600" bind:value={material} placeholder="E.g., wood, metal, plastic, fabric" />
                 </div>
                 <div>
                     <label for="shape" class="block text-sm font-medium mb-2">Shape</label>
-                    <Input id="shape" class="w-full p-2 border rounded dark:border-gray-600" bind:value={shape} placeholder="E.g., round, square" />
+                    <Input id="shape" class="w-full p-2 border rounded dark:border-gray-600" bind:value={shape} placeholder="E.g., round, square or something more elaborate" />
                 </div>
                 <div>
                     <label for="color" class="block text-sm font-medium mb-2">Color</label>
-                    <Input id="color" class="w-full p-2 border rounded dark:border-gray-600" bind:value={color} placeholder="E.g., red, blue" />
+                    <Input id="color" class="w-full p-2 border rounded dark:border-gray-600" bind:value={color} placeholder="E.g., red, blue, yellow, transparent" />
                 </div>
                 <div>
-                    <label for="texture" class="block text-sm font-medium mb-2">Texture</label>
-                    <Input id="texture" class="w-full p-2 border rounded dark:border-gray-600" bind:value={texture} placeholder="E.g., smooth, rough" />
+                    <label for="texture" class="block text-sm font-medium mb-2">Texture or Markings</label>
+                    <Input id="texture" class="w-full p-2 border rounded dark:border-gray-600" bind:value={texture} placeholder="Does it have logo, text, engravings etc?" />
                 </div>
                 <div>
                     <label for="smell" class="block text-sm font-medium mb-2">Smell/Taste</label>
-                    <Input id="smell" class="w-full p-2 border rounded dark:border-gray-600" bind:value={smell} placeholder="E.g., sweet, sour" />
-                </div>
-                <div>
-                    <label for="marking" class="block text-sm font-medium mb-2">Marking</label>
-                    <Input id="marking" class="w-full p-2 border rounded dark:border-gray-600" bind:value={marking} placeholder="E.g., logo, text" />
+                    <Input id="smell" class="w-full p-2 border rounded dark:border-gray-600" bind:value={smell} placeholder="Dont lick weird stuff" />
                 </div>
                 <div>
                     <label for="functionality" class="block text-sm font-medium mb-2">Functionality</label>
-                    <Input id="functionality" class="w-full p-2 border rounded dark:border-gray-600" bind:value={functionality} placeholder="E.g., cutting, writing" />
+                    <Input id="functionality" class="w-full p-2 border rounded dark:border-gray-600" bind:value={functionality} placeholder="E.g., cutting, writing, art" />
                 </div>
                 <div>
                     <label for="period" class="block text-sm font-medium mb-2">Period</label>
-                    <Input id="period" class="w-full p-2 border rounded dark:border-gray-600" bind:value={period} placeholder="E.g., 1800s, 1900s" />
+                    <Input id="period" class="w-full p-2 border rounded dark:border-gray-600" bind:value={period} placeholder="E.g., 1800s, 1900s, 2000s" />
                 </div>
                 <div>
                     <label for="location" class="block text-sm font-medium mb-2">Location</label>
-                    <Input id="location" class="w-full p-2 border rounded dark:border-gray-600" bind:value={location} placeholder="E.g., Europe, Asia" />
-                </div>
-                <div>
-                    <label for="location" class="block text-sm font-medium mb-2">Description</label>
-                    <Input id="description" class="w-full p-2 border rounded dark:border-gray-600" bind:value={description} placeholder="Add any additional context about your object"/>
+                    <Input id="location" class="w-full p-2 border rounded dark:border-gray-600" bind:value={location} placeholder="Where is it typically found? E.g., Europe, Asia" />
                 </div>
             </div>
 
             <!-- Dropdowns for Size and Weight -->
             <div class="mb-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
-                    <label for="size-select" class="block text-sm font-medium mb-2">Size</label>
-                    <select id="size-select" bind:value={size} class="w-full p-2 rounded border dark:border-gray-600">
+                    <label for="size-select" class="block text-sm mb-2">Size</label>
+                    <select id="size-select" bind:value={size} class="w-full p-2 rounded border dark:border-gray-600 dark:bg-neutral-950 text-sm dark:text-neutral-400 text-neutral-500">
                         <option value="" disabled selected>Select a size range</option>
                         <option value="Tiny (under 5cm)">Tiny (under 5cm)</option>
                         <option value="Small (5cm to 20cm)">Small (5cm to 20cm)</option>
@@ -236,9 +230,9 @@
                     </select>
                 </div>
                 <div>
-                    <label for="weight-select" class="block text-sm font-medium mb-2">Weight</label>
-                    <select id="weight-select" bind:value={weight} class="w-full p-2 rounded border dark:border-gray-600">
-                        <option value="" disabled selected>Select a weight range</option>
+                    <label for="weight-select" class="block text-sm mb-2">Weight</label>
+                    <select id="weight-select" bind:value={weight} class="w-full p-2 rounded border dark:border-gray-600 dark:bg-neutral-950 text-sm dark:text-neutral-400 text-neutral-500">
+                        <option class="text-sm" value="" disabled selected>Select a weight range</option>
                         <option value="Very Light (under 100g)">Very Light (under 100g)</option>
                         <option value="Light (100g to 500g)">Light (100g to 500g)</option>
                         <option value="Moderate (500g to 2kg)">Moderate (500g to 2kg)</option>
@@ -249,7 +243,11 @@
                 </div>
             </div>
 
-
+            <div>
+                <label for="location" class="block text-sm font-medium mb-2">Description</label>
+                <Textarea id="description" class="w-full p-2 mb-4 border rounded dark:border-gray-600 h-auto" bind:value={description} placeholder="You can add any additional context about your object or how you came into possession of it. Or tell us about your cat who am I to judge"/>
+            </div>
+            
             <!-- Tags -->
             <div class="mb-4">
                 <label for="tags" class="block text-sm font-medium mb-2">Tags</label>
@@ -285,7 +283,7 @@
                 variant="outline"
                 size="icon"
                 class="w-full p-4 bg-black dark:bg-white text-white dark:text-black hover:bg-rose-900 hover:dark:bg-rose-900 hover:text-white transition-colors rounded shadow">
-                Post Your Object
+                Post Your Stuff
             </Button>
             </div>
         </div>
