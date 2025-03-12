@@ -2,6 +2,8 @@
 
 **Stufffinder** is a web application developed as part of the **Bogazici University Software Engineering Master's Degree Program** to demonstrate foundationary software engineering concepts, including requirements gathering process, modular architecture, frontend-backend integration, containerization, and testing practices. It's main use case is helping users identify and explore objects using **Wikidata**, several other user defined properties, and community feedback the in the form of comments.
 
+This is an older version, continuation of the project is at: https://github.com/rmguney/swe574-2025s-g2
+
 ## 1. Key Features
 
 - **1.1 Thread Creation**: Users can create threads to describe unknown objects, including attributes such as Wikidata tags, images, videos, and visual descriptions.       
